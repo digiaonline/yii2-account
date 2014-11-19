@@ -14,31 +14,30 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model nord\yii\account\models\ForgotPasswordForm */
+/* @var $model nord\yii\account\models\ConnectForm */
+/* @var $provider nord\yii\account\models\AccountProvider */
 
-$this->title = Module::t('views', 'Forgot password');
+$this->title = Module::t('views', 'Connect with {provider}', ['provider' => ucfirst($provider->name)]);
 ?>
-<div class="password-controller forgot-action">
+<div class="register-controller connect-action">
 
     <div class="row">
         <div class="col-lg-5">
 
             <h1 class="page-header"><?= Html::encode($this->title); ?></h1>
 
-            <p class="help-block">
-                <?= Module::t(
-                    'views',
-                    'Please enter your e-mail address and we will send you instructions on how to reset your password.'
-                ); ?>
+            <p class="help-text">
+                <?= Module::t('views', 'Please enter your e-mail address and desired username and to create your account.'); ?>
             </p>
 
-            <?php $form = ActiveForm::begin(['id' => 'forgot-password-form']); ?>
+            <?php $form = ActiveForm::begin(['id' => 'connect-form']); ?>
 
             <fieldset>
                 <?= $form->field($model, 'email'); ?>
+                <?= $form->field($model, 'username'); ?>
             </fieldset>
 
-            <?= Html::submitButton(Module::t('views', 'Recover Account'), ['class' => 'btn btn-lg btn-primary']); ?>
+            <?= Html::submitButton(Module::t('views', 'Connect'), ['class' => 'btn btn-lg btn-primary']); ?>
 
             <?php ActiveForm::end(); ?>
 

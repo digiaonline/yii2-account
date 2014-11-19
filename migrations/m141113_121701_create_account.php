@@ -9,6 +9,7 @@
  */
 
 use yii\db\Migration;
+use yii\db\Schema;
 
 class m141113_121701_create_account extends Migration
 {
@@ -17,17 +18,17 @@ class m141113_121701_create_account extends Migration
         $this->createTable(
             'account',
             array(
-                'id' => 'pk',
-                'salt' => 'string NOT NULL',
-                'username' => 'string NOT NULL',
-                'password' => 'string NOT NULL',
-                'authKey' => 'string NOT NULL',
-                'email' => 'string NOT NULL',
-                'passwordStrategy' => 'string NOT NULL',
-                'requireNewPassword' => "boolean NOT NULL DEFAULT '0'",
-                'lastLoginAt' => 'datetime NULL DEFAULT NULL',
-                'createdAt' => 'datetime NULL DEFAULT NULL',
-                'status' => "integer NOT NULL DEFAULT '0'",
+                'id' => Schema::TYPE_PK,
+                'salt' => Schema::TYPE_STRING . ' NOT NULL',
+                'username' => Schema::TYPE_STRING . ' NOT NULL',
+                'password' => Schema::TYPE_STRING . ' NOT NULL',
+                'authKey' => Schema::TYPE_STRING . ' NOT NULL',
+                'email' => Schema::TYPE_STRING . ' NOT NULL',
+                'passwordStrategy' => Schema::TYPE_STRING . ' NOT NULL',
+                'requireNewPassword' => Schema::TYPE_BOOLEAN . " NOT NULL DEFAULT '0'",
+                'lastLoginAt' => Schema::TYPE_DATETIME . ' NULL DEFAULT NULL',
+                'createdAt' => Schema::TYPE_DATETIME . ' NULL DEFAULT NULL',
+                'status' => Schema::TYPE_INTEGER . " NOT NULL DEFAULT '0'",
                 'UNIQUE KEY username (username)',
                 'UNIQUE KEY email (email)',
             )

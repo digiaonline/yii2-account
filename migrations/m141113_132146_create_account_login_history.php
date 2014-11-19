@@ -9,6 +9,7 @@
  */
 
 use yii\db\Migration;
+use yii\db\Schema;
 
 class m141113_132146_create_account_login_history extends Migration
 {
@@ -17,11 +18,11 @@ class m141113_132146_create_account_login_history extends Migration
         $this->createTable(
             'account_login_history',
             array(
-                'id' => 'pk',
-                'accountId' => "int NOT NULL DEFAULT '0'",
-                'success' => "boolean NOT NULL DEFAULT '0'",
-                'numFailedAttempts' => "int NOT NULL DEFAULT '0'",
-                'createdAt' => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
+                'id' => Schema::TYPE_PK,
+                'accountId' => Schema::TYPE_INTEGER . " NOT NULL DEFAULT '0'",
+                'success' => Schema::TYPE_BOOLEAN . " NOT NULL DEFAULT '0'",
+                'numFailedAttempts' => Schema::TYPE_INTEGER . " NOT NULL DEFAULT '0'",
+                'createdAt' => Schema::TYPE_DATETIME . ' NULL DEFAULT NULL',
             )
         );
     }

@@ -54,37 +54,38 @@ class Module extends \yii\base\Module
      * @var array map over classes used by this module.
      */
     public $classMap = [];
-
     /**
      * @var bool whether to enable activation (defaults to true).
      */
     public $enableActivation = true;
-
     /**
      * @var bool whether to enable signing up (defaults to true).
      */
     public $enableSignup = true;
-
+    /**
+     * @var bool whether to enable client authentication, e.g. Facebook (defaults to false).
+     */
+    public $enableClientAuth = false;
+    /**
+     * @var array list of clients that can be used for client authentication.
+     */
+    public $authClients = ['google' => ['class' => 'yii\authclient\clients\GoogleOpenId']];
     /**
      * @var bool whether to enable CAPTCHA on sign up (defaults to false).
      */
     public $enableCaptcha = false;
-
     /**
      * @var array configuration that is passed to the captcha action.
      */
     public $captchaOptions = [];
-
     /**
      * @var string name of the attribute to use for logging in.
      */
     public $loginAttribute = 'username';
-
     /**
      * @var string message source to use for this module.
      */
     public $messageSource = 'yii\i18n\PhpMessageSource';
-
     /**
      * @var string default controller.
      */

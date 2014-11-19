@@ -9,6 +9,7 @@
  */
 
 use yii\db\Migration;
+use yii\db\Schema;
 
 class m141113_131938_create_account_token extends Migration
 {
@@ -17,12 +18,12 @@ class m141113_131938_create_account_token extends Migration
         $this->createTable(
             'account_token',
             array(
-                'id' => 'pk',
-                'accountId' => 'int NOT NULL',
-                'type' => 'string NOT NULL',
-                'token' => 'string NOT NULL',
-                'createdAt' => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
-                'status' => "integer NOT NULL DEFAULT '0'",
+                'id' => Schema::TYPE_PK,
+                'accountId' => Schema::TYPE_INTEGER . ' NOT NULL',
+                'type' => Schema::TYPE_STRING . ' NOT NULL',
+                'token' => Schema::TYPE_STRING . ' NOT NULL',
+                'createdAt' => Schema::TYPE_DATETIME . ' NULL DEFAULT NULL',
+                'status' => Schema::TYPE_INTEGER . " NOT NULL DEFAULT '0'",
                 'UNIQUE KEY accountId_type_token (accountId, type, token)',
             )
         );

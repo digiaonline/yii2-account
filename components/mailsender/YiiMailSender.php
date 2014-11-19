@@ -12,14 +12,18 @@ namespace nord\yii\account\components\mailsender;
 
 use Yii;
 
-class DummyMailSender extends LocalMailSender
+class YiiMailSender extends LocalMailSender
 {
     /**
      * @inheritdoc
      */
     public function send(array $config = [])
     {
-        echo $config['body'];
-        Yii::$app->end();
+        return Yii::$app->mailer->compose()
+            ->setTo($config['to'])
+            ->setFrom($config['from'])
+            ->setSubject($config['subject'])
+            ->setTextBody($config['body'])
+            ->send();
     }
 }

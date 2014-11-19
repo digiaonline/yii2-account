@@ -11,6 +11,7 @@
 namespace nord\yii\account\controllers;
 
 use nord\yii\account\components\datacontract\DataContract;
+use nord\yii\account\filters\ClientAuthFilter;
 use nord\yii\account\filters\SignupFilter;
 use nord\yii\account\filters\TokenFilter;
 use nord\yii\account\models\SignupForm;
@@ -39,7 +40,7 @@ class SignupController extends Controller
                 'denyCallback' => [$this, 'goHome'],
                 'rules' => [
                     [
-                        'actions' => ['activate', 'index'],
+                        'actions' => ['activate', 'connect', 'index'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -49,6 +50,10 @@ class SignupController extends Controller
                 'class' => TokenFilter::className(),
                 'only' => ['activate'],
             ],
+            'clientAuth' => [
+                'class' => ClientAuthFilter::className(),
+                'only' => ['connect'],
+            ]
         ];
     }
 
@@ -64,9 +69,9 @@ class SignupController extends Controller
         $model = $dataContract->createSignupForm(['scenario' => $scenario]);
 
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            $account = $dataContract->findAccount(['username' => $model->username]);
-
             $this->afterSignup();
+
+            $account = $dataContract->findAccount(['username' => $model->username]);
 
             if ($this->module->enableActivation) {
                 $this->sendActivationMail($account);
@@ -105,6 +110,45 @@ class SignupController extends Controller
         $this->afterActivate();
 
         $this->redirect(['/account/authenticate/login']);
+    }
+
+    /**
+     * Displays the 'connect' page.
+     *
+     * @param string $providerId provider identifier.
+     * @return string|\yii\web\Response
+     */
+    public function actionConnect($providerId)
+    {
+        $dataContract = $this->module->getDataContract();
+        $provider = $dataContract->findProvider($providerId);
+
+        if ($provider === null || !empty($provider->accountId)) {
+            $this->pageNotFound();
+        }
+
+        $model = $dataContract->createConnectForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $account = $dataContract->createAccount([
+                'attributes' => [
+                    'username' => $model->username,
+                    'password' => $this->module->getTokenGenerator()->generate(),
+                    'email' => $model->email
+                ],
+            ]);
+
+            if (!$account->save()) {
+                $this->fatalError();
+            }
+
+            $provider->updateAttributes(['accountId' => $account->id]);
+            $this->afterSignup();
+            Yii::$app->user->login($account, Module::getParam(Module::PARAM_LOGIN_EXPIRE_TIME));
+            return $this->goBack();
+        } else {
+            return $this->render('connect', ['model' => $model, 'provider' => $provider]);
+        }
     }
 
     /**

@@ -13,7 +13,9 @@ namespace nord\yii\account\models;
 use nord\yii\account\Module;
 use Yii;
 use yii\base\Exception;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "account_login_history".
@@ -34,6 +36,22 @@ class AccountLoginHistory extends ActiveRecord
     public static function tableName()
     {
         return 'account_login_history';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'createdAt',
+                ],
+                'value' => new Expression('NOW()'),
+            ],
+        ];
     }
 
     /**

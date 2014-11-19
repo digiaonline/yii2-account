@@ -44,7 +44,7 @@ class SignupForm extends PasswordForm
             parent::rules(),
             [
                 [['email', 'username'], 'required'],
-                ['username', 'string', 'min' => Module::getInstance()->getParam(Module::PARAM_MIN_USERNAME_LENGTH)],
+                ['username', 'string', 'min' => Module::getParam(Module::PARAM_MIN_USERNAME_LENGTH)],
                 ['email', 'email'],
                 [['username', 'email'], 'unique', 'targetClass' => Account::className()],
                 [
@@ -52,7 +52,6 @@ class SignupForm extends PasswordForm
                     'captcha',
                     'captchaAction' => '/account/authenticate/captcha',
                     'on' => 'captcha',
-                    'when' => !$captchaClass::checkRequirements()
                 ],
             ]
         );

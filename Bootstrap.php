@@ -12,6 +12,7 @@ namespace nord\yii\account;
 
 use nord\yii\account\commands\AccountCommand;
 use nord\yii\account\components\datacontract\DataContract;
+use yii\authclient\Collection;
 use yii\base\BootstrapInterface;
 use yii\base\InvalidConfigException;
 
@@ -60,6 +61,13 @@ class Bootstrap implements BootstrapInterface
         /** @var Module $module */
         $module = $app->getModule(Module::MODULE_ID);
         $dataContract = $module->getDataContract();
+
+        if ($module->enableClientAuth && !$app->has('authClientCollection')) {
+            $app->set('authClientCollection', [
+                'class' => Collection::className(),
+                'clients' => $module->authClients,
+            ]);
+        }
 
         $app->set('user', [
             'class' => $dataContract->getClassName(DataContract::CLASS_WEB_USER),

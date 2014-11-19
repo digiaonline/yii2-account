@@ -13,7 +13,9 @@ namespace nord\yii\account\components\datacontract;
 use nord\yii\account\models\Account;
 use nord\yii\account\models\AccountLoginHistory;
 use nord\yii\account\models\AccountPasswordHistory;
+use nord\yii\account\models\AccountProvider;
 use nord\yii\account\models\AccountToken;
+use nord\yii\account\models\ConnectForm;
 use nord\yii\account\models\ForgotPasswordForm;
 use nord\yii\account\models\LoginForm;
 use nord\yii\account\models\PasswordForm;
@@ -34,13 +36,14 @@ class DataContract extends Component implements DataContractInterface
     // Class name types.
     const CLASS_ACCOUNT = 'account';
     const CLASS_TOKEN = 'token';
-    const CLASS_USER_IDENTITY = 'userIdentity';
+    const CLASS_LOGIN_HISTORY = 'loginHistory';
+    const CLASS_PASSWORD_HISTORY = 'passwordHistory';
+    const CLASS_PROVIDER = 'provider';
     const CLASS_LOGIN_FORM = 'loginForm';
     const CLASS_PASSWORD_FORM = 'passwordForm';
     const CLASS_SIGNUP_FORM = 'signupForm';
+    const CLASS_CONNECT_FORM = 'connectForm';
     const CLASS_FORGOT_PASSWORD_FORM = 'forgotPasswordForm';
-    const CLASS_LOGIN_HISTORY = 'loginHistory';
-    const CLASS_PASSWORD_HISTORY = 'passwordHistory';
     const CLASS_WEB_USER = 'webUser';
     const CLASS_CAPTCHA = 'captcha';
     const CLASS_CAPTCHA_ACTION = 'captchaAction';
@@ -122,8 +125,8 @@ class DataContract extends Component implements DataContractInterface
      */
     public function isAccountLocked(ActiveRecord $model)
     {
-        $numAllowedAttempts = Module::getInstance()->getParam(Module::PARAM_NUM_ALLOWED_FAILED_LOGIN_ATTEMPTS);
-        $lockoutExpireTime = Module::getInstance()->getParam(Module::PARAM_LOCKOUT_EXPIRE_TIME);
+        $numAllowedAttempts = Module::getParam(Module::PARAM_NUM_ALLOWED_FAILED_LOGIN_ATTEMPTS);
+        $lockoutExpireTime = Module::getParam(Module::PARAM_LOCKOUT_EXPIRE_TIME);
 
         if ($numAllowedAttempts === 0) {
             return false;
@@ -149,7 +152,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function isAccountPasswordExpired(ActiveRecord $model)
     {
-        $passwordExpireTime = Module::getInstance()->getParam(Module::PARAM_PASSWORD_EXPIRE_TIME);
+        $passwordExpireTime = Module::getParam(Module::PARAM_PASSWORD_EXPIRE_TIME);
 
         if ($passwordExpireTime === 0) {
             return false;
@@ -221,7 +224,24 @@ class DataContract extends Component implements DataContractInterface
 
     /**
      * @inheritdoc
-     * @throws Exception if the history entry cannot be saved.
+     * @return AccountProvider model instance.
+     */
+    public function createProvider(array $config = [])
+    {
+        return $this->createInternal(self::CLASS_PROVIDER, $config, false);
+    }
+
+    /**
+     * @inheritdoc
+     * @return AccountProvider model instance.
+     */
+    public function findProvider($condition)
+    {
+        return $this->findInternal(self::CLASS_PROVIDER, $condition);
+    }
+
+    /**
+     * @inheritdoc
      * @return AccountLoginHistory model instance.
      */
     public function createLoginHistory(array $config = [])
@@ -231,7 +251,6 @@ class DataContract extends Component implements DataContractInterface
 
     /**
      * @inheritdoc
-     * @throws Exception if the history entry cannot be saved.
      * @return AccountPasswordHistory model instance.
      */
     public function createPasswordHistory(array $config = [])
@@ -241,7 +260,6 @@ class DataContract extends Component implements DataContractInterface
 
     /**
      * @inheritdoc
-     * @throws Exception if the token cannot be generated.
      * @return string the generated token.
      */
     public function createToken(array $config = [])
@@ -255,7 +273,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function findToken($type, $token)
     {
-        $tokenExpireTime = Module::getInstance()->getParam(Module::PARAM_TOKEN_EXPIRE_TIME);
+        $tokenExpireTime = Module::getParam(Module::PARAM_TOKEN_EXPIRE_TIME);
 
         /** @var AccountToken $modelClass */
         $modelClass = $this->getClassName(self::CLASS_TOKEN);
@@ -293,6 +311,14 @@ class DataContract extends Component implements DataContractInterface
     public function createSignupForm(array $config = [])
     {
         return $this->createModelInternal(self::CLASS_SIGNUP_FORM, $config);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function createConnectForm(array $config = [])
+    {
+        return $this->createModelInternal(self::CLASS_CONNECT_FORM, $config);
     }
 
     /**
@@ -353,11 +379,13 @@ class DataContract extends Component implements DataContractInterface
             [
                 self::CLASS_ACCOUNT => Account::className(),
                 self::CLASS_TOKEN => AccountToken::className(),
+                self::CLASS_PROVIDER => AccountProvider::className(),
                 self::CLASS_LOGIN_HISTORY => AccountLoginHistory::className(),
                 self::CLASS_PASSWORD_HISTORY => AccountPasswordHistory::className(),
                 self::CLASS_LOGIN_FORM => LoginForm::className(),
                 self::CLASS_PASSWORD_FORM => PasswordForm::className(),
                 self::CLASS_SIGNUP_FORM => SignupForm::className(),
+                self::CLASS_CONNECT_FORM => ConnectForm::className(),
                 self::CLASS_FORGOT_PASSWORD_FORM => ForgotPasswordForm::className(),
                 self::CLASS_WEB_USER => User::className(),
                 self::CLASS_CAPTCHA => Captcha::className(),

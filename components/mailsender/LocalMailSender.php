@@ -13,14 +13,22 @@ namespace nord\yii\account\components\mailsender;
 use Yii;
 use yii\base\Component;
 
-class LocalMailSender extends Component implements MailSenderInterface
+abstract class LocalMailSender extends Component implements MailSenderInterface
 {
+    /**
+     * Sends an e-mail message.
+     *
+     * @param array $config mail configurations.
+     * @return bool whether the mail was sent successfully.
+     */
+    abstract public function send(array $config = []);
+
     /**
      * @inheritdoc
      */
     public function sendActivationMail(array $config = [])
     {
-        $config['body'] = Yii::$app->controller->renderPartial('/email/activate', $config['data']);
+        $config['body'] = Yii::$app->controller->renderPartial('/mail/activate', $config['data']);
         return $this->send($config);
     }
 
@@ -29,27 +37,7 @@ class LocalMailSender extends Component implements MailSenderInterface
      */
     public function sendResetPasswordMail(array $config = [])
     {
-        $config['body'] = Yii::$app->controller->renderPartial('/email/resetPassword', $config['data']);
+        $config['body'] = Yii::$app->controller->renderPartial('/mail/resetPassword', $config['data']);
         return $this->send($config);
-    }
-
-    /**
-     * Sends an e-mail message.
-     *
-     * @param array $config mail configurations.
-     * @return bool whether the mail was sent successfully.
-     */
-    protected function send(array $config = [])
-    {
-        $config['headers'] = isset($config['headers']) ? $config['headers'] : [];
-        $config['headers']['from'] = $config['from'];
-
-        return mail(
-            implode(',', $config['to']),
-            $config['subject'],
-            $config['body'],
-            $config['headers'],
-            $config['params']
-        );
     }
 }

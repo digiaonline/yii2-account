@@ -9,6 +9,7 @@
  */
 
 use nord\yii\account\Module;
+use yii\authclient\widgets\AuthChoice;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
@@ -22,7 +23,8 @@ $this->title = Module::t('views', 'Login');
 
     <div class="row">
         <div class="col-lg-5">
-            <h1><?= Html::encode($this->title); ?></h1>
+
+            <h1 class="page-header"><?= Html::encode($this->title); ?></h1>
 
             <?php if (Module::getInstance()->enableSignup): ?>
                 <p class="help-block">
@@ -34,6 +36,14 @@ $this->title = Module::t('views', 'Login');
                 </p>
             <?php endif; ?>
 
+            <p class="help-block">
+                <?= Module::t(
+                    'views',
+                    'Did you forget your password? &mdash; {forgotLink}.',
+                    ['forgotLink' => Html::a('Recover it', ['/account/password/forgot'])]
+                ); ?>
+            </p>
+
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
             <fieldset>
@@ -42,17 +52,20 @@ $this->title = Module::t('views', 'Login');
                 <?= $form->field($model, 'rememberMe')->checkbox(); ?>
             </fieldset>
 
-            <p class="help-block">
-                <?= Module::t(
-                    'views',
-                    'If you forgot your password you can {link}.',
-                    ['link' => Html::a('reset it', ['/account/password/forgot'])]
-                ); ?>
-            </p>
-
-            <?= Html::submitButton(Module::t('views', 'Login'), ['class' => 'btn btn-primary']); ?>
+            <?= Html::submitButton(Module::t('views', 'Login'), ['class' => 'btn btn-lg btn-primary']); ?>
 
             <?php ActiveForm::end(); ?>
+
+            <?php if (Module::getInstance()->enableClientAuth): ?>
+                <hr/>
+
+                <p class="help-block">
+                    <?= Module::t('views', 'You may also log in using one of the providers below:'); ?>
+                </p>
+
+                <?= AuthChoice::widget(['baseAuthUrl' => ['/account/authenticate/client']]); ?>
+            <?php endif; ?>
+
         </div>
     </div>
 

@@ -14,15 +14,16 @@ with salt that are encrypted using bcrypt instead of password hashes. It also co
  - Secure accounts (password + salt) __DONE__
  - Migrating passwords from md5 and sha1 to e.g. bcrypt __DONE__
  - Optional sign-up process (enabled by default) __DONE__
+ - Captcha support on sign up __DONE__
  - Optional account activation (enabled by default) __DONE__
  - Log in / Log out __DONE__
+ - Sign up and log in through third-party services __DONE__
  - Reset password __DONE__
  - Email sending (with token validation) __DONE__
  - Require new password every x days (disabled by default) __DONE__
  - Password history (encrypted) to prevent from using same password twice __DONE__
  - Lock accounts after x failed login attempts (disabled by default) __DONE__
  - Console command for creating accounts __DONE__
- - Captcha support on sign up __WIP__
  - Proper README __WIP__
 
 ## Installation
@@ -70,6 +71,8 @@ The following configurations are available for the ```nord\yii\account\Module```
  * __classMap__ _array_ map over classes to use within the module.
  * __enableActivation__ _bool_ whether to enable account activation (defaults to ```true```).
  * __enableSignup__ _bool_ whether to enable the sign-up process (defaults to ```true```).
+ * __enableClientAuth__ _bool_ whether to enable client authentication (defaults to ```false```).
+ * __authClients__ _array_ list of clients that can be used for client authentication.
  * __enableCaptcha__ _bool_ whether to enable CAPTCHA when signing up (defaults to ```false```).
  * __captchaOptions__ _array_ configuration that is passed to the ```CaptchaAction```.
  * __loginAttribute__ _string_ attribute to use as the login when logging in (defaults to ```username```).
@@ -141,12 +144,14 @@ class map for the module:
 You can use the class map to configure any classes used by the module, here is a complete list of the available classes:
 
  * __account__ _models\Account_ account model
- * __token__ _models\AccountToken_ account token mode
+ * __token__ _models\AccountToken_ account token model
+ * __provider__ _models\AccountProvider_ account provider model
  * __loginHistory__ _models\AccountLoginHistory_ login history model
  * __passwordHistory__ _models\AccountPasswordHistory_ password history model
  * __loginForm__ _models\LoginForm_ login form
  * __passwordForm__ _models\PasswordForm_ base form that handles passwords
  * __signupForm__ _models\SignupForm_ signup form
+ * __connectForm__ _models\ConnectForm_ connect form
  * __forgotPassword__ _models\ForgotPasswordForm_ forgot password form
  * __webUser__ _yii\web\User_ web user component
  * __captcha__ _yii\captcha\Captcha_ captcha widget

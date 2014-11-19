@@ -11,9 +11,12 @@
 namespace nord\yii\account\controllers;
 
 use nord\yii\account\components\datacontract\DataContract;
+use nord\yii\account\filters\ClientAuthFilter;
 use nord\yii\account\models\LoginForm;
 use nord\yii\account\Module;
 use Yii;
+use yii\authclient\AuthAction;
+use yii\authclient\ClientInterface;
 use yii\filters\AccessControl;
 
 class AuthenticateController extends Controller
@@ -28,12 +31,15 @@ class AuthenticateController extends Controller
      */
     public function actions()
     {
-
         return [
             'captcha' => array_merge(
                 ['class' => $this->module->getDataContract()->getClassName(DataContract::CLASS_CAPTCHA_ACTION)],
                 $this->module->captchaOptions
-            )
+            ),
+            'client' => [
+                'class' => AuthAction::className(),
+                'successCallback' => [$this, 'afterAuthSuccess'],
+            ],
         ];
     }
 
@@ -48,7 +54,7 @@ class AuthenticateController extends Controller
                 'denyCallback' => [$this, 'goHome'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'captcha'],
+                        'actions' => ['captcha', 'client', 'login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -59,6 +65,10 @@ class AuthenticateController extends Controller
                         'roles' => ['@'],
                     ],
                 ],
+            ],
+            'clientAuth' => [
+                'class' => ClientAuthFilter::className(),
+                'only' => ['client'],
             ],
         ];
     }
@@ -95,5 +105,35 @@ class AuthenticateController extends Controller
     {
         Yii::$app->user->logout();
         return $this->goHome();
+    }
+
+    /**
+     * Invoked after a successful authentication with a client.
+     *
+     * @param ClientInterface $client client instance.
+     * @return \yii\web\Response
+     */
+    public function afterAuthSuccess(ClientInterface $client)
+    {
+        $attributes = $client->getUserAttributes();
+        $name = $client->getId();
+        $dataContract = $this->module->getDataContract();
+        $provider = $dataContract->findProvider(['name' => $name, 'clientId' => $attributes['id']]);
+
+        if ($provider === null) {
+            $provider = $dataContract->createProvider([
+                'attributes' => ['name' => $name, 'clientId' => $attributes['id'], 'data' => $attributes]
+            ]);
+            if (!$provider->save(false)) {
+                $this->fatalError();
+            }
+        }
+
+        if ($provider->account !== null) {
+            Yii::$app->user->login($provider->account, Module::getParam(Module::PARAM_LOGIN_EXPIRE_TIME));
+            return $this->goHome();
+        } else {
+            return $this->redirect(['/account/signup/connect', 'providerId' => $provider->id]);
+        }
     }
 }

@@ -17,7 +17,7 @@ $this->title = Module::t('views', 'Success');
 ?>
 <div class="password-controller sent-action">
 
-        <h1><?= Html::encode($this->title); ?></h1>
+        <h1 class="page-header"><?= Html::encode($this->title); ?></h1>
 
         <p class="lead"><?= Module::t('views', 'Do not worry'); ?></p>
 

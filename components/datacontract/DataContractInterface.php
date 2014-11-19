@@ -95,6 +95,22 @@ interface DataContractInterface
     public function getAccountPasswordHistory(ActiveRecord $model);
 
     /**
+     * Creates a provider model.
+     *
+     * @param array $config object configuration.
+     * @return ActiveRecord model instance.
+     */
+    public function createProvider(array $config = []);
+
+    /**
+     * Returns a provider using the given search condition.
+     *
+     * @param mixed $condition search condition.
+     * @return ActiveRecord model instance.
+     */
+    public function findProvider($condition);
+
+    /**
      * Creates a login history model.
      *
      * @param array $config object configuration.
@@ -149,6 +165,14 @@ interface DataContractInterface
      * @return ActiveRecord form model instance.
      */
     public function createSignupForm(array $config = []);
+
+    /**
+     * Creates a new connect form model.
+     *
+     * @param array $config object configuration.
+     * @return ActiveRecord form model instance.
+     */
+    public function createConnectForm(array $config = []);
 
     /**
      * Creates a new forgot password form model.

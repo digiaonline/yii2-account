@@ -9,6 +9,7 @@
  */
 
 use yii\db\Migration;
+use yii\db\Schema;
 
 class m141113_132156_create_account_password_history extends Migration
 {
@@ -17,11 +18,11 @@ class m141113_132156_create_account_password_history extends Migration
         $this->createTable(
             'account_password_history',
             array(
-                'id' => 'pk',
-                'accountId' => 'int NOT NULL',
-                'salt' => 'string NOT NULL',
-                'password' => 'string NOT NULL',
-                'createdAt' => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
+                'id' => Schema::TYPE_PK,
+                'accountId' => Schema::TYPE_INTEGER . ' NOT NULL',
+                'salt' => Schema::TYPE_STRING . ' NOT NULL',
+                'password' => Schema::TYPE_STRING . ' NOT NULL',
+                'createdAt' => Schema::TYPE_DATETIME . ' NULL DEFAULT NULL',
             )
         );
     }

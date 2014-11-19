@@ -32,8 +32,8 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $passwordStrategy
  * @property integer $requireNewPassword
- * @property string $createdAt
  * @property string $lastLoginAt
+ * @property string $createdAt
  * @property integer $status
  *
  * @property string $password write-only password
@@ -80,9 +80,8 @@ class Account extends ActiveRecord implements IdentityInterface
             'email' => Module::t('labels', 'Email'),
             'passwordStrategy' => Module::t('labels', 'Password Strategy'),
             'requireNewPassword' => Module::t('labels', 'Require New Password'),
-            'createdAt' => Module::t('labels', 'Created At'),
-            'updatedAt' => Module::t('labels', 'Updated At'),
             'lastLoginAt' => Module::t('labels', 'Last Login At'),
+            'createdAt' => Module::t('labels', 'Created At'),
             'status' => Module::t('labels', 'Status'),
         ];
     }
@@ -99,7 +98,7 @@ class Account extends ActiveRecord implements IdentityInterface
                 'strategies' => [
                     'bcrypt' => [
                         'class' => BcryptStrategy::className(),
-                        'minLength' => Module::getInstance()->getParam(Module::PARAM_MIN_PASSWORD_LENGTH),
+                        'minLength' => Module::getParam(Module::PARAM_MIN_PASSWORD_LENGTH),
                     ],
                 ],
             ],

@@ -23,7 +23,7 @@ use yii\helpers\Html;
     <div class="row">
         <div class="col-lg-5">
 
-            <h1><?= Html::encode($title); ?></h1>
+            <h1 class="page-header"><?= Html::encode($title); ?></h1>
 
             <p class="lead"><?= Html::encode($reason); ?></p>
 
@@ -41,7 +41,7 @@ use yii\helpers\Html;
                 <?= $form->field($model, 'verifyPassword')->passwordInput(); ?>
             </fieldset>
 
-            <?= Html::submitButton(Module::t('views', 'Change Password'), ['class' => 'btn btn-primary']); ?>
+            <?= Html::submitButton(Module::t('views', 'Change Password'), ['class' => 'btn btn-lg btn-primary']); ?>
 
             <?php ActiveForm::end(); ?>
 

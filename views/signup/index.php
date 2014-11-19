@@ -9,6 +9,7 @@
  */
 
 use nord\yii\account\Module;
+use yii\authclient\widgets\AuthChoice;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
@@ -24,7 +25,7 @@ $this->title = Module::t('views', 'Sign up');
     <div class="row">
         <div class="col-lg-5">
 
-            <h1><?= Html::encode($this->title); ?></h1>
+            <h1 class="page-header"><?= Html::encode($this->title); ?></h1>
 
             <p class="help-block">
                 <?= Module::t(
@@ -57,9 +58,19 @@ $this->title = Module::t('views', 'Sign up');
                 <?php endif; ?>
             </fieldset>
 
-            <?= Html::submitButton(Module::t('views', 'Create Account'), ['class' => 'btn btn-primary']); ?>
+            <?= Html::submitButton(Module::t('views', 'Create Account'), ['class' => 'btn btn-lg btn-primary']); ?>
 
             <?php ActiveForm::end(); ?>
+
+            <?php if (Module::getInstance()->enableClientAuth): ?>
+                <hr/>
+
+                <p class="help-block">
+                    <?= Module::t('views', 'You may also sign up using one of the providers below:'); ?>
+                </p>
+
+                <?= AuthChoice::widget(['baseAuthUrl' => ['/account/authenticate/client']]); ?>
+            <?php endif; ?>
 
         </div>
     </div>
