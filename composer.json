@@ -1,0 +1,20 @@
+{
+    "name": "nordsoftware/yii2-account",
+    "description": "Account module for the Yii framework.",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Christoffer Niska",
+            "email": "christoffer.niska@nordsoftware.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+      "nordsoftware/yii2-password": "*"
+    },
+    "autoload": {
+      "psr-4": {
+        "nord\\yii\\account\\": ""
+      }
+    }
+}

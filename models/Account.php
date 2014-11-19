@@ -12,8 +12,8 @@ namespace nord\yii\account\models;
 
 use nord\yii\account\Module;
 use phpnode\yii\password\PasswordBehavior;
-use phpnode\yii\password\PasswordStrategy;
 use phpnode\yii\password\strategies\BcryptStrategy;
+use phpnode\yii\password\strategies\PasswordStrategy;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;

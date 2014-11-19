@@ -118,11 +118,11 @@ class LoginForm extends Model
      *
      * @param ActiveRecord $account account instance.
      * @param bool $success whether login was successful.
-     * @return AccountLoginHistory model instance.
      */
     protected function createHistoryEntry(ActiveRecord $account, $success)
     {
-        Module::getInstance()->getDataContract()->createLoginHistory([
+        $dataContract = Module::getInstance()->getDataContract();
+        $dataContract->createLoginHistory([
             'accountId' => $account->getPrimaryKey(),
             'success' => $success,
             'numFailedAttempts' => $success ? 0 : $dataContract->getAccountNumFailedLoginAttempts($account),

@@ -10,7 +10,7 @@
 
 namespace nord\yii\account\controllers;
 
-use nord\yii\account\components\TokenFilter;
+use nord\yii\account\filters\TokenFilter;
 use nord\yii\account\models\SignupForm;
 use nord\yii\account\Module;
 use Yii;

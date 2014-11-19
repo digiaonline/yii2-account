@@ -91,11 +91,7 @@ class PasswordForm extends Model
     /**
      * Creates a password history entry.
      *
-     * @param int $accountId account id.
-     * @param string $salt password salt.
-     * @param string $password hashed password.
-     * @throws Exception if the history entry cannot be saved.
-     * @return AccountPasswordHistory model instance.
+     * @param Account $account model instance.
      */
     public function createHistoryEntry(ActiveRecord $account)
     {
