@@ -10,6 +10,7 @@
 
 namespace nord\yii\account\controllers;
 
+use nord\yii\account\filters\SignupFilter;
 use nord\yii\account\filters\TokenFilter;
 use nord\yii\account\models\SignupForm;
 use nord\yii\account\Module;
@@ -29,6 +30,9 @@ class SignupController extends Controller
     public function behaviors()
     {
         return [
+            'signup' => [
+                'class' => SignupFilter::className(),
+            ],
             'access' => [
                 'class' => AccessControl::className(),
                 'denyCallback' => [$this, 'goHome'],
@@ -37,7 +41,6 @@ class SignupController extends Controller
                         'actions' => ['index', 'activate'],
                         'allow' => true,
                         'roles' => ['?'],
-
                     ],
                 ],
             ],

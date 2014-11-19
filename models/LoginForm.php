@@ -46,7 +46,9 @@ class LoginForm extends Model
         return [
             [['username', 'password'], 'required'],
             ['rememberMe', 'boolean'],
-            ['password', 'validatePassword'],
+            ['password', 'validatePassword', 'skipOnError' => true],
+            ['password', 'validateAccountActivated', 'skipOnError' => true],
+            ['password', 'validateAccountNotLocked', 'skipOnError' => true],
         ];
     }
 
@@ -64,29 +66,44 @@ class LoginForm extends Model
 
     /**
      * Validates the password.
-     * This method serves as the inline validation for password.
      *
-     * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
+     * @param string $attribute validated attribute.
+     * @param array $params additional parameters.
      */
     public function validatePassword($attribute, $params)
     {
-        if (!$this->hasErrors()) {
-            $dataContract = Module::getInstance()->getDataContract();
-            $account = $this->getAccount();
+        $account = $this->getAccount();
+        if ($account === null || !$account->validatePassword($this->password)) {
+            $this->addError($attribute, Module::t('errors', 'Incorrect username or password.'));
+        }
+    }
 
-            if (!$account || !$account->validatePassword($this->password)) {
-                $this->addError($attribute, Module::t('errors', 'Incorrect username or password.'));
-            }
+    /**
+     * Validates that the account is activated.
+     *
+     * @param string $attribute validated attribute.
+     * @param array $params additional parameters.
+     */
+    public function validateAccountActivated($attribute, $params)
+    {
+        $account = $this->getAccount();
+        if ($account !== null && !Module::getInstance()->getDataContract()->isAccountActivated($account)) {
+            $this->addError($attribute, Module::t('errors', 'Your account has not yet been activated.'));
+        }
+    }
 
-            if (!$dataContract->isAccountActivated($account)) {
-                $this->addError($attribute, Module::t('errors', 'Your account has not yet been activated.'));
-            }
-
-            if ($dataContract->isAccountLocked($account)) {
-                $this->addError($attribute,
-                    Module::t('errors', 'Your account has been locked due to too many failed login attempts.'));
-            }
+    /**
+     * Validates that the account is not locked.
+     *
+     * @param string $attribute validated attribute.
+     * @param array $params additional parameters.
+     */
+    public function validateAccountNotLocked($attribute, $params)
+    {
+        $account = $this->getAccount();
+        if ($account !== null && Module::getInstance()->getDataContract()->isAccountLocked($account)) {
+            $this->addError($attribute,
+                Module::t('errors', 'Your account has been locked due to too many failed login attempts.'));
         }
     }
 
@@ -130,14 +147,15 @@ class LoginForm extends Model
     }
 
     /**
-     * Finds an account by [[username]]
+     * Returns the account associated with the value of the login attribute.
      *
-     * @return Account
+     * @return Account model instance.
      */
     public function getAccount()
     {
         if ($this->_account === null) {
-            $this->_account = Module::getInstance()->getDataContract()->findAccount(['username' => $this->username]);
+            $this->_account = Module::getInstance()->getDataContract()->findAccount(
+                [Module::getInstance()->loginAttribute => $this->username]);
         }
         return $this->_account;
     }

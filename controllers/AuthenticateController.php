@@ -58,7 +58,7 @@ class AuthenticateController extends Controller
         $model = $dataContract->createLoginForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            $account = $dataContract->findAccount(['username' => $model->username]);
+            $account = $dataContract->findAccount([$this->module->loginAttribute => $model->username]);
 
             if ($account->requireNewPassword) {
                 $token = $this->module->generateToken(Module::TOKEN_CHANGE_PASSWORD, $account->id);

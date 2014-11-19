@@ -17,11 +17,12 @@ use nord\yii\account\components\tokengenerator\RandomLibTokenGenerator;
 use nord\yii\account\components\tokengenerator\TokenGeneratorInterface;
 use Yii;
 use yii\base\InvalidParamException;
-use yii\base\Module as ModuleBase;
 use yii\base\Exception;
 
-class Module extends ModuleBase
+class Module extends \yii\base\Module
 {
+    const MODULE_ID = 'account';
+
     // Parameter types.
     const PARAM_FROM_EMAIL_ADDRESS = 'fromEmailAddress';
     const PARAM_NUM_ALLOWED_FAILED_LOGIN_ATTEMPTS = 'numAllowedFailedLoginAttempts';
@@ -58,6 +59,16 @@ class Module extends ModuleBase
     public $enableActivation = true;
 
     /**
+     * @var bool whether to enable signing up (defaults to true).
+     */
+    public $enableSignup = true;
+
+    /**
+     * @var string name of the attribute to use for logging in.
+     */
+    public $loginAttribute = 'username';
+
+    /**
      * @var string message source to use for this module.
      */
     public $messageSource = 'yii\i18n\PhpMessageSource';
@@ -66,11 +77,6 @@ class Module extends ModuleBase
      * @var string default controller.
      */
     public $defaultController = 'login';
-
-    /**
-     * @var string namespace used by controllers in this module.
-     */
-    public $controllerNamespace = 'nord\yii\account\controllers';
 
     // TODO Add support for CAPTCHA
 

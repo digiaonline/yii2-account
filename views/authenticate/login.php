@@ -24,13 +24,15 @@ $this->title = Module::t('views', 'Login');
         <div class="col-lg-5">
             <h1><?= Html::encode($this->title); ?></h1>
 
-            <p class="help-block">
-                <?= Module::t(
-                    'views',
-                    'If you do not have an account &mdash; {signupLink}.',
-                    ['signupLink' => Html::a(Module::t('views', 'Sign up'), ['/account/signup'])]
-                ); ?>
-            </p>
+            <?php if (Module::getInstance()->enableSignup): ?>
+                <p class="help-block">
+                    <?= Module::t(
+                        'views',
+                        'If you do not have an account &mdash; {signupLink}.',
+                        ['signupLink' => Html::a(Module::t('views', 'Sign up'), ['/account/signup'])]
+                    ); ?>
+                </p>
+            <?php endif; ?>
 
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 

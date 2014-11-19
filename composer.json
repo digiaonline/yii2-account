@@ -10,7 +10,8 @@
     ],
     "minimum-stability": "dev",
     "require": {
-      "nordsoftware/yii2-password": "*"
+      "nordsoftware/yii2-password": "*",
+      "ircmaxell/random-lib": "~1.0@dev"
     },
     "autoload": {
       "psr-4": {

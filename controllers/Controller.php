@@ -14,7 +14,10 @@ use nord\yii\account\models\AccountToken;
 use nord\yii\account\Module;
 use Yii;
 use yii\web\Controller as ControllerBase;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
+use yii\web\ServerErrorHttpException;
 
 /**
  * @property Module $module
@@ -43,7 +46,7 @@ class Controller extends ControllerBase
      */
     public function accessDenied($message = null)
     {
-        throw new HttpException(401, $message === null ? Module::t('errors', 'Access denied.') : $message);
+        throw new ForbiddenHttpException($message === null ? Module::t('errors', 'Access denied.') : $message);
     }
 
     /**
@@ -52,7 +55,7 @@ class Controller extends ControllerBase
      */
     public function pageNotFound($message = null)
     {
-        throw new HttpException(404, $message === null ? Module::t('errors', 'Page not found.') : $message);
+        throw new NotFoundHttpException($message === null ? Module::t('errors', 'Page not found.') : $message);
     }
 
     /**
@@ -61,6 +64,6 @@ class Controller extends ControllerBase
      */
     public function fatalError($message = null)
     {
-        throw new HttpException(500, $message === null ? Module::t('errors', 'Something went wrong.') : $message);
+        throw new ServerErrorHttpException($message === null ? Module::t('errors', 'Something went wrong.') : $message);
     }
 }

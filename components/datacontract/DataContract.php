@@ -25,6 +25,7 @@ use yii\base\InvalidParamException;
 use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
+use yii\web\User;
 
 class DataContract extends Component implements DataContractInterface
 {
@@ -38,6 +39,7 @@ class DataContract extends Component implements DataContractInterface
     const CLASS_FORGOT_PASSWORD_FORM = 'forgotPasswordForm';
     const CLASS_LOGIN_HISTORY = 'loginHistory';
     const CLASS_PASSWORD_HISTORY = 'passwordHistory';
+    const CLASS_WEB_USER = 'webUser';
 
     // Model status types.
     const STATUS_UNACTIVATED = 'unactivated';
@@ -306,6 +308,39 @@ class DataContract extends Component implements DataContractInterface
     }
 
     /**
+     * Returns the class name for a specific model class.
+     *
+     * @param string $type class type.
+     * @throws InvalidParamException if the class cannot be found.
+     * @return string class name.
+     */
+    public function getClassName($type)
+    {
+        if (!isset($this->classMap[$type])) {
+            throw new InvalidParamException("Trying to get class name for unknown class '$type'.");
+        }
+        return $this->classMap[$type];
+    }
+
+    /**
+     * Returns the status code for a specific model status.
+     *
+     * @param string $className class name.
+     * @param string $status status identifier.
+     * @return int status code.
+     */
+    public function getStatusCode($className, $status)
+    {
+        if (!isset($this->statusMap[$className])) {
+            throw new InvalidParamException("Trying to get status code for unknown class '$className'.");
+        }
+        if (!isset($this->statusMap[$className][$status])) {
+            throw new InvalidParamException("Trying to get status code for unknown status '$status'.");
+        }
+        return $this->statusMap[$className][$status];
+    }
+
+    /**
      * Initializes the class map.
      */
     protected function initClassMap()
@@ -320,6 +355,7 @@ class DataContract extends Component implements DataContractInterface
                 self::CLASS_PASSWORD_FORM => PasswordForm::className(),
                 self::CLASS_SIGNUP_FORM => SignupForm::className(),
                 self::CLASS_FORGOT_PASSWORD_FORM => ForgotPasswordForm::className(),
+                self::CLASS_WEB_USER => User::className(),
             ],
             $this->classMap
         );
@@ -417,38 +453,5 @@ class DataContract extends Component implements DataContractInterface
     protected function transitionInternal(ActiveRecord $model, $className, $status)
     {
         $this->updateAttributesInternal($model, ['status' => $this->getStatusCode($className, $status)]);
-    }
-
-    /**
-     * Returns the class name for a specific model class.
-     *
-     * @param string $type class type.
-     * @throws InvalidParamException if the class cannot be found.
-     * @return string class name.
-     */
-    protected function getClassName($type)
-    {
-        if (!isset($this->classMap[$type])) {
-            throw new InvalidParamException("Trying to get class name for unknown class '$type'.");
-        }
-        return $this->classMap[$type];
-    }
-
-    /**
-     * Returns the status code for a specific model status.
-     *
-     * @param string $className class name.
-     * @param string $status status identifier.
-     * @return int status code.
-     */
-    protected function getStatusCode($className, $status)
-    {
-        if (!isset($this->statusMap[$className])) {
-            throw new InvalidParamException("Trying to get status code for unknown class '$className'.");
-        }
-        if (!isset($this->statusMap[$className][$status])) {
-            throw new InvalidParamException("Trying to get status code for unknown status '$status'.");
-        }
-        return $this->statusMap[$className][$status];
     }
 }

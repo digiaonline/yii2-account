@@ -112,8 +112,6 @@ class Account extends ActiveRecord implements IdentityInterface
         ];
     }
 
-
-
     /**
      * @inheritdoc
      */

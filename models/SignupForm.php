@@ -69,7 +69,7 @@ class SignupForm extends PasswordForm
     {
         if ($this->validate()) {
             $dataContract = Module::getInstance()->getDataContract();
-            $account = $dataContract->createAccount($this->attributes);
+            $account = $dataContract->createAccount(['attributes' => $this->attributes]);
 
             if ($account->validate()) {
                 if ($account->save(false/* already validated */)) {
