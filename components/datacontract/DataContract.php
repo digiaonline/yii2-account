@@ -23,6 +23,8 @@ use yii\base\Component;
 use yii\base\Exception;
 use yii\base\InvalidParamException;
 use yii\base\Model;
+use yii\captcha\Captcha;
+use yii\captcha\CaptchaAction;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
 use yii\web\User;
@@ -40,6 +42,8 @@ class DataContract extends Component implements DataContractInterface
     const CLASS_LOGIN_HISTORY = 'loginHistory';
     const CLASS_PASSWORD_HISTORY = 'passwordHistory';
     const CLASS_WEB_USER = 'webUser';
+    const CLASS_CAPTCHA = 'captcha';
+    const CLASS_CAPTCHA_ACTION = 'captchaAction';
 
     // Model status types.
     const STATUS_UNACTIVATED = 'unactivated';
@@ -356,6 +360,8 @@ class DataContract extends Component implements DataContractInterface
                 self::CLASS_SIGNUP_FORM => SignupForm::className(),
                 self::CLASS_FORGOT_PASSWORD_FORM => ForgotPasswordForm::className(),
                 self::CLASS_WEB_USER => User::className(),
+                self::CLASS_CAPTCHA => Captcha::className(),
+                self::CLASS_CAPTCHA_ACTION => CaptchaAction::className(),
             ],
             $this->classMap
         );

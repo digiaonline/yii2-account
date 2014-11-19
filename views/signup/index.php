@@ -15,6 +15,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model nord\yii\account\models\SignupForm */
+/* @var $captchaClass yii\captcha\Captcha */
 
 $this->title = Module::t('views', 'Sign up');
 ?>
@@ -40,6 +41,20 @@ $this->title = Module::t('views', 'Sign up');
                 <?= $form->field($model, 'username'); ?>
                 <?= $form->field($model, 'password')->passwordInput(); ?>
                 <?= $form->field($model, 'verifyPassword')->passwordInput(); ?>
+                <?php if (Module::getInstance()->enableCaptcha): ?>
+                    <?= $form->field($model, 'captcha')->widget($captchaClass, [
+                        'captchaAction' => '/account/authenticate/captcha',
+                        'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-9">{input}</div></div>',
+                        'imageOptions' => ['height' => 35],
+                    ]); ?>
+
+                    <p class="help-block">
+                        <?= Module::t(
+                            'views',
+                            'Please enter the verification code in the field above.'
+                        ); ?>
+                    </p>
+                <?php endif; ?>
             </fieldset>
 
             <?= Html::submitButton(Module::t('views', 'Create Account'), ['class' => 'btn btn-primary']); ?>

@@ -35,5 +35,6 @@ return [
     'Type' => '',
     'Updated At' => '',
     'Username' => '',
+    'Verification Code' => '',
     'Verify Password' => '',
 ];

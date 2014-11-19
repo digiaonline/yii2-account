@@ -28,6 +28,7 @@ return [
     'Log in' => '',
     'Login' => '',
     'Please enter a new password twice to change the your password.' => '',
+    'Please enter the verification code in the field above.' => '',
     'Please enter your e-mail address and we will send you instructions on how to reset your password.' => '',
     'Recover Account' => '',
     'Reset password' => '',
@@ -38,4 +39,6 @@ return [
     'You will soon receive an email with instructions on how to activate your account.' => '',
     'You will soon receive an email with instructions on how to reset the password for your account.' => '',
     'Your password has expired.' => '',
+    'Please enter the verification code into the box above.' => '@@@@',
+    'Please enter the verification code into the input field above.' => '@@@@',
 ];

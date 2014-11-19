@@ -70,6 +70,8 @@ The following configurations are available for the ```nord\yii\account\Module```
  * __classMap__ _array_ map over classes to use within the module.
  * __enableActivation__ _bool_ whether to enable account activation (defaults to ```true```).
  * __enableSignup__ _bool_ whether to enable the sign-up process (defaults to ```true```).
+ * __enableCaptcha__ _bool_ whether to enable CAPTCHA when signing up (defaults to ```false```).
+ * __captchaOptions__ _array_ configuration that is passed to the ```CaptchaAction```.
  * __loginAttribute__ _string_ attribute to use as the login when logging in (defaults to ```username```).
  * __messageSource__ _string_ message source component to use for the module.
 
@@ -79,6 +81,8 @@ The following parameters are available for the ```nord\yii\account\Module``` cla
 
  * __fromEmailAddress__ _string_ from e-mail address used when sending e-mail.
  * __numAllowedFailedLoginAttempts__ _int_ number of failed login attempts before the account is locked (defaults to 10)
+ * __minUsernameLength__ _int_ minimum length for usernames (defaults to 4).
+ * __minPasswordLength__ _int_ minimum length for passwords (defaults to 6).
  * __loginExpireTime__ _int_ number of seconds for login cookie to expire (defaults to 30 days).
  * __activateExpireTime__ _int_ number of seconds for account activation to expire (defaults to 30 days).
  * __resetPasswordExpireTime__ _int_ number of seconds for password reset to expire (defaults to 1 day).
@@ -145,6 +149,8 @@ You can use the class map to configure any classes used by the module, here is a
  * __signupForm__ _models\SignupForm_ signup form
  * __forgotPassword__ _models\ForgotPasswordForm_ forgot password form
  * __webUser__ _yii\web\User_ web user component
+ * __captcha__ _yii\captcha\Captcha_ captcha widget
+ * __captchaAction__ _yii\captcha\CaptchaAction_ captcha action
 
 ### Custom controllers
 

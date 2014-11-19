@@ -10,6 +10,7 @@
 
 namespace nord\yii\account\controllers;
 
+use nord\yii\account\components\datacontract\DataContract;
 use nord\yii\account\filters\SignupFilter;
 use nord\yii\account\filters\TokenFilter;
 use nord\yii\account\models\SignupForm;
@@ -38,7 +39,7 @@ class SignupController extends Controller
                 'denyCallback' => [$this, 'goHome'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'activate'],
+                        'actions' => ['activate', 'index'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -56,24 +57,29 @@ class SignupController extends Controller
      */
     public function actionIndex()
     {
+        $scenario = $this->module->enableCaptcha ? 'captcha' : 'default';
         $dataContract = $this->module->getDataContract();
+
         /** @var SignupForm $model */
-        $model = $dataContract->createSignupForm();
+        $model = $dataContract->createSignupForm(['scenario' => $scenario]);
 
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             $account = $dataContract->findAccount(['username' => $model->username]);
 
+            $this->afterSignup();
+
             if ($this->module->enableActivation) {
                 $this->sendActivationMail($account);
-                $this->redirect(['done']);
+                return $this->redirect(['done']);
             } else {
                 $dataContract->activateAccount($account);
-                $this->redirect(['/account/authenticate/login']);
+                return $this->redirect(['/account/authenticate/login']);
             }
-
-            $this->afterSignup();
         } else {
-            return $this->render('index', ['model' => $model]);
+            return $this->render('index', [
+                'model' => $model,
+                'captchaClass' => $dataContract->getClassName(DataContract::CLASS_CAPTCHA),
+            ]);
         }
     }
 
@@ -88,9 +94,11 @@ class SignupController extends Controller
 
         $dataContract = $this->module->getDataContract();
         $account = $dataContract->findAccount($tokenModel->accountId);
+
         if ($account === null) {
             $this->pageNotFound();
         }
+
         $dataContract->activateAccount($account);
         $dataContract->useToken($tokenModel);
 
@@ -100,7 +108,7 @@ class SignupController extends Controller
     }
 
     /**
-     * TODO Write this
+     * Triggers the 'after signup' event.
      */
     public function afterSignup()
     {
@@ -108,7 +116,7 @@ class SignupController extends Controller
     }
 
     /**
-     * TODO Write this
+     * Triggers the 'after activate' event.
      */
     public function afterActivate()
     {

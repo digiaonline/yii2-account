@@ -99,6 +99,7 @@ class Account extends ActiveRecord implements IdentityInterface
                 'strategies' => [
                     'bcrypt' => [
                         'class' => BcryptStrategy::className(),
+                        'minLength' => Module::getInstance()->getParam(Module::PARAM_MIN_PASSWORD_LENGTH),
                     ],
                 ],
             ],

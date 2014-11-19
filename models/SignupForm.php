@@ -10,8 +10,10 @@
 
 namespace nord\yii\account\models;
 
+use nord\yii\account\components\datacontract\DataContract;
 use nord\yii\account\Module;
 use Yii;
+use yii\captcha\Captcha;
 
 class SignupForm extends PasswordForm
 {
@@ -28,20 +30,30 @@ class SignupForm extends PasswordForm
     /**
      * @var string
      */
-    //public $captcha;
+    public $captcha;
 
     /**
      * @inheritDoc
      */
     public function rules()
     {
+        /** @var Captcha $captchaClass */
+        $captchaClass = Module::getInstance()->getDataContract()->getClassName(DataContract::CLASS_CAPTCHA);
+
         return array_merge(
             parent::rules(),
             [
                 [['email', 'username'], 'required'],
-                ['username', 'string', 'min' => 4],
+                ['username', 'string', 'min' => Module::getInstance()->getParam(Module::PARAM_MIN_USERNAME_LENGTH)],
                 ['email', 'email'],
                 [['username', 'email'], 'unique', 'targetClass' => Account::className()],
+                [
+                    'captcha',
+                    'captcha',
+                    'captchaAction' => '/account/authenticate/captcha',
+                    'on' => 'captcha',
+                    'when' => !$captchaClass::checkRequirements()
+                ],
             ]
         );
     }
@@ -56,6 +68,7 @@ class SignupForm extends PasswordForm
             [
                 'email' => Module::t('labels', 'Email'),
                 'username' => Module::t('labels', 'Username'),
+                'captcha' => Module::t('labels', 'Verification Code'),
             ]
         );
     }

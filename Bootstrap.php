@@ -60,10 +60,11 @@ class Bootstrap implements BootstrapInterface
         /** @var Module $module */
         $module = $app->getModule(Module::MODULE_ID);
         $dataContract = $module->getDataContract();
+
         $app->set('user', [
             'class' => $dataContract->getClassName(DataContract::CLASS_WEB_USER),
-            'identityClass' => $dataContract->getClassName(DataContract::CLASS_ACCOUNT),
             'enableAutoLogin' => true,
+            'identityClass' => $dataContract->getClassName(DataContract::CLASS_ACCOUNT),
             'loginUrl' => ['/account/authenticate/login'],
         ]);
     }

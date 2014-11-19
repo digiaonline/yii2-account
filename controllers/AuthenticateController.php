@@ -10,6 +10,7 @@
 
 namespace nord\yii\account\controllers;
 
+use nord\yii\account\components\datacontract\DataContract;
 use nord\yii\account\models\LoginForm;
 use nord\yii\account\Module;
 use Yii;
@@ -25,6 +26,20 @@ class AuthenticateController extends Controller
     /**
      * @inheritdoc
      */
+    public function actions()
+    {
+
+        return [
+            'captcha' => array_merge(
+                ['class' => $this->module->getDataContract()->getClassName(DataContract::CLASS_CAPTCHA_ACTION)],
+                $this->module->captchaOptions
+            )
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -33,7 +48,7 @@ class AuthenticateController extends Controller
                 'denyCallback' => [$this, 'goHome'],
                 'rules' => [
                     [
-                        'actions' => ['login'],
+                        'actions' => ['login', 'captcha'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -54,6 +69,7 @@ class AuthenticateController extends Controller
     public function actionLogin()
     {
         $dataContract = $this->module->getDataContract();
+
         /** @var LoginForm $model */
         $model = $dataContract->createLoginForm();
 

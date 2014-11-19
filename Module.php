@@ -25,6 +25,8 @@ class Module extends \yii\base\Module
 
     // Parameter types.
     const PARAM_FROM_EMAIL_ADDRESS = 'fromEmailAddress';
+    const PARAM_MIN_USERNAME_LENGTH = 'minUsernameLength';
+    const PARAM_MIN_PASSWORD_LENGTH = 'minPasswordLength';
     const PARAM_NUM_ALLOWED_FAILED_LOGIN_ATTEMPTS = 'numAllowedFailedLoginAttempts';
     const PARAM_LOGIN_EXPIRE_TIME = 'loginExpireTime';
     const PARAM_ACTIVATE_EXPIRE_TIME = 'activateExpireTime';
@@ -64,6 +66,16 @@ class Module extends \yii\base\Module
     public $enableSignup = true;
 
     /**
+     * @var bool whether to enable CAPTCHA on sign up (defaults to false).
+     */
+    public $enableCaptcha = false;
+
+    /**
+     * @var array configuration that is passed to the captcha action.
+     */
+    public $captchaOptions = [];
+
+    /**
      * @var string name of the attribute to use for logging in.
      */
     public $loginAttribute = 'username';
@@ -77,8 +89,6 @@ class Module extends \yii\base\Module
      * @var string default controller.
      */
     public $defaultController = 'login';
-
-    // TODO Add support for CAPTCHA
 
     /**
      * @inheritdoc
@@ -124,6 +134,8 @@ class Module extends \yii\base\Module
         $this->params = array_merge(
             [
                 self::PARAM_FROM_EMAIL_ADDRESS => 'admin@example.com',
+                self::PARAM_MIN_USERNAME_LENGTH => 4,
+                self::PARAM_MIN_PASSWORD_LENGTH => 6,
                 self::PARAM_NUM_ALLOWED_FAILED_LOGIN_ATTEMPTS => 10,
                 self::PARAM_LOGIN_EXPIRE_TIME => 2592000, // 30 days
                 self::PARAM_ACTIVATE_EXPIRE_TIME => 2592000, // 30 days

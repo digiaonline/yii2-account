@@ -52,6 +52,7 @@ class PasswordController extends Controller
      * Displays the 'change password' page.
      *
      * @param string $token authentication token.
+     * @return string|\yii\web\Response
      */
     public function actionChange($token)
     {
@@ -103,6 +104,7 @@ class PasswordController extends Controller
      * Displays the 'reset password' page.
      *
      * @param string $token authentication token.
+     * @return string|\yii\web\Response
      */
     public function actionReset($token)
     {
