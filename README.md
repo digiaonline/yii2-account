@@ -120,8 +120,8 @@ You can use your own account model as long as you add the following fields to it
  * __email__ _varchar(255) not null_ account email
  * __passwordStrategy__ _varchar(255) not null_ password encryption type  
  * __requireNewPassword__ _tinyint(1) not null default '0'_ whether account password must be changed
- * __lastLoginAt__ _timestamp null default null_ when the account was last active
- * __createdAt__ _timestamp null default current_timestamp_ when the account was created
+ * __lastLoginAt__ _datetime null default null_ when the user last logged in
+ * __createdAt__ _datetime null default_ when the account was created
  * __status__ _int(11) default '0'_ account status (e.g. unactivated, activated)
 
 Changing the model used by the extension is easy, simply configure it to use your class instead by adding it to the
@@ -169,7 +169,7 @@ If you want to use your own controllers you can map them using the module's cont
 
 If you want to change the components used by the module, here is a complete list of the available interfaces:
 
- * __dataContract__ _nord\yii\account\components\datacontract\DataContractInterface_ abstraction layer between the module and its data model (defaults to ```DataContract```)
+ * __dataContract__ _components\datacontract\DataContractInterface_ abstraction layer between the module and its data model (defaults to ```DataContract```)
  * __mailSender__ _components\mailsender\MailSenderInterface_ component used for sending e-mail (defaults to ```LocalMailSender```)
  * __tokenGenerator__ _components\tokengenerator\TokenGeneratorInterface_ component used for generating random tokens (default to ```RandomLibTokenGenerator```)
 
@@ -186,4 +186,4 @@ Coming soon ...
 ### Translate
 
 If you wish to translate this project you can find the translation templates under ```messages/templates```.
-When you are done with your translation create a pull-request to the ```develop``` branch.
+When you are done with your translation you should create a pull-request to the ```develop``` branch.
