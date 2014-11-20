@@ -26,6 +26,7 @@ class Bootstrap implements BootstrapInterface
         if (!$app->hasModule(Module::MODULE_ID)) {
             throw new InvalidConfigException("Failed to bootstrap the 'account' module.");
         }
+        $app->setAliases(['@nord/yii/account' => __DIR__]);
         if ($app instanceof \yii\web\Application) {
             $this->bootstrapWebApplication($app);
         } elseif ($app instanceof \yii\console\Application) {
@@ -60,7 +61,6 @@ class Bootstrap implements BootstrapInterface
     {
         /** @var Module $module */
         $module = $app->getModule(Module::MODULE_ID);
-        $dataContract = $module->getDataContract();
 
         if ($module->enableClientAuth && !$app->has('authClientCollection')) {
             $app->set('authClientCollection', [
@@ -70,9 +70,9 @@ class Bootstrap implements BootstrapInterface
         }
 
         $app->set('user', [
-            'class' => $dataContract->getClassName(DataContract::CLASS_WEB_USER),
+            'class' => $module->getClassName(Module::CLASS_WEB_USER),
             'enableAutoLogin' => true,
-            'identityClass' => $dataContract->getClassName(DataContract::CLASS_ACCOUNT),
+            'identityClass' => $module->getClassName(Module::CLASS_ACCOUNT),
             'loginUrl' => ['/account/authenticate/login'],
         ]);
     }

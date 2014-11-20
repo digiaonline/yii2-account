@@ -83,7 +83,7 @@ class SignupController extends Controller
         } else {
             return $this->render('index', [
                 'model' => $model,
-                'captchaClass' => $dataContract->getClassName(DataContract::CLASS_CAPTCHA),
+                'captchaClass' => $this->module->getClassName(Module::CLASS_CAPTCHA),
             ]);
         }
     }

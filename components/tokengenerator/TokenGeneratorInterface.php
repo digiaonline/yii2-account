@@ -12,8 +12,6 @@ namespace nord\yii\account\components\tokengenerator;
 
 interface TokenGeneratorInterface
 {
-    const DEFAULT_TOKEN_LENGTH = 32;
-
     /**
      * Generates a new random token.
      *

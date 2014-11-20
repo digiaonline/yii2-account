@@ -19,13 +19,10 @@ class m141113_121701_create_account extends Migration
             'account',
             array(
                 'id' => Schema::TYPE_PK,
-                'salt' => Schema::TYPE_STRING . ' NOT NULL',
                 'username' => Schema::TYPE_STRING . ' NOT NULL',
                 'password' => Schema::TYPE_STRING . ' NOT NULL',
                 'authKey' => Schema::TYPE_STRING . ' NOT NULL',
                 'email' => Schema::TYPE_STRING . ' NOT NULL',
-                'passwordStrategy' => Schema::TYPE_STRING . ' NOT NULL',
-                'requireNewPassword' => Schema::TYPE_BOOLEAN . " NOT NULL DEFAULT '0'",
                 'lastLoginAt' => Schema::TYPE_DATETIME . ' NULL DEFAULT NULL',
                 'createdAt' => Schema::TYPE_DATETIME . ' NULL DEFAULT NULL',
                 'status' => Schema::TYPE_INTEGER . " NOT NULL DEFAULT '0'",

@@ -13,12 +13,14 @@ namespace nord\yii\account\components\tokengenerator;
 use Yii;
 use yii\base\Component;
 
-class YiiTokenGeneratorInterface extends Component implements TokenGeneratorInterface
+class YiiTokenGenerator extends Component implements TokenGeneratorInterface
 {
+    const DEFAULT_LENGTH = 32;
+
     /**
      * @var int token length.
      */
-    public $length = TokenGeneratorInterface::DEFAULT_TOKEN_LENGTH;
+    public $length = self::DEFAULT_LENGTH;
 
     /**
      * @inheritdoc

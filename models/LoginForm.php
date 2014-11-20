@@ -121,9 +121,6 @@ class LoginForm extends Model
             $this->createHistoryEntry($account, $success);
             $dataContract = Module::getInstance()->getDataContract();
             $dataContract->updateAccountAttributes($account, ['lastLoginAt' => new Expression('NOW()')]);
-            if ($dataContract->isAccountPasswordExpired($account)) {
-                $dataContract->updateAccountAttributes($account, ['requireNewPassword' => 1]);
-            }
             return $success;
         } else {
             return false;

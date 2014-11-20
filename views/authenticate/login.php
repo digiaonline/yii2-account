@@ -9,9 +9,9 @@
  */
 
 use nord\yii\account\Module;
-use yii\authclient\widgets\AuthChoice;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use nord\yii\account\widgets\AuthChoice;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
@@ -63,7 +63,7 @@ $this->title = Module::t('views', 'Login');
                     <?= Module::t('views', 'You may also log in using one of the providers below:'); ?>
                 </p>
 
-                <?= AuthChoice::widget(['baseAuthUrl' => ['/account/authenticate/client']]); ?>
+                <?= AuthChoice::widget(); ?>
             <?php endif; ?>
 
         </div>

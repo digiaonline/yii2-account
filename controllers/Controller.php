@@ -33,7 +33,7 @@ class Controller extends ControllerBase
      */
     protected function loadToken($type, $token)
     {
-        $model = $this->module->getDataContract()->findToken($type, $token);
+        $model = $this->module->getDataContract()->findValidToken($type, $token);
         if ($model === null) {
             $this->accessDenied(Module::t('errors', 'Invalid authentication token.'));
         }

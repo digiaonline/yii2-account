@@ -141,7 +141,7 @@ interface DataContractInterface
      * @param string $token token string.
      * @return ActiveRecord token model.
      */
-    public function findToken($type, $token);
+    public function findValidToken($type, $token);
 
     /**
      * Changes the status of the given token model as used.

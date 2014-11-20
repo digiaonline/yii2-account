@@ -11,8 +11,6 @@
 namespace nord\yii\account\models;
 
 use nord\yii\account\Module;
-use phpnode\yii\password\PasswordBehavior;
-use phpnode\yii\password\strategies\BcryptStrategy;
 use phpnode\yii\password\strategies\PasswordStrategy;
 use Yii;
 use yii\base\NotSupportedException;
@@ -25,13 +23,10 @@ use yii\web\IdentityInterface;
  * This is the model class for table "account".
  *
  * @property integer $id
- * @property string $salt
  * @property string $username
  * @property string $passwordHash
  * @property string $authKey
  * @property string $email
- * @property string $passwordStrategy
- * @property integer $requireNewPassword
  * @property string $lastLoginAt
  * @property string $createdAt
  * @property integer $status
@@ -59,8 +54,8 @@ class Account extends ActiveRecord implements IdentityInterface
     {
         return [
             [['username', 'password', 'email'], 'required'],
-            [['requireNewPassword', 'status'], 'integer', 'integerOnly' => true],
-            [['salt', 'username', 'password', 'authKey', 'email', 'passwordStrategy'], 'string', 'max' => 255],
+            [['status'], 'integer', 'integerOnly' => true],
+            [['username', 'password', 'authKey', 'email'], 'string', 'max' => 255],
             [['username', 'email'], 'unique'],
             [['createdAt', 'lastLoginAt'], 'safe'],
         ];
@@ -73,13 +68,10 @@ class Account extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => Module::t('labels', 'ID'),
-            'salt' => Module::t('labels', 'Salt'),
             'username' => Module::t('labels', 'Username'),
             'password' => Module::t('labels', 'Password'),
             'authKey' => Module::t('labels', 'Authentication Key'),
             'email' => Module::t('labels', 'Email'),
-            'passwordStrategy' => Module::t('labels', 'Password Strategy'),
-            'requireNewPassword' => Module::t('labels', 'Require New Password'),
             'lastLoginAt' => Module::t('labels', 'Last Login At'),
             'createdAt' => Module::t('labels', 'Created At'),
             'status' => Module::t('labels', 'Status'),
@@ -91,16 +83,10 @@ class Account extends ActiveRecord implements IdentityInterface
      */
     public function behaviors()
     {
+        $passwordBehaviorClass = Module::getInstance()->getClassName(Module::CLASS_PASSWORD_BEHAVIOR);
         return [
             [
-                'class' => PasswordBehavior::className(),
-                'defaultStrategy' => 'bcrypt',
-                'strategies' => [
-                    'bcrypt' => [
-                        'class' => BcryptStrategy::className(),
-                        'minLength' => Module::getParam(Module::PARAM_MIN_PASSWORD_LENGTH),
-                    ],
-                ],
+                'class' => $passwordBehaviorClass,
             ],
             [
                 'class' => TimestampBehavior::className(),

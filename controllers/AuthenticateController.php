@@ -33,7 +33,7 @@ class AuthenticateController extends Controller
     {
         return [
             'captcha' => array_merge(
-                ['class' => $this->module->getDataContract()->getClassName(DataContract::CLASS_CAPTCHA_ACTION)],
+                ['class' => $this->module->getClassName(Module::CLASS_CAPTCHA_ACTION)],
                 $this->module->captchaOptions
             ),
             'client' => [
@@ -86,7 +86,7 @@ class AuthenticateController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             $account = $dataContract->findAccount([$this->module->loginAttribute => $model->username]);
 
-            if ($account->requireNewPassword) {
+            if ($dataContract->isAccountPasswordExpired($account)) {
                 $token = $this->module->generateToken(Module::TOKEN_CHANGE_PASSWORD, $account->id);
                 Yii::$app->user->logout();
                 return $this->redirect(['/account/password/change', 'token' => $token]);

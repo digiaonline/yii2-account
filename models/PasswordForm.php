@@ -97,7 +97,6 @@ class PasswordForm extends Model
     {
         Module::getInstance()->getDataContract()->createPasswordHistory([
             'accountId' => $account->getPrimaryKey(),
-            'salt' => $account->salt,
             'password' => $account->password,
         ]);
     }

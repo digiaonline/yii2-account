@@ -14,10 +14,12 @@ use yii\base\Component;
 
 class RandomLibTokenGenerator extends Component implements TokenGeneratorInterface
 {
+    const DEFAULT_LENGTH = 32;
+
     /**
      * @var int token length.
      */
-    public $length = TokenGeneratorInterface::DEFAULT_TOKEN_LENGTH;
+    public $length = self::DEFAULT_LENGTH;
 
     /**
      * @var int token strength.

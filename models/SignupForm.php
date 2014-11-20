@@ -37,8 +37,8 @@ class SignupForm extends PasswordForm
      */
     public function rules()
     {
-        /** @var Captcha $captchaClass */
-        $captchaClass = Module::getInstance()->getDataContract()->getClassName(DataContract::CLASS_CAPTCHA);
+        /** @var Account $accountClass */
+        $accountClass = Module::getInstance()->getClassName(Module::CLASS_ACCOUNT);
 
         return array_merge(
             parent::rules(),
@@ -46,7 +46,7 @@ class SignupForm extends PasswordForm
                 [['email', 'username'], 'required'],
                 ['username', 'string', 'min' => Module::getParam(Module::PARAM_MIN_USERNAME_LENGTH)],
                 ['email', 'email'],
-                [['username', 'email'], 'unique', 'targetClass' => Account::className()],
+                [['username', 'email'], 'unique', 'targetClass' => $accountClass],
                 [
                     'captcha',
                     'captcha',
@@ -87,7 +87,6 @@ class SignupForm extends PasswordForm
                 if ($account->save(false/* already validated */)) {
                     $dataContract->createPasswordHistory([
                         'accountId' => $account->id,
-                        'salt' => $account->salt,
                         'password' => $account->password,
                     ]);
 

@@ -21,7 +21,6 @@ use yii\db\Expression;
  *
  * @property integer $id
  * @property integer $accountId
- * @property string $salt
  * @property string $password
  * @property string $createdAt
  *
@@ -59,10 +58,10 @@ class AccountPasswordHistory extends ActiveRecord
     public function rules()
     {
         return [
-            [['accountId', 'salt', 'password'], 'required'],
+            [['accountId', 'password'], 'required'],
             [['accountId'], 'integer'],
             [['createdAt'], 'safe'],
-            [['salt', 'password'], 'string', 'max' => 255]
+            [['password'], 'string', 'max' => 255]
         ];
     }
 
@@ -74,7 +73,6 @@ class AccountPasswordHistory extends ActiveRecord
         return [
             'id' => Module::t('labels', 'ID'),
             'accountId' => Module::t('labels', 'Account ID'),
-            'salt' => Module::t('labels', 'Salt'),
             'password' => Module::t('labels', 'Password'),
             'createdAt' => Module::t('labels', 'Created At'),
         ];

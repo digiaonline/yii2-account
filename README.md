@@ -1,9 +1,6 @@
 yii2-account
 ============
 
-[![Latest Stable Version](https://poser.pugx.org/nordsoftware/yii2-account/v/stable.svg)](https://packagist.org/packages/nordsoftware/yii2-account) [![Total Downloads](https://poser.pugx.org/nordsoftware/yii2-account/downloads.svg)](https://packagist.org/packages/nordsoftware/yii2-account) [![Latest Unstable Version](https://poser.pugx.org/nordsoftware/yii2-account/v/unstable.svg)](https://packagist.org/packages/nordsoftware/yii2-account) [![License](https://poser.pugx.org/nordsoftware/yii2-account/license.svg)](https://packagist.org/packages/nordsoftware/yii2-account)
-[![Code Climate](https://codeclimate.com/github/nordsoftware/yii2-account/badges/gpa.svg)](https://codeclimate.com/github/nordsoftware/yii2-account)
-
 Account module for the Yii PHP framework.
 
 ## Why do I want this
@@ -14,8 +11,7 @@ with salt that are encrypted using bcrypt instead of password hashes. It also co
 
 ## Requirements
 
- - Secure accounts (password + salt) __DONE__
- - Migrating passwords from md5 and sha1 to e.g. bcrypt __DONE__
+ - Secure accounts (bcrypt encryption) __DONE__
  - Optional sign-up process (enabled by default) __DONE__
  - Captcha support on sign up __DONE__
  - Optional account activation (enabled by default) __DONE__
@@ -77,7 +73,8 @@ The following configurations are available for the ```nord\yii\account\Module```
  * __enableClientAuth__ _bool_ whether to enable client authentication (defaults to ```false```).
  * __authClients__ _array_ list of clients that can be used for client authentication.
  * __enableCaptcha__ _bool_ whether to enable CAPTCHA when signing up (defaults to ```false```).
- * __captchaOptions__ _array_ configuration that is passed to the ```CaptchaAction```.
+ * __captchaOptions__ _array_ configuration that is passed to ```CaptchaAction```.
+ * __passwordStrategy__ _string_ configuration that is passed to ```PasswordStrengthValidator```.
  * __loginAttribute__ _string_ attribute to use as the login when logging in (defaults to ```username```).
  * __messageSource__ _string_ message source component to use for the module.
 
@@ -124,8 +121,6 @@ You can use your own account model as long as you add the following fields to it
  * __password__ _varchar(255) not null_ account password
  * __authKey__ _varchar(255) not null_ authentication key used for cookie authentication
  * __email__ _varchar(255) not null_ account email
- * __passwordStrategy__ _varchar(255) not null_ password encryption type  
- * __requireNewPassword__ _tinyint(1) not null default '0'_ whether account password must be changed
  * __lastLoginAt__ _datetime null default null_ when the user last logged in
  * __createdAt__ _datetime null default_ when the account was created
  * __status__ _int(11) default '0'_ account status (e.g. unactivated, activated)
@@ -156,6 +151,8 @@ You can use the class map to configure any classes used by the module, here is a
  * __signupForm__ _models\SignupForm_ signup form
  * __connectForm__ _models\ConnectForm_ connect form
  * __forgotPassword__ _models\ForgotPasswordForm_ forgot password form
+ * __passwordBehavior__ _behaviors/PasswordAttributeBehavior_ password attribute behavior
+ * __passwordValidator__ _validators/PasswordStrengthValidator_ password strength validator
  * __webUser__ _yii\web\User_ web user component
  * __captcha__ _yii\captcha\Captcha_ captcha widget
  * __captchaAction__ _yii\captcha\CaptchaAction_ captcha action
@@ -178,8 +175,9 @@ If you want to use your own controllers you can map them using the module's cont
 If you want to change the components used by the module, here is a complete list of the available interfaces:
 
  * __dataContract__ _components\datacontract\DataContractInterface_ abstraction layer between the module and its data model (defaults to ```DataContract```)
- * __mailSender__ _components\mailsender\MailSenderInterface_ component used for sending e-mail (defaults to ```LocalMailSender```)
- * __tokenGenerator__ _components\tokengenerator\TokenGeneratorInterface_ component used for generating random tokens (default to ```RandomLibTokenGenerator```)
+ * __mailSender__ _components\mailsender\MailSenderInterface_ component used for sending e-mail (defaults to ```YiiMailSender```)
+ * __passwordHasher__ _components\passwordhasher\PasswordHasherInterface_ component used for hashing password (defaults to ```YiiPasswordHasher```)
+ * __tokenGenerator__ _components\tokengenerator\TokenGeneratorInterface_ component used for generating random tokens (default to ```YiiTokenGenerator```)
 
 You might want to look at the bundled implementations before making your own because we already support e.g. sending mail through Mandrill.
 

@@ -15,50 +15,16 @@ use nord\yii\account\models\AccountLoginHistory;
 use nord\yii\account\models\AccountPasswordHistory;
 use nord\yii\account\models\AccountProvider;
 use nord\yii\account\models\AccountToken;
-use nord\yii\account\models\ConnectForm;
-use nord\yii\account\models\ForgotPasswordForm;
-use nord\yii\account\models\LoginForm;
-use nord\yii\account\models\PasswordForm;
-use nord\yii\account\models\SignupForm;
 use nord\yii\account\Module;
 use yii\base\Component;
 use yii\base\Exception;
 use yii\base\InvalidParamException;
 use yii\base\Model;
-use yii\captcha\Captcha;
-use yii\captcha\CaptchaAction;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
-use yii\web\User;
 
 class DataContract extends Component implements DataContractInterface
 {
-    // Class name types.
-    const CLASS_ACCOUNT = 'account';
-    const CLASS_TOKEN = 'token';
-    const CLASS_LOGIN_HISTORY = 'loginHistory';
-    const CLASS_PASSWORD_HISTORY = 'passwordHistory';
-    const CLASS_PROVIDER = 'provider';
-    const CLASS_LOGIN_FORM = 'loginForm';
-    const CLASS_PASSWORD_FORM = 'passwordForm';
-    const CLASS_SIGNUP_FORM = 'signupForm';
-    const CLASS_CONNECT_FORM = 'connectForm';
-    const CLASS_FORGOT_PASSWORD_FORM = 'forgotPasswordForm';
-    const CLASS_WEB_USER = 'webUser';
-    const CLASS_CAPTCHA = 'captcha';
-    const CLASS_CAPTCHA_ACTION = 'captchaAction';
-
-    // Model status types.
-    const STATUS_UNACTIVATED = 'unactivated';
-    const STATUS_ACTIVATED = 'activated';
-    const STATUS_UNUSED = 'unused';
-    const STATUS_USED = 'used';
-
-    /**
-     * @var array map over classes to use by this contract.
-     */
-    public $classMap = [];
-
     /**
      * @var array map over model statuses to use by this contract.
      */
@@ -71,7 +37,6 @@ class DataContract extends Component implements DataContractInterface
     {
         parent::init();
 
-        $this->initClassMap();
         $this->initStatusMap();
     }
 
@@ -81,7 +46,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function createAccount(array $config = [])
     {
-        return $this->createInternal(self::CLASS_ACCOUNT, $config, false);
+        return $this->createInternal(Module::CLASS_ACCOUNT, $config, false);
     }
 
     /**
@@ -90,7 +55,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function findAccount($condition)
     {
-        return $this->findInternal(self::CLASS_ACCOUNT, $condition);
+        return $this->findInternal(Module::CLASS_ACCOUNT, $condition);
     }
 
     /**
@@ -106,7 +71,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function activateAccount(ActiveRecord $model)
     {
-        $this->transitionInternal($model, self::CLASS_ACCOUNT, self::STATUS_ACTIVATED);
+        $this->transitionInternal($model, $this->getStatusCode(Module::CLASS_ACCOUNT, Module::STATUS_ACTIVATED));
     }
 
     /**
@@ -117,7 +82,7 @@ class DataContract extends Component implements DataContractInterface
         if (!Module::getInstance()->enableActivation) {
             return true;
         }
-        return $model->status === $this->getStatusCode(self::CLASS_ACCOUNT, self::STATUS_ACTIVATED);
+        return $model->status === $this->getStatusCode(Module::CLASS_ACCOUNT, Module::STATUS_ACTIVATED);
     }
 
     /**
@@ -133,7 +98,7 @@ class DataContract extends Component implements DataContractInterface
         }
 
         /** @var ActiveRecord $modelClass */
-        $modelClass = $this->getClassName(self::CLASS_LOGIN_HISTORY);
+        $modelClass = Module::getInstance()->getClassName(Module::CLASS_LOGIN_HISTORY);
 
         /** @var AccountLoginHistory $model */
         $model = $modelClass::find()
@@ -159,7 +124,7 @@ class DataContract extends Component implements DataContractInterface
         }
 
         /** @var ActiveRecord $modelClass */
-        $modelClass = $this->getClassName(self::CLASS_PASSWORD_HISTORY);
+        $modelClass = Module::getInstance()->getClassName(Module::CLASS_PASSWORD_HISTORY);
 
         /** @var AccountPasswordHistory $model */
         $model = $modelClass::find()
@@ -177,12 +142,9 @@ class DataContract extends Component implements DataContractInterface
      */
     public function isAccountPasswordUsed(ActiveRecord $model, $password)
     {
-        /** @var Account $model */
-        $strategy = $model->getStrategy();
         $models = $this->getAccountPasswordHistory($model);
         foreach ($models as $model) {
-            $strategy->setSalt($model->salt);
-            if ($model->password === $strategy->encode($password)) {
+            if (Module::getInstance()->getPasswordHasher()->validatePassword($password, $model->password)) {
                 return true;
             }
         }
@@ -195,7 +157,7 @@ class DataContract extends Component implements DataContractInterface
     public function getAccountNumFailedLoginAttempts(ActiveRecord $model)
     {
         /** @var ActiveRecord $modelClass */
-        $modelClass = $this->getClassName(self::CLASS_LOGIN_HISTORY);
+        $modelClass = Module::getInstance()->getClassName(Module::CLASS_LOGIN_HISTORY);
 
         /** @var AccountLoginHistory $lastEntry */
         $lastEntry = $modelClass::find()
@@ -214,7 +176,7 @@ class DataContract extends Component implements DataContractInterface
     public function getAccountPasswordHistory(ActiveRecord $model)
     {
         /** @var ActiveRecord $modelClass */
-        $modelClass = $this->getClassName(self::CLASS_PASSWORD_HISTORY);
+        $modelClass = Module::getInstance()->getClassName(Module::CLASS_PASSWORD_HISTORY);
         return $modelClass::find()
             ->where(['accountId' => $model->getPrimaryKey()])
             ->orderBy('createdAt DESC')
@@ -228,7 +190,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function createProvider(array $config = [])
     {
-        return $this->createInternal(self::CLASS_PROVIDER, $config, false);
+        return $this->createInternal(Module::CLASS_PROVIDER, $config, false);
     }
 
     /**
@@ -237,7 +199,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function findProvider($condition)
     {
-        return $this->findInternal(self::CLASS_PROVIDER, $condition);
+        return $this->findInternal(Module::CLASS_PROVIDER, $condition);
     }
 
     /**
@@ -246,7 +208,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function createLoginHistory(array $config = [])
     {
-        return $this->createInternal(self::CLASS_LOGIN_HISTORY, $config);
+        return $this->createInternal(Module::CLASS_LOGIN_HISTORY, $config);
     }
 
     /**
@@ -255,7 +217,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function createPasswordHistory(array $config = [])
     {
-        return $this->createInternal(self::CLASS_PASSWORD_HISTORY, $config);
+        return $this->createInternal(Module::CLASS_PASSWORD_HISTORY, $config);
     }
 
     /**
@@ -264,25 +226,34 @@ class DataContract extends Component implements DataContractInterface
      */
     public function createToken(array $config = [])
     {
-        return $this->createInternal(self::CLASS_TOKEN, $config);
+        return $this->createInternal(Module::CLASS_TOKEN, $config);
+    }
+
+    /**
+     * @inheritdoc
+     * @return AccountToken
+     */
+    public function findToken($condition)
+    {
+        return $this->findInternal(Module::CLASS_TOKEN, $condition);
     }
 
     /**
      * @inheritdoc
      * @return AccountToken token model.
      */
-    public function findToken($type, $token)
+    public function findValidToken($type, $token)
     {
         $tokenExpireTime = Module::getParam(Module::PARAM_TOKEN_EXPIRE_TIME);
 
         /** @var AccountToken $modelClass */
-        $modelClass = $this->getClassName(self::CLASS_TOKEN);
+        $modelClass = Module::getInstance()->getClassName(Module::CLASS_TOKEN);
 
         return $modelClass::find()
             ->where([
                 'type' => $type,
                 'token' => $token,
-                'status' => $this->getStatusCode(self::CLASS_TOKEN, self::STATUS_UNUSED),
+                'status' => $this->getStatusCode(Module::CLASS_TOKEN, Module::STATUS_UNUSED),
             ])
             ->andWhere('(UNIX_TIMESTAMP() - UNIX_TIMESTAMP(createdAt)) < :expireTime',
                 [':expireTime' => $tokenExpireTime])
@@ -294,7 +265,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function useToken(ActiveRecord $model)
     {
-        $this->transitionInternal($model, self::CLASS_TOKEN, self::STATUS_USED);
+        $this->transitionInternal($model, $this->getStatusCode(Module::CLASS_TOKEN, Module::STATUS_USED));
     }
 
     /**
@@ -302,7 +273,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function createLoginForm(array $config = [])
     {
-        return $this->createModelInternal(self::CLASS_LOGIN_FORM, $config);
+        return $this->createModelInternal(Module::CLASS_LOGIN_FORM, $config);
     }
 
     /**
@@ -310,7 +281,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function createSignupForm(array $config = [])
     {
-        return $this->createModelInternal(self::CLASS_SIGNUP_FORM, $config);
+        return $this->createModelInternal(Module::CLASS_SIGNUP_FORM, $config);
     }
 
     /**
@@ -318,7 +289,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function createConnectForm(array $config = [])
     {
-        return $this->createModelInternal(self::CLASS_CONNECT_FORM, $config);
+        return $this->createModelInternal(Module::CLASS_CONNECT_FORM, $config);
     }
 
     /**
@@ -326,7 +297,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function createForgotPasswordForm(array $config = [])
     {
-        return $this->createModelInternal(self::CLASS_FORGOT_PASSWORD_FORM, $config);
+        return $this->createModelInternal(Module::CLASS_FORGOT_PASSWORD_FORM, $config);
     }
 
     /**
@@ -334,22 +305,7 @@ class DataContract extends Component implements DataContractInterface
      */
     public function createPasswordForm(array $config = [])
     {
-        return $this->createModelInternal(self::CLASS_PASSWORD_FORM, $config);
-    }
-
-    /**
-     * Returns the class name for a specific model class.
-     *
-     * @param string $type class type.
-     * @throws InvalidParamException if the class cannot be found.
-     * @return string class name.
-     */
-    public function getClassName($type)
-    {
-        if (!isset($this->classMap[$type])) {
-            throw new InvalidParamException("Trying to get class name for unknown class '$type'.");
-        }
-        return $this->classMap[$type];
+        return $this->createModelInternal(Module::CLASS_PASSWORD_FORM, $config);
     }
 
     /**
@@ -371,44 +327,19 @@ class DataContract extends Component implements DataContractInterface
     }
 
     /**
-     * Initializes the class map.
-     */
-    protected function initClassMap()
-    {
-        $this->classMap = array_merge(
-            [
-                self::CLASS_ACCOUNT => Account::className(),
-                self::CLASS_TOKEN => AccountToken::className(),
-                self::CLASS_PROVIDER => AccountProvider::className(),
-                self::CLASS_LOGIN_HISTORY => AccountLoginHistory::className(),
-                self::CLASS_PASSWORD_HISTORY => AccountPasswordHistory::className(),
-                self::CLASS_LOGIN_FORM => LoginForm::className(),
-                self::CLASS_PASSWORD_FORM => PasswordForm::className(),
-                self::CLASS_SIGNUP_FORM => SignupForm::className(),
-                self::CLASS_CONNECT_FORM => ConnectForm::className(),
-                self::CLASS_FORGOT_PASSWORD_FORM => ForgotPasswordForm::className(),
-                self::CLASS_WEB_USER => User::className(),
-                self::CLASS_CAPTCHA => Captcha::className(),
-                self::CLASS_CAPTCHA_ACTION => CaptchaAction::className(),
-            ],
-            $this->classMap
-        );
-    }
-
-    /**
      * Initializes the status map.
      */
     protected function initStatusMap()
     {
         $this->statusMap = array_merge(
             [
-                self::CLASS_ACCOUNT => [
-                    self::STATUS_UNACTIVATED => 0,
-                    self::STATUS_ACTIVATED => 1,
+                Module::CLASS_ACCOUNT => [
+                    Module::STATUS_UNACTIVATED => 0,
+                    Module::STATUS_ACTIVATED => 1,
                 ],
-                self::CLASS_TOKEN => [
-                    self::STATUS_UNUSED => 0,
-                    self::STATUS_USED => 1,
+                Module::CLASS_TOKEN => [
+                    Module::STATUS_UNUSED => 0,
+                    Module::STATUS_USED => 1,
                 ],
             ],
             $this->statusMap
@@ -445,7 +376,7 @@ class DataContract extends Component implements DataContractInterface
      */
     protected function createModelInternal($className, array $config = [])
     {
-        $modelClass = $this->getClassName($className);
+        $modelClass = Module::getInstance()->getClassName($className);
         return new $modelClass($config);
     }
 
@@ -473,7 +404,7 @@ class DataContract extends Component implements DataContractInterface
     protected function findInternal($className, $condition)
     {
         /** @var ActiveRecord $modelClass */
-        $modelClass = $this->getClassName($className);
+        $modelClass = Module::getInstance()->getClassName($className);
         return $modelClass::findOne($condition);
     }
 
@@ -481,11 +412,10 @@ class DataContract extends Component implements DataContractInterface
      * Changes the status of a model class.
      *
      * @param ActiveRecord $model model instance.
-     * @param string $className class name.
-     * @param string $status new status.
+     * @param int $status new status.
      */
-    protected function transitionInternal(ActiveRecord $model, $className, $status)
+    protected function transitionInternal(ActiveRecord $model, $status)
     {
-        $this->updateAttributesInternal($model, ['status' => $this->getStatusCode($className, $status)]);
+        $this->updateAttributesInternal($model, ['status' => $status]);
     }
 }
