@@ -37,8 +37,8 @@ class AccountCommand extends Controller
                     'username' => $username,
                     'password' => $password,
                     'email' => $username . '@example.com',
-                    'status' => $dataContract->getStatusCode(DataContract::CLASS_ACCOUNT,
-                        DataContract::STATUS_ACTIVATED)
+                    'status' => $dataContract->getStatusCode(Module::CLASS_ACCOUNT,
+                        Module::STATUS_ACTIVATED)
                 ]
             ]);
 

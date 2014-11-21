@@ -33,7 +33,7 @@ class SignupForm extends PasswordForm
     public $captcha;
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function rules()
     {
@@ -58,7 +58,7 @@ class SignupForm extends PasswordForm
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function attributeLabels()
     {
@@ -73,9 +73,9 @@ class SignupForm extends PasswordForm
     }
 
     /**
-     * TODO Write this
+     * Validates this model and creates a new account for the user.
      *
-     * @return bool
+     * @return bool whether sign-up was successful.
      */
     public function signup()
     {
