@@ -26,4 +26,9 @@ return [
     'You have already used this password.' => '',
     'Your account has been locked due to too many failed login attempts.' => '',
     'Your account has not yet been activated.' => '',
+    '{attribute} is too short, minimum is {n} {n, plural, =1{character} other{characters}}.' => '',
+    '{attribute} should contain at least {n} lower case {n, plural, =1{character} other{characters}}.' => '',
+    '{attribute} should contain at least {n} non alpha numeric {n, plural, =1{character} other{characters}}.' => '',
+    '{attribute} should contain at least {n} upper case {n, plural, =1{character} other{characters}}.' => '',
+    '{attribute} should contain at least {n} {n, plural, =1{digit} other{digits}}.' => '',
 ];
