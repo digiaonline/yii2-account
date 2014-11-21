@@ -17,7 +17,7 @@ class m141113_121701_create_account extends Migration
     {
         $this->createTable(
             'account',
-            array(
+            [
                 'id' => Schema::TYPE_PK,
                 'username' => Schema::TYPE_STRING . ' NOT NULL',
                 'password' => Schema::TYPE_STRING . ' NOT NULL',
@@ -28,7 +28,7 @@ class m141113_121701_create_account extends Migration
                 'status' => Schema::TYPE_INTEGER . " NOT NULL DEFAULT '0'",
                 'UNIQUE KEY username (username)',
                 'UNIQUE KEY email (email)',
-            )
+            ]
         );
     }
 

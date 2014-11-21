@@ -33,7 +33,7 @@ class PasswordForm extends Model
     public $verifyPassword;
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function rules()
     {
@@ -45,7 +45,7 @@ class PasswordForm extends Model
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function attributeLabels()
     {

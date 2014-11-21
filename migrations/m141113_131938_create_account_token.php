@@ -17,7 +17,7 @@ class m141113_131938_create_account_token extends Migration
     {
         $this->createTable(
             'account_token',
-            array(
+            [
                 'id' => Schema::TYPE_PK,
                 'accountId' => Schema::TYPE_INTEGER . ' NOT NULL',
                 'type' => Schema::TYPE_STRING . ' NOT NULL',
@@ -25,7 +25,7 @@ class m141113_131938_create_account_token extends Migration
                 'createdAt' => Schema::TYPE_DATETIME . ' NULL DEFAULT NULL',
                 'status' => Schema::TYPE_INTEGER . " NOT NULL DEFAULT '0'",
                 'UNIQUE KEY accountId_type_token (accountId, type, token)',
-            )
+            ]
         );
     }
 

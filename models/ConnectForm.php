@@ -39,7 +39,7 @@ class ConnectForm extends Model
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function attributeLabels()
     {

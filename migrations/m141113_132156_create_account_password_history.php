@@ -17,12 +17,12 @@ class m141113_132156_create_account_password_history extends Migration
     {
         $this->createTable(
             'account_password_history',
-            array(
+            [
                 'id' => Schema::TYPE_PK,
                 'accountId' => Schema::TYPE_INTEGER . ' NOT NULL',
                 'password' => Schema::TYPE_STRING . ' NOT NULL',
                 'createdAt' => Schema::TYPE_DATETIME . ' NULL DEFAULT NULL',
-            )
+            ]
         );
     }
 

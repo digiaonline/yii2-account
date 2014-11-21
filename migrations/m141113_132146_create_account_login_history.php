@@ -17,13 +17,13 @@ class m141113_132146_create_account_login_history extends Migration
     {
         $this->createTable(
             'account_login_history',
-            array(
+            [
                 'id' => Schema::TYPE_PK,
                 'accountId' => Schema::TYPE_INTEGER . " NOT NULL DEFAULT '0'",
                 'success' => Schema::TYPE_BOOLEAN . " NOT NULL DEFAULT '0'",
                 'numFailedAttempts' => Schema::TYPE_INTEGER . " NOT NULL DEFAULT '0'",
                 'createdAt' => Schema::TYPE_DATETIME . ' NULL DEFAULT NULL',
-            )
+            ]
         );
     }
 

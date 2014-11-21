@@ -21,7 +21,7 @@ class ForgotPasswordForm extends Model
     public $email;
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function rules()
     {
@@ -33,7 +33,7 @@ class ForgotPasswordForm extends Model
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function attributeLabels()
     {
