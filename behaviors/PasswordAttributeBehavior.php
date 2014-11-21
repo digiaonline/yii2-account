@@ -25,7 +25,7 @@ class PasswordAttributeBehavior extends Behavior
     /**
      * @var string name of the password attribute.
      */
-    public $passwordAttribute = 'password';
+    public $attribute = 'password';
 
     /**
      * @var string holds the current password, used to detect whether the password has been changed.
@@ -52,8 +52,8 @@ class PasswordAttributeBehavior extends Behavior
      */
     public function changePassword($password, $runValidation = true)
     {
-        $this->owner->{$this->passwordAttribute} = $password;
-        return $this->owner->save($runValidation, [$this->passwordAttribute]);
+        $this->owner->{$this->attribute} = $password;
+        return $this->owner->save($runValidation, [$this->attribute]);
     }
 
     /**
@@ -64,7 +64,7 @@ class PasswordAttributeBehavior extends Behavior
      */
     public function validatePassword($password)
     {
-        return $this->getPasswordHasher()->validatePassword($password, $this->owner->{$this->passwordAttribute});
+        return $this->getPasswordHasher()->validatePassword($password, $this->owner->{$this->attribute});
     }
 
     /**
@@ -74,7 +74,7 @@ class PasswordAttributeBehavior extends Behavior
      */
     public function afterFind($event)
     {
-        $this->_passwordHash = $event->sender->{$this->passwordAttribute};
+        $this->_passwordHash = $event->sender->{$this->attribute};
     }
 
     /**
@@ -84,7 +84,7 @@ class PasswordAttributeBehavior extends Behavior
      */
     public function beforeSave($event)
     {
-        $password = $event->sender->{$this->passwordAttribute};
+        $password = $event->sender->{$this->attribute};
         if ($password !== '' && $this->isPasswordChanged($password)) {
             $this->changePasswordInternal($password);
         }
@@ -97,12 +97,12 @@ class PasswordAttributeBehavior extends Behavior
      */
     public function beforeValidate($event)
     {
-        $password = $event->sender->{$this->passwordAttribute};
+        $password = $event->sender->{$this->attribute};
         if ($password !== '' && $this->isPasswordChanged($password)) {
             $config = Module::getInstance()->passwordStrategy;
             $validatorClass = Module::getInstance()->getClassName(Module::CLASS_PASSWORD_VALIDATOR);
             $validator = Yii::createObject($validatorClass, $config);
-            $validator->attributes = [$this->passwordAttribute];
+            $validator->attributes = [$this->attribute];
             $validator->validateAttributes($event->sender);
         }
     }
@@ -115,7 +115,7 @@ class PasswordAttributeBehavior extends Behavior
     protected function changePasswordInternal($password)
     {
         $passwordHash = $this->getPasswordHasher()->generatePasswordHash($password);
-        $this->_passwordHash = $this->owner->{$this->passwordAttribute} = $passwordHash;
+        $this->_passwordHash = $this->owner->{$this->attribute} = $passwordHash;
     }
 
     /**

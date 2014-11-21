@@ -11,7 +11,6 @@
 namespace nord\yii\account\models;
 
 use nord\yii\account\Module;
-use phpnode\yii\password\strategies\PasswordStrategy;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -35,7 +34,6 @@ use yii\web\IdentityInterface;
  *
  * @method bool validatePassword($password)
  * @method bool changePassword($password, $runValidation = true)
- * @method PasswordStrategy getStrategy()
  */
 class Account extends ActiveRecord implements IdentityInterface
 {
