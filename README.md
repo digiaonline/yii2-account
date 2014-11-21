@@ -5,11 +5,11 @@ Account module for the Yii PHP framework.
 
 ## Why do I want this
 
-This project was inspired by both the [http://github.com/mishamx/yii-user](yii-user) 
-and [https://github.com/dektrium/yii2-user](yii2-user) modules and was carefully developed with our expertise in Yii 
+This project was inspired by both the [http://github.com/mishamx/yii-user](yii-user)
+and [https://github.com/dektrium/yii2-user](yii2-user) modules and was carefully developed with our expertise in Yii
 following the best practices of the framework. The module uses Yii's own password methods in ```yii\base\Security```,
 alternatively you can implement our ```PasswordHasherInterface``` to hash passwords differently. Other features include
-interfaces for sending mail and creating authentication tokens; various password security features and much more. 
+interfaces for sending mail and creating authentication tokens; various password security features and much more.
 For more details refer to the features section below.
 
 ## Features
@@ -109,7 +109,7 @@ index.php?r=account OR index.php/account
 You can run the following command to generate an account from the command line:
 
 ```bash
-php yii account/create demo demo
+php yii account/create demo demo1234
 ```
 
 ## Extending
@@ -126,7 +126,7 @@ You can use your own account model as long as you add the following fields to it
  * __authKey__ _varchar(255) not null_ authentication key used for cookie authentication
  * __email__ _varchar(255) not null_ account email
  * __lastLoginAt__ _datetime null default null_ when the user last logged in
- * __createdAt__ _datetime null default_ when the account was created
+ * __createdAt__ _datetime null default null_ when the account was created
  * __status__ _int(11) default '0'_ account status (e.g. unactivated, activated)
 
 Changing the model used by the extension is easy, simply configure it to use your class instead by adding it to the
