@@ -10,7 +10,8 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "ircmaxell/random-lib": "~1.0@dev"
+    "ircmaxell/random-lib": "~1.0@dev",
+    "yiisoft/yii2-authclient": "~2.0@dev"
   },
   "autoload": {
     "psr-4": {
