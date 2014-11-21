@@ -85,6 +85,7 @@ class Account extends ActiveRecord implements IdentityInterface
         return [
             [
                 'class' => $passwordBehaviorClass,
+                'attribute' => Module::getInstance()->passwordAttribute,
             ],
             [
                 'class' => TimestampBehavior::className(),

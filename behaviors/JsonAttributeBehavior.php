@@ -16,6 +16,8 @@ use yii\db\ActiveRecord;
 use yii\helpers\Json;
 
 /**
+ * Behavior that allows for automatic encoding/decoding of JSON attributes.
+ *
  * @property ActiveRecord $owner
  */
 class JsonAttributeBehavior extends Behavior

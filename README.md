@@ -5,11 +5,14 @@ Account module for the Yii PHP framework.
 
 ## Why do I want this
 
-This project was inspired by the [http://github.com/mishamx/yii-user](yii-user module) and was carefully developed
-with our expertise in Yii following the best practices of the framework. It is more secure because it uses passwords
-with salt that are encrypted using bcrypt instead of password hashes. It also comes with support for sending mail with truly random authentication tokens that expire.
+This project was inspired by both the [http://github.com/mishamx/yii-user](yii-user) 
+and [https://github.com/dektrium/yii2-user](yii2-user) modules and was carefully developed with our expertise in Yii 
+following the best practices of the framework. The module uses Yii's own password methods in ```yii\base\Security```,
+alternatively you can implement our ```PasswordHasherInterface``` to hash passwords differently. Other features include
+interfaces for sending mail and creating authentication tokens; various password security features and much more. 
+For more details refer to the features section below.
 
-## Requirements
+## Features
 
  - Secure accounts (bcrypt encryption) __DONE__
  - Optional sign-up process (enabled by default) __DONE__
@@ -76,6 +79,7 @@ The following configurations are available for the ```nord\yii\account\Module```
  * __captchaOptions__ _array_ configuration that is passed to ```CaptchaAction```.
  * __passwordStrategy__ _string_ configuration that is passed to ```PasswordStrengthValidator```.
  * __loginAttribute__ _string_ attribute to use as the login when logging in (defaults to ```username```).
+ * __passwordAttribute__ _string_ name of the password attribute (defaults to ```password```).
  * __messageSource__ _string_ message source component to use for the module.
 
 ### Parameters

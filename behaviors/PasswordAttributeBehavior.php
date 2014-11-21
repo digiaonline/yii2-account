@@ -18,6 +18,8 @@ use yii\base\ModelEvent;
 use yii\db\ActiveRecord;
 
 /**
+ * Behavior that ensures that the password field is updated correctly.
+ *
  * @property ActiveRecord $owner
  */
 class PasswordAttributeBehavior extends Behavior

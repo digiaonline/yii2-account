@@ -123,6 +123,10 @@ class Module extends \yii\base\Module
      */
     public $loginAttribute = 'username';
     /**
+     * @var string name of the password attribute.
+     */
+    public $passwordAttribute = 'password';
+    /**
      * @var array configuration that is passed to the password validator.
      */
     public $passwordStrategy = [];
