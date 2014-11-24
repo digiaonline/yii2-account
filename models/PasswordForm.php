@@ -77,11 +77,7 @@ class PasswordForm extends Model
     {
         if ($this->validate()) {
             if ($this->account->changePassword($this->password)) {
-                $dataContract = Module::getInstance()->getDataContract();
                 $this->createHistoryEntry($this->account);
-                if ((bool) $this->account->requireNewPassword) {
-                    $dataContract->updateAccountAttributes($this->account, ['requireNewPassword' => 0]);
-                }
                 return true;
             }
         }

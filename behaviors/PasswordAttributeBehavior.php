@@ -54,7 +54,7 @@ class PasswordAttributeBehavior extends Behavior
      */
     public function changePassword($password, $runValidation = true)
     {
-        $this->owner->{$this->attribute} = $password;
+        $this->changePasswordInternal($password);
         return $this->owner->save($runValidation, [$this->attribute]);
     }
 
