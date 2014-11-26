@@ -63,7 +63,6 @@ composer install --dev --prefer-source
 cd /vagrant/tests && sudo wget http://codeception.com/codecept.phar
 chmod +x codecept.phar
 mv codecept.phar /usr/local/bin/codecept
-cd /vagrant/tests && sudo wget https://raw.github.com/Codeception/c3/2.0/c3.php
 
 # --- configure apache ---
 
