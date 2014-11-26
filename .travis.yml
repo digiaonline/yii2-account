@@ -6,7 +6,7 @@ php:
 before_script:
   - sh scripts/setup-travis.sh
 
-script: php codecept.phar run --coverage-xml
+script: php codecept.phar run --coverage-xml --config="tests/codeception.yml"
 
 after_script:
   - sh scripts/send-coverage.sh

@@ -1,6 +1,11 @@
 yii2-account
 ============
 
+[![Build Status](https://travis-ci.org/nordsoftware/yii2-account.svg?branch=test-suite)](https://travis-ci.org/nordsoftware/yii2-account)
+[![Latest Stable Version](https://poser.pugx.org/nordsoftware/yii2-account/v/stable.svg)](https://packagist.org/packages/nordsoftware/yii2-account) [![Total Downloads](https://poser.pugx.org/nordsoftware/yii2-account/downloads.svg)](https://packagist.org/packages/nordsoftware/yii2-account) [![Latest Unstable Version](https://poser.pugx.org/nordsoftware/yii2-account/v/unstable.svg)](https://packagist.org/packages/nordsoftware/yii2-account) [![License](https://poser.pugx.org/nordsoftware/yii2-account/license.svg)](https://packagist.org/packages/nordsoftware/yii2-account)
+[![Code Climate](https://codeclimate.com/github/nordsoftware/yii2-account/badges/gpa.svg)](https://codeclimate.com/github/nordsoftware/yii2-account)
+[![Test Coverage](https://codeclimate.com/github/nordsoftware/yii2-account/badges/coverage.svg)](https://codeclimate.com/github/nordsoftware/yii2-account)
+
 Account module for the Yii PHP framework.
 
 ## Why do I want this
@@ -79,7 +84,7 @@ The following configurations are available for the ```nord\yii\account\Module```
  * __passwordConfig__ _array_ configuration passed to ```PasswordStrengthValidator```.
  * __captchaConfig__ _array_ configuration passed to ```CaptchaAction```.
  * __clientAuthConfig__ _array_ configuration passed to ```yii\authclient\Collection```.
- * __urlConfig__ _array_ configuration for the URLs used by the module. 
+ * __urlConfig__ _array_ configuration for the URLs used by the module.
  * __loginAttribute__ _string_ name of the attribute to use for logging in (defaults to ```username```).
  * __passwordAttribute__ _string_ name of the password attribute (defaults to ```password```).
  * __messageSource__ _string_ message source component to use for the module.
