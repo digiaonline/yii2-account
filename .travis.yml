@@ -6,7 +6,7 @@ php:
 before_script:
   - sh scripts/setup-travis.sh
 
-script: php codecept.phar run --coverage-clover build/logs/clover.xml
+script: php codecept.phar run --coverage-xml
 
 after_script:
   - sh scripts/send-coverage.sh
