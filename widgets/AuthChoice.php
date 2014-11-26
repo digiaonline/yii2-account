@@ -2,14 +2,21 @@
 
 namespace nord\yii\account\widgets;
 
+use nord\yii\account\Module;
+use yii\authclient\widgets\AuthChoice as BaseAuthChoice;
 use yii\helpers\Html;
 
-class AuthChoice extends \yii\authclient\widgets\AuthChoice
+class AuthChoice extends BaseAuthChoice
 {
     /**
-     * @var array
+     * @inheritdoc
      */
-    public $baseAuthUrl = ['/account/authenticate/client'];
+    public function init()
+    {
+        parent::init();
+
+        $this->setBaseAuthUrl([Module::URL_ROUTE_CLIENT_AUTH]);
+    }
 
     /**
      * @inheritdoc
@@ -21,6 +28,9 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function clientLink($client, $text = null, array $htmlOptions = [])
     {
         if ($text === null) {

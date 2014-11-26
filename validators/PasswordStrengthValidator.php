@@ -16,23 +16,23 @@ use yii\validators\Validator;
 class PasswordStrengthValidator extends Validator
 {
     /**
-     * @var int minimum password length.
+     * @var integer minimum password length.
      */
     public $minLength = 6;
     /**
-     * @var int minimum amount of upper case characters required.
+     * @var integer minimum amount of upper case characters required.
      */
     public $minUpperCaseLetters = 0;
     /**
-     * @var int minimum amount of lower case characters required.
+     * @var integer minimum amount of lower case characters required.
      */
     public $minLowerCaseLetters = 0;
     /**
-     * @var int minimum amount of non alpha numeric characters required.
+     * @var integer minimum amount of non alpha numeric characters required.
      */
     public $minDigits = 0;
     /**
-     * @var int minimum amount of special characters required.
+     * @var integer minimum amount of special characters required.
      */
     public $minSpecialChars = 0;
     /**

@@ -30,7 +30,7 @@ class PasswordController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
+            [
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
@@ -41,7 +41,7 @@ class PasswordController extends Controller
                     ],
                 ],
             ],
-            'token' => [
+            [
                 'class' => TokenFilter::className(),
                 'only' => ['change', 'reset'],
             ],
@@ -65,7 +65,7 @@ class PasswordController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->changePassword()) {
             $dataContract->useToken($tokenModel);
-            return $this->redirect(['/account/authenticate/login']);
+            return $this->redirect([Module::URL_ROUTE_LOGIN]);
         } else {
             return $this->render('change', [
                 'model' => $model,
@@ -86,7 +86,7 @@ class PasswordController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $account = $dataContract->findAccount(['email' => $model->email]);
             $this->sendResetPasswordMail($account);
-            return $this->redirect('forgotDone');
+            return $this->redirect([Module::URL_ROUTE_FORGOT_PASSWORD_DONE]);
         } else {
             return $this->render('forgot', ['model' => $model]);
         }
@@ -117,7 +117,7 @@ class PasswordController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->changePassword()) {
             $dataContract->useToken($tokenModel);
-            return $this->redirect(['/account/authenticate/login']);
+            return $this->redirect([Module::URL_ROUTE_LOGIN]);
         } else {
             return $this->render('change', [
                 'model' => $model,
@@ -135,8 +135,7 @@ class PasswordController extends Controller
     protected function sendResetPasswordMail(ActiveRecord $account)
     {
         $token = $this->module->generateToken(Module::TOKEN_RESET_PASSWORD, $account->id);
-        $actionUrl = Yii::$app->getUrlManager()->createAbsoluteUrl(['/account/password/reset', 'token' => $token]);
-
+        $actionUrl = $this->module->createUrl([Module::URL_ROUTE_RESET_PASSWORD, 'token' => $token], true);
         $this->module->getMailSender()->sendResetPasswordMail([
             'to' => [$account->email],
             'from' => $this->module->getParam(Module::PARAM_FROM_EMAIL_ADDRESS),

@@ -25,7 +25,7 @@ class AccountCommand extends Controller
      *
      * @param string $username desired username.
      * @param string $password desired password.
-     * @return int exit code.
+     * @return integer exit code.
      * @throws Exception
      */
     public function actionCreate($username, $password)

@@ -18,7 +18,7 @@ class YiiTokenGenerator extends Component implements TokenGeneratorInterface
     const DEFAULT_LENGTH = 32;
 
     /**
-     * @var int token length.
+     * @var integer token length.
      */
     public $length = self::DEFAULT_LENGTH;
 

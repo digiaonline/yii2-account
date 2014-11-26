@@ -12,6 +12,7 @@ namespace nord\yii\account\components\mailsender;
 
 use Mandrill;
 use yii\base\Component;
+use yii\helpers\ArrayHelper;
 
 class MandrillMailSender extends Component implements MailSenderInterface
 {
@@ -41,7 +42,7 @@ class MandrillMailSender extends Component implements MailSenderInterface
     {
         parent::init();
 
-        $this->messages = array_merge(
+        $this->messages = ArrayHelper::merge(
             [
                 static::TEMPLATE_ACTIVATE => ['template' => 'activation'],
                 static::TEMPLATE_RESET_PASSWORD => ['template' => 'resetPassword'],
@@ -74,7 +75,7 @@ class MandrillMailSender extends Component implements MailSenderInterface
      * Sends an e-mail message.
      *
      * @param array $config mail configurations.
-     * @return bool whether the mail was sent successfully.
+     * @return boolean whether the mail was sent successfully.
      */
     protected function send(array $config = [])
     {

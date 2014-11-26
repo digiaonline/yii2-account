@@ -25,7 +25,7 @@ interface PasswordHasherInterface
      *
      * @param string $password password to verify.
      * @param string $hash password hash.
-     * @return bool whether the passwords match.
+     * @return boolean whether the passwords match.
      */
     public function validatePassword($password, $hash);
 }

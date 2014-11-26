@@ -59,7 +59,7 @@ class JsonAttributeBehavior extends Behavior
     public function beforeSave($event)
     {
         foreach ($this->attributes as $name) {
-            $this->owner->$name = !empty($this->owner->$name) ? Json::encode($name) : null;
+            $this->owner->$name = !empty($this->owner->$name) ? Json::encode($this->owner->$name) : null;
         }
     }
 }

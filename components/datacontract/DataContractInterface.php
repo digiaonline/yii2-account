@@ -49,7 +49,7 @@ interface DataContractInterface
      * Returns whether the given account is activated.
      *
      * @param ActiveRecord $model model instance.
-     * @return bool whether the account is activated.
+     * @return boolean whether the account is activated.
      */
     public function isAccountActivated(ActiveRecord $model);
 
@@ -57,7 +57,7 @@ interface DataContractInterface
      * Returns whether the given account is locked.
      *
      * @param ActiveRecord $model model instance.
-     * @return bool whether the account is locked.
+     * @return boolean whether the account is locked.
      */
     public function isAccountLocked(ActiveRecord $model);
 
@@ -65,7 +65,7 @@ interface DataContractInterface
      * Returns whether the password for the given account has expired.
      *
      * @param ActiveRecord $model model instance.
-     * @return bool whether the password has expired.
+     * @return boolean whether the password has expired.
      */
     public function isAccountPasswordExpired(ActiveRecord $model);
 
@@ -74,7 +74,7 @@ interface DataContractInterface
      *
      * @param ActiveRecord $model model instance.
      * @param string $password password hash.
-     * @return bool whether the password has been used already.
+     * @return boolean whether the password has been used already.
      */
     public function isAccountPasswordUsed(ActiveRecord $model, $password);
 
@@ -82,7 +82,7 @@ interface DataContractInterface
      * Returns the number of failed login attempts for the given account.
      *
      * @param ActiveRecord $model model instance.
-     * @return int number of failed login attempts.
+     * @return integer number of failed login attempts.
      */
     public function getAccountNumFailedLoginAttempts(ActiveRecord $model);
 

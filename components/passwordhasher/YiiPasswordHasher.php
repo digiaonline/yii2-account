@@ -16,7 +16,7 @@ use yii\base\Component;
 class YiiPasswordHasher extends Component implements PasswordHasherInterface
 {
     /**
-     * @var int cost to use when hashing passwords.
+     * @var integer cost to use when hashing passwords.
      */
     public $cost = 13;
 

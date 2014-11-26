@@ -17,12 +17,12 @@ class RandomLibTokenGenerator extends Component implements TokenGeneratorInterfa
     const DEFAULT_LENGTH = 32;
 
     /**
-     * @var int token length.
+     * @var integer token length.
      */
     public $length = self::DEFAULT_LENGTH;
 
     /**
-     * @var int token strength.
+     * @var integer token strength.
      */
     public $strength = \SecurityLib\Strength::MEDIUM;
 

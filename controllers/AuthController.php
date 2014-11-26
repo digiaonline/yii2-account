@@ -10,7 +10,6 @@
 
 namespace nord\yii\account\controllers;
 
-use nord\yii\account\components\datacontract\DataContract;
 use nord\yii\account\filters\ClientAuthFilter;
 use nord\yii\account\models\LoginForm;
 use nord\yii\account\Module;
@@ -18,8 +17,9 @@ use Yii;
 use yii\authclient\AuthAction;
 use yii\authclient\ClientInterface;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 
-class AuthenticateController extends Controller
+class AuthController extends Controller
 {
     /**
      * @var string default action.
@@ -32,13 +32,13 @@ class AuthenticateController extends Controller
     public function actions()
     {
         return [
-            'captcha' => array_merge(
+            'captcha' => ArrayHelper::merge(
                 ['class' => $this->module->getClassName(Module::CLASS_CAPTCHA_ACTION)],
-                $this->module->captchaOptions
+                $this->module->captchaConfig
             ),
             'client' => [
                 'class' => AuthAction::className(),
-                'successCallback' => [$this, 'afterAuthSuccess'],
+                'successCallback' => [$this, 'clientLogin'],
             ],
         ];
     }
@@ -49,7 +49,7 @@ class AuthenticateController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
+            [
                 'class' => AccessControl::className(),
                 'denyCallback' => [$this, 'goHome'],
                 'rules' => [
@@ -66,7 +66,7 @@ class AuthenticateController extends Controller
                     ],
                 ],
             ],
-            'clientAuth' => [
+            [
                 'class' => ClientAuthFilter::className(),
                 'only' => ['client'],
             ],
@@ -89,7 +89,7 @@ class AuthenticateController extends Controller
             if ($dataContract->isAccountPasswordExpired($account)) {
                 $token = $this->module->generateToken(Module::TOKEN_CHANGE_PASSWORD, $account->id);
                 Yii::$app->user->logout();
-                return $this->redirect(['/account/password/change', 'token' => $token]);
+                return $this->redirect([Module::URL_ROUTE_CHANGE_PASSWORD, 'token' => $token]);
             } else {
                 return $this->goBack();
             }
@@ -113,10 +113,11 @@ class AuthenticateController extends Controller
      * @param ClientInterface $client client instance.
      * @return \yii\web\Response
      */
-    public function afterAuthSuccess(ClientInterface $client)
+    public function clientLogin(ClientInterface $client)
     {
         $attributes = $client->getUserAttributes();
         $name = $client->getId();
+
         $dataContract = $this->module->getDataContract();
         $provider = $dataContract->findProvider(['name' => $name, 'clientId' => $attributes['id']]);
 
@@ -133,7 +134,7 @@ class AuthenticateController extends Controller
             Yii::$app->user->login($provider->account, Module::getParam(Module::PARAM_LOGIN_EXPIRE_TIME));
             return $this->goHome();
         } else {
-            return $this->redirect(['/account/signup/connect', 'providerId' => $provider->id]);
+            return $this->redirect([Module::URL_ROUTE_CONNECT, 'providerId' => $provider->id]);
         }
     }
 }

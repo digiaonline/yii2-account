@@ -14,6 +14,7 @@ use nord\yii\account\components\datacontract\DataContract;
 use nord\yii\account\Module;
 use Yii;
 use yii\captcha\Captcha;
+use yii\helpers\ArrayHelper;
 
 class SignupForm extends PasswordForm
 {
@@ -37,10 +38,13 @@ class SignupForm extends PasswordForm
      */
     public function rules()
     {
-        /** @var Account $accountClass */
-        $accountClass = Module::getInstance()->getClassName(Module::CLASS_ACCOUNT);
+        /** @var Module $module */
+        $module = Module::getInstance();
 
-        return array_merge(
+        /** @var Account $accountClass */
+        $accountClass = $module->getClassName(Module::CLASS_ACCOUNT);
+
+        return ArrayHelper::merge(
             parent::rules(),
             [
                 [['email', 'username'], 'required'],
@@ -50,7 +54,7 @@ class SignupForm extends PasswordForm
                 [
                     'captcha',
                     'captcha',
-                    'captchaAction' => '/account/authenticate/captcha',
+                    'captchaAction' => $module->createRoute(Module::URL_ROUTE_CAPTCHA),
                     'on' => 'captcha',
                 ],
             ]
@@ -62,7 +66,7 @@ class SignupForm extends PasswordForm
      */
     public function attributeLabels()
     {
-        return array_merge(
+        return ArrayHelper::merge(
             parent::attributeLabels(),
             [
                 'email' => Module::t('labels', 'Email'),
@@ -75,7 +79,7 @@ class SignupForm extends PasswordForm
     /**
      * Validates this model and creates a new account for the user.
      *
-     * @return bool whether sign-up was successful.
+     * @return boolean whether sign-up was successful.
      */
     public function signup()
     {

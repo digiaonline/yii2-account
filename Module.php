@@ -31,12 +31,16 @@ use nord\yii\account\models\SignupForm;
 use nord\yii\account\validators\PasswordStrengthValidator;
 use Yii;
 use yii\base\InvalidParamException;
+use yii\base\Module as BaseModule;
 use yii\captcha\Captcha;
 use yii\captcha\CaptchaAction;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\User;
 
-class Module extends \yii\base\Module
+class Module extends BaseModule
 {
+    // Canonical module id.
     const MODULE_ID = 'account';
 
     // Class name types.
@@ -75,9 +79,12 @@ class Module extends \yii\base\Module
     const PARAM_TOKEN_EXPIRE_TIME = 'tokenExpireTime';
 
     // Controller types.
-    const CONTROLLER_AUTHENTICATE = 'authenticate';
+    const CONTROLLER_AUTH = 'auth';
     const CONTROLLER_PASSWORD = 'password';
     const CONTROLLER_SIGNUP = 'signup';
+
+    // Command types.
+    const COMMAND_ACCOUNT = 'account';
 
     // Token types.
     const TOKEN_ACTIVATE = 'activate';
@@ -90,34 +97,80 @@ class Module extends \yii\base\Module
     const COMPONENT_PASSWORD_HASHER = 'passwordHasher';
     const COMPONENT_TOKEN_GENERATOR = 'tokenGenerator';
 
+    // URL prefix.
+    const URL_PREFIX = 'account';
+
+    // URL patterns.
+    const URL_PATTERN_CAPTCHA = 'captcha';
+    const URL_PATTERN_CLIENT_AUTH = 'clientAuth';
+    const URL_PATTERN_LOGIN = 'login';
+    const URL_PATTERN_LOGOUT = 'logout';
+    const URL_PATTERN_SIGNUP = 'signup';
+    const URL_PATTERN_SIGNUP_DONE = 'signupDone';
+    const URL_PATTERN_ACTIVATE = 'activate/<token:[a-zA-Z0-9_-]+>';
+    const URL_PATTERN_CONNECT = 'connect';
+    const URL_PATTERN_CHANGE_PASSWORD = 'changePassword/<token:[a-zA-Z0-9_-]+>';
+    const URL_PATTERN_FORGOT_PASSWORD = 'forgotPassword';
+    const URL_PATTERN_FORGOT_PASSWORD_DONE = 'forgotPasswordDone';
+    const URL_PATTERN_RESET_PASSWORD = 'resetPassword/<token:[a-zA-Z0-9_-]+>';
+
+    // URL routes.
+    const URL_ROUTE_CAPTCHA = 'auth/captcha';
+    const URL_ROUTE_CLIENT_AUTH = 'auth/client';
+    const URL_ROUTE_LOGIN = 'auth/login';
+    const URL_ROUTE_LOGOUT = 'auth/logout';
+    const URL_ROUTE_SIGNUP = 'signup/index';
+    const URL_ROUTE_SIGNUP_DONE = 'signup/done';
+    const URL_ROUTE_ACTIVATE = 'signup/activate';
+    const URL_ROUTE_CONNECT = 'signup/connect';
+    const URL_ROUTE_CHANGE_PASSWORD = 'password/change';
+    const URL_ROUTE_FORGOT_PASSWORD = 'password/forgot';
+    const URL_ROUTE_FORGOT_PASSWORD_DONE = 'password/forgotDone';
+    const URL_ROUTE_RESET_PASSWORD = 'password/reset';
+
+    // Translation category prefix.
+    const I18N_PREFIX = 'nord/account/';
+
     /**
      * @var array map over classes used by this module.
      */
     public $classMap = [];
     /**
-     * @var bool whether to enable activation (defaults to true).
+     * @var boolean whether to enable account activation (defaults to true).
      */
     public $enableActivation = true;
     /**
-     * @var bool whether to enable signing up (defaults to true).
+     * @var boolean whether to enable signing up (defaults to true).
      */
     public $enableSignup = true;
     /**
-     * @var bool whether to enable client authentication, e.g. Facebook (defaults to false).
-     */
-    public $enableClientAuth = false;
-    /**
-     * @var array list of clients that can be used for client authentication.
-     */
-    public $authClients = ['google' => ['class' => 'yii\authclient\clients\GoogleOpenId']];
-    /**
-     * @var bool whether to enable CAPTCHA on sign up (defaults to false).
+     * @var boolean whether to enable CAPTCHA on sign up (defaults to false).
      */
     public $enableCaptcha = false;
     /**
+     * @var boolean whether to enable client authentication, e.g. Facebook (defaults to false).
+     */
+    public $enableClientAuth = false;
+    /**
      * @var array configuration that is passed to the captcha action.
      */
-    public $captchaOptions = [];
+    public $captchaConfig = [];
+    /**
+     * @var boolean configuration that is passed to the web user.
+     */
+    public $userConfig = [];
+    /**
+     * @var array configuration that is passed to the password validator.
+     */
+    public $passwordConfig = [];
+    /**
+     * @var array list of clients that can be used for client authentication.
+     */
+    public $clientAuthConfig = [];
+    /**
+     * @var array configuration over the URLs used by this module.
+     */
+    public $urlConfig = [];
     /**
      * @var string name of the attribute to use for logging in.
      */
@@ -127,17 +180,17 @@ class Module extends \yii\base\Module
      */
     public $passwordAttribute = 'password';
     /**
-     * @var array configuration that is passed to the password validator.
-     */
-    public $passwordStrategy = [];
-    /**
      * @var string message source to use for this module.
      */
     public $messageSource = 'yii\i18n\PhpMessageSource';
     /**
+     * @var string path to message files used by yii\i18n\PhpMessageSource.
+     */
+    public $messagePath = '@nord/yii/account/messages';
+    /**
      * @var string default controller.
      */
-    public $defaultController = 'login';
+    public $defaultController = self::CONTROLLER_AUTH;
 
     /**
      * @inheritdoc
@@ -149,6 +202,7 @@ class Module extends \yii\base\Module
         $this->initComponents();
         $this->initClassMap();
         $this->initParams();
+        $this->initUrlRules();
         $this->registerTranslations();
     }
 
@@ -183,7 +237,7 @@ class Module extends \yii\base\Module
      */
     protected function initParams()
     {
-        $this->params = array_merge(
+        $this->params = ArrayHelper::merge(
             [
                 self::PARAM_FROM_EMAIL_ADDRESS => 'admin@example.com',
                 self::PARAM_MIN_USERNAME_LENGTH => 4,
@@ -201,22 +255,49 @@ class Module extends \yii\base\Module
     }
 
     /**
+     * Initializes the URL rules for this module.
+     */
+    protected function initUrlRules()
+    {
+        $this->urlConfig = ArrayHelper::merge(
+            [
+                'prefix' => self::URL_PREFIX,
+                'routePrefix' => self::URL_PREFIX,
+                'rules' => [
+                    self::URL_PATTERN_CAPTCHA => self::URL_ROUTE_CAPTCHA,
+                    self::URL_PATTERN_CLIENT_AUTH => self::URL_ROUTE_CLIENT_AUTH,
+                    self::URL_PATTERN_LOGIN => self::URL_ROUTE_LOGIN,
+                    self::URL_PATTERN_LOGOUT => self::URL_ROUTE_LOGOUT,
+                    self::URL_PATTERN_SIGNUP => self::URL_ROUTE_SIGNUP,
+                    self::URL_PATTERN_SIGNUP_DONE => self::URL_ROUTE_SIGNUP_DONE,
+                    self::URL_PATTERN_ACTIVATE => self::URL_ROUTE_ACTIVATE,
+                    self::URL_PATTERN_CONNECT => self::URL_ROUTE_CONNECT,
+                    self::URL_PATTERN_CHANGE_PASSWORD => self::URL_ROUTE_CHANGE_PASSWORD,
+                    self::URL_PATTERN_FORGOT_PASSWORD => self::URL_ROUTE_FORGOT_PASSWORD,
+                    self::URL_PATTERN_RESET_PASSWORD => self::URL_ROUTE_RESET_PASSWORD,
+                ],
+            ],
+            $this->urlConfig
+        );
+    }
+
+    /**
      * Registers the translations for this module.
      */
-    public function registerTranslations()
+    protected function registerTranslations()
     {
-        Yii::$app->i18n->translations['nord/account/*'] = [
+        Yii::$app->i18n->translations[self::I18N_PREFIX . '*'] = [
             'class' => $this->messageSource,
             'sourceLanguage' => 'en-US',
-            'basePath' => '@nord/yii/account/messages',
+            'basePath' => $this->messagePath,
         ];
     }
 
     /**
-     * Generates a new random token and saves it in the database.
+     * Generates a new truly unique random token and saves it in the database.
      *
      * @param string $type token type.
-     * @param int $accountId account id.
+     * @param integer $accountId account id.
      * @return string the generated token.
      */
     public function generateToken($type, $accountId)
@@ -269,7 +350,7 @@ class Module extends \yii\base\Module
      * Returns a configuration parameter for this module.
      *
      * @param string $name parameter name.
-     * @return string|int parameter value.
+     * @return string|integer parameter value.
      */
     public static function getParam($name)
     {
@@ -296,16 +377,26 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Translates the the given text in this module.
+     * Creates a URL route for this module.
      *
-     * @param string $category message category.
-     * @param string $message text to translate.
-     * @param array $params additional parameters.
-     * @return string translated text.
+     * @param string $route desired route.
+     * @return string the generated route.
      */
-    public static function t($category, $message, array $params = [])
+    public function createRoute($route)
     {
-        return Yii::t('nord/account/' . $category, $message, $params);
+        return $this->urlConfig['routePrefix'] . '/' . $route;
+    }
+
+    /**
+     * Creates an URL to this module.
+     *
+     * @param string|array $route URL route.
+     * @param boolean|string $scheme URL scheme (defaults to 'false', meaning relative URL).
+     * @return string the generated URL.
+     */
+    public function createUrl($route, $scheme = false)
+    {
+        return Url::toRoute($this->createRoute($route[0]), $scheme);
     }
 
     /**
@@ -313,7 +404,7 @@ class Module extends \yii\base\Module
      */
     protected function initClassMap()
     {
-        $this->classMap = array_merge(
+        $this->classMap = ArrayHelper::merge(
             [
                 Module::CLASS_ACCOUNT => Account::className(),
                 Module::CLASS_TOKEN => AccountToken::className(),
@@ -333,5 +424,18 @@ class Module extends \yii\base\Module
             ],
             $this->classMap
         );
+    }
+
+    /**
+     * Translates the the given text in this module.
+     *
+     * @param string $category message category.
+     * @param string $message text to translate.
+     * @param array $params additional parameters.
+     * @return string translated text.
+     */
+    public static function t($category, $message, array $params = [])
+    {
+        return Yii::t(self::I18N_PREFIX . $category, $message, $params);
     }
 }

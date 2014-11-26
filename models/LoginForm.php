@@ -131,7 +131,7 @@ class LoginForm extends Model
      * Creates a login history entry.
      *
      * @param ActiveRecord $account account instance.
-     * @param bool $success whether login was successful.
+     * @param boolean $success whether login was successful.
      */
     protected function createHistoryEntry(ActiveRecord $account, $success)
     {

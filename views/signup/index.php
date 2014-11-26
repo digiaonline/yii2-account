@@ -30,7 +30,7 @@ $this->title = Module::t('views', 'Sign up');
                 <?= Module::t(
                     'views',
                     'If you already have an account &ndash; {loginLink}.',
-                    ['loginLink' => Html::a(Module::t('views', 'Log in'), ['/account/authenticate/login'])]
+                    ['loginLink' => Html::a(Module::t('views', 'Log in'), [Module::URL_ROUTE_LOGIN])]
                 ); ?>
             </p>
 
@@ -43,7 +43,7 @@ $this->title = Module::t('views', 'Sign up');
                 <?= $form->field($model, 'verifyPassword')->passwordInput(); ?>
                 <?php if (Module::getInstance()->enableCaptcha): ?>
                     <?= $form->field($model, 'captcha')->widget($captchaClass, [
-                        'captchaAction' => '/account/authenticate/captcha',
+                        'captchaAction' => Module::URL_ROUTE_CAPTCHA,
                         'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-9">{input}</div></div>',
                         'imageOptions' => ['height' => 35],
                     ]); ?>

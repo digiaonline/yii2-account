@@ -5,6 +5,7 @@ namespace nord\yii\account\models;
 use nord\yii\account\behaviors\JsonAttributeBehavior;
 use nord\yii\account\Module;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "account_provider".
@@ -17,7 +18,7 @@ use Yii;
  *
  * @property Account $account
  */
-class AccountProvider extends \yii\db\ActiveRecord
+class AccountProvider extends ActiveRecord
 {
     /**
      * @inheritdoc

@@ -21,6 +21,7 @@ use yii\base\Exception;
 use yii\base\InvalidParamException;
 use yii\base\Model;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
 class DataContract extends Component implements DataContractInterface
@@ -313,7 +314,7 @@ class DataContract extends Component implements DataContractInterface
      *
      * @param string $className class name.
      * @param string $status status identifier.
-     * @return int status code.
+     * @return integer status code.
      */
     public function getStatusCode($className, $status)
     {
@@ -331,7 +332,7 @@ class DataContract extends Component implements DataContractInterface
      */
     protected function initStatusMap()
     {
-        $this->statusMap = array_merge(
+        $this->statusMap = ArrayHelper::merge(
             [
                 Module::CLASS_ACCOUNT => [
                     Module::STATUS_UNACTIVATED => 0,
@@ -412,7 +413,7 @@ class DataContract extends Component implements DataContractInterface
      * Changes the status of a model class.
      *
      * @param ActiveRecord $model model instance.
-     * @param int $status new status.
+     * @param integer $status new status.
      */
     protected function transitionInternal(ActiveRecord $model, $status)
     {

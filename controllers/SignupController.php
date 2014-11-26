@@ -32,10 +32,10 @@ class SignupController extends Controller
     public function behaviors()
     {
         return [
-            'signup' => [
+            [
                 'class' => SignupFilter::className(),
             ],
-            'access' => [
+            [
                 'class' => AccessControl::className(),
                 'denyCallback' => [$this, 'goHome'],
                 'rules' => [
@@ -46,11 +46,11 @@ class SignupController extends Controller
                     ],
                 ],
             ],
-            'token' => [
+            [
                 'class' => TokenFilter::className(),
                 'only' => ['activate'],
             ],
-            'clientAuth' => [
+            [
                 'class' => ClientAuthFilter::className(),
                 'only' => ['connect'],
             ]
@@ -75,10 +75,10 @@ class SignupController extends Controller
 
             if ($this->module->enableActivation) {
                 $this->sendActivationMail($account);
-                return $this->redirect(['done']);
+                return $this->redirect([Module::URL_ROUTE_SIGNUP_DONE]);
             } else {
                 $dataContract->activateAccount($account);
-                return $this->redirect(['/account/authenticate/login']);
+                return $this->redirect([Module::URL_ROUTE_LOGIN]);
             }
         } else {
             return $this->render('index', [
@@ -109,7 +109,7 @@ class SignupController extends Controller
 
         $this->afterActivate();
 
-        $this->redirect(['/account/authenticate/login']);
+        $this->redirect([Module::URL_ROUTE_LOGIN]);
     }
 
     /**
@@ -183,8 +183,7 @@ class SignupController extends Controller
     protected function sendActivationMail(ActiveRecord $account)
     {
         $token = $this->module->generateToken(Module::TOKEN_ACTIVATE, $account->id);
-        $actionUrl = Yii::$app->getUrlManager()->createAbsoluteUrl(['/account/signup/activate', 'token' => $token]);
-
+        $actionUrl = $this->module->createUrl([Module::URL_ROUTE_ACTIVATE, 'token' => $token], true);
         $this->module->getMailSender()->sendActivationMail([
             'to' => [$account->email],
             'from' => $this->module->getParam(Module::PARAM_FROM_EMAIL_ADDRESS),

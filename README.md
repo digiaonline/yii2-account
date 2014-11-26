@@ -73,14 +73,17 @@ The following configurations are available for the ```nord\yii\account\Module```
  * __classMap__ _array_ map over classes to use within the module.
  * __enableActivation__ _bool_ whether to enable account activation (defaults to ```true```).
  * __enableSignup__ _bool_ whether to enable the sign-up process (defaults to ```true```).
- * __enableClientAuth__ _bool_ whether to enable client authentication (defaults to ```false```).
- * __authClients__ _array_ list of clients that can be used for client authentication.
  * __enableCaptcha__ _bool_ whether to enable CAPTCHA when signing up (defaults to ```false```).
- * __captchaOptions__ _array_ configuration that is passed to ```CaptchaAction```.
- * __passwordStrategy__ _string_ configuration that is passed to ```PasswordStrengthValidator```.
- * __loginAttribute__ _string_ attribute to use as the login when logging in (defaults to ```username```).
+ * __enableClientAuth__ _bool_ whether to enable client authentication (defaults to ```false```).
+ * __userConfig__ _array_ configuration passed to ```yii\web\User```.
+ * __passwordConfig__ _array_ configuration passed to ```PasswordStrengthValidator```.
+ * __captchaConfig__ _array_ configuration passed to ```CaptchaAction```.
+ * __clientAuthConfig__ _array_ configuration passed to ```yii\authclient\Collection```.
+ * __urlConfig__ _array_ configuration for the URLs used by the module. 
+ * __loginAttribute__ _string_ name of the attribute to use for logging in (defaults to ```username```).
  * __passwordAttribute__ _string_ name of the password attribute (defaults to ```password```).
  * __messageSource__ _string_ message source component to use for the module.
+ * __messagePath__ _string_ message path to use for the module.
 
 ### Parameters
 

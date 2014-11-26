@@ -71,7 +71,7 @@ class PasswordForm extends Model
     /**
      * Changes the password for an account.
      *
-     * @return bool whether the password was changed.
+     * @return boolean whether the password was changed.
      */
     public function changePassword()
     {

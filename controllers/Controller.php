@@ -13,7 +13,7 @@ namespace nord\yii\account\controllers;
 use nord\yii\account\models\AccountToken;
 use nord\yii\account\Module;
 use Yii;
-use yii\web\Controller as ControllerBase;
+use yii\web\Controller as BaseController;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -22,7 +22,7 @@ use yii\web\ServerErrorHttpException;
 /**
  * @property Module $module
  */
-class Controller extends ControllerBase
+class Controller extends BaseController
 {
     /**
      * Loads a token of a specific type.

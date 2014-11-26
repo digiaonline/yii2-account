@@ -31,7 +31,7 @@ $this->title = Module::t('views', 'Login');
                     <?= Module::t(
                         'views',
                         'If you do not have an account &mdash; {signupLink}.',
-                        ['signupLink' => Html::a(Module::t('views', 'Sign up'), ['/account/signup'])]
+                        ['signupLink' => Html::a(Module::t('views', 'Sign up'), [Module::URL_ROUTE_SIGNUP])]
                     ); ?>
                 </p>
             <?php endif; ?>
@@ -40,7 +40,7 @@ $this->title = Module::t('views', 'Login');
                 <?= Module::t(
                     'views',
                     'Did you forget your password? &mdash; {forgotLink}.',
-                    ['forgotLink' => Html::a('Recover it', ['/account/password/forgot'])]
+                    ['forgotLink' => Html::a('Recover it', [Module::URL_ROUTE_FORGOT_PASSWORD])]
                 ); ?>
             </p>
 

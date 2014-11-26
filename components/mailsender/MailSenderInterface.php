@@ -16,7 +16,7 @@ interface MailSenderInterface
      * Sends an account activation e-mail message.
      *
      * @param array $config mail configurations.
-     * @return bool whether the mail was sent successfully.
+     * @return boolean whether the mail was sent successfully.
      */
     public function sendActivationMail(array $config = []);
 
@@ -24,7 +24,7 @@ interface MailSenderInterface
      * Sends an account reset password e-mail message.
      *
      * @param array $config mail configurations.
-     * @return bool whether the mail was sent successfully.
+     * @return boolean whether the mail was sent successfully.
      */
     public function sendResetPasswordMail(array $config = []);
 }

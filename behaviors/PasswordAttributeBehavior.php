@@ -49,8 +49,8 @@ class PasswordAttributeBehavior extends Behavior
 
     /**
      * @param $password
-     * @param bool $runValidation
-     * @return bool
+     * @param boolean $runValidation
+     * @return boolean
      */
     public function changePassword($password, $runValidation = true)
     {
@@ -62,7 +62,7 @@ class PasswordAttributeBehavior extends Behavior
      * Compares the given password against the owner's password hash.
      *
      * @param string $password password to validate.
-     * @return bool whether the password matches the one on record.
+     * @return boolean whether the password matches the one on record.
      */
     public function validatePassword($password)
     {
@@ -101,7 +101,7 @@ class PasswordAttributeBehavior extends Behavior
     {
         $password = $event->sender->{$this->attribute};
         if ($password !== '' && $this->isPasswordChanged($password)) {
-            $config = Module::getInstance()->passwordStrategy;
+            $config = Module::getInstance()->passwordConfig;
             $validatorClass = Module::getInstance()->getClassName(Module::CLASS_PASSWORD_VALIDATOR);
             $validator = Yii::createObject($validatorClass, $config);
             $validator->attributes = [$this->attribute];
@@ -124,7 +124,7 @@ class PasswordAttributeBehavior extends Behavior
      * Returns whether the password has been changed.
      *
      * @param string $password password to compare.
-     * @return bool whether the password has changed.
+     * @return boolean whether the password has changed.
      */
     protected function isPasswordChanged($password)
     {

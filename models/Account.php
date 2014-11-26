@@ -32,8 +32,8 @@ use yii\web\IdentityInterface;
  *
  * @property string $password write-only password
  *
- * @method bool validatePassword($password)
- * @method bool changePassword($password, $runValidation = true)
+ * @method boolean validatePassword($password)
+ * @method boolean changePassword($password, $runValidation = true)
  */
 class Account extends ActiveRecord implements IdentityInterface
 {

@@ -19,7 +19,7 @@ abstract class LocalMailSender extends Component implements MailSenderInterface
      * Sends an e-mail message.
      *
      * @param array $config mail configurations.
-     * @return bool whether the mail was sent successfully.
+     * @return boolean whether the mail was sent successfully.
      */
     abstract public function send(array $config = []);
 

@@ -11,10 +11,12 @@
 namespace nord\yii\account;
 
 use nord\yii\account\commands\AccountCommand;
-use nord\yii\account\components\datacontract\DataContract;
+use yii\authclient\clients\GoogleOpenId;
 use yii\authclient\Collection;
 use yii\base\BootstrapInterface;
 use yii\base\InvalidConfigException;
+use yii\helpers\ArrayHelper;
+use yii\web\GroupUrlRule;
 
 class Bootstrap implements BootstrapInterface
 {
@@ -44,7 +46,7 @@ class Bootstrap implements BootstrapInterface
         /** @var Module $module */
         $module = $app->getModule(Module::MODULE_ID);
         $module->controllerNamespace = 'nord\yii\account\commands';
-        $module->defaultController = 'account';
+        $module->defaultController = Module::COMMAND_ACCOUNT;
 
         $app->controllerMap[$module->id] = [
             'class' => AccountCommand::className(),
@@ -62,18 +64,27 @@ class Bootstrap implements BootstrapInterface
         /** @var Module $module */
         $module = $app->getModule(Module::MODULE_ID);
 
-        if ($module->enableClientAuth && !$app->has('authClientCollection')) {
-            $app->set('authClientCollection', [
-                'class' => Collection::className(),
-                'clients' => $module->authClients,
-            ]);
-        }
+        // prepend the URL rules to the URL manager
+        $app->getUrlManager()->addRules([new GroupUrlRule($module->urlConfig)], false/* append */);
 
-        $app->set('user', [
-            'class' => $module->getClassName(Module::CLASS_WEB_USER),
-            'enableAutoLogin' => true,
-            'identityClass' => $module->getClassName(Module::CLASS_ACCOUNT),
-            'loginUrl' => ['/account/authenticate/login'],
-        ]);
+        // Configure the web user component
+        $app->set('user', ArrayHelper::merge([
+                'class' => $module->getClassName(Module::CLASS_WEB_USER),
+                'identityClass' => $module->getClassName(Module::CLASS_ACCOUNT),
+                'loginUrl' => [Module::URL_ROUTE_LOGIN],
+                'enableAutoLogin' => true,
+            ],
+            $module->userConfig
+        ));
+
+        // configure client authentication if necessary
+        if ($module->enableClientAuth && !$app->has('authClientCollection')) {
+            $app->set('authClientCollection', ArrayHelper::merge([
+                    'class' => Collection::className(),
+                    'clients' => ['google' => ['class' => GoogleOpenId::className()]],
+                ],
+                $module->clientAuthConfig
+            ));
+        }
     }
 }
