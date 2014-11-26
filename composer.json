@@ -10,8 +10,13 @@
   ],
   "minimum-stability": "dev",
   "require": {
+    "php": ">=5.4.0",
     "ircmaxell/random-lib": "~1.0@dev",
     "yiisoft/yii2-authclient": "~2.0@dev"
+  },
+  "require-dev": {
+    "yiisoft/yii2-codeception": "~2.0@dev",
+    "codeception/codeception": "~2.1@dev"
   },
   "autoload": {
     "psr-4": {

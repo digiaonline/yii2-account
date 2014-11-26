@@ -1,1 +1,6 @@
-/vendor/
+tests/codeception.yml
+tests/codeception/app/runtime
+tests/codeception/app/web/assets
+tests/codeception/_output
+tests/codeception/config/env.php
+vendor
