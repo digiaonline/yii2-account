@@ -17,3 +17,4 @@ php -S localhost:8000 -t tests/app/web/ > /dev/null 2>&1 &
 
 # install codeception
 wget http://codeception.com/codecept.phar
+wget https://raw.github.com/Codeception/c3/2.0/c3.php

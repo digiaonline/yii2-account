@@ -1,5 +1,6 @@
 .DS_Store
 .vagrant
+c3.php
 tests/app/config/env.php
 tests/app/runtime/*
 tests/app/web/assets/*
