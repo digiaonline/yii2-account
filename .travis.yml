@@ -1,0 +1,16 @@
+language: php
+
+php:
+  - 5.4
+
+before_script:
+  - sh scripts/setup-travis.sh
+
+script: php codecept.phar run --coverage-clover build/logs/clover.xml
+
+after_script:
+  - sh scripts/send-coverage.sh
+
+branches:
+  only:
+    - test-suite

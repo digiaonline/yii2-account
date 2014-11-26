@@ -11,16 +11,44 @@
   "minimum-stability": "dev",
   "require": {
     "php": ">=5.4.0",
-    "ircmaxell/random-lib": "~1.0@dev",
-    "yiisoft/yii2-authclient": "~2.0@dev"
+    "ircmaxell/random-lib": ">=v1.0",
+    "yiisoft/yii2": ">=2.0",
+    "yiisoft/yii2-authclient": ">=2.0",
+    "yiisoft/yii2-bootstrap": ">=2.0"
   },
   "require-dev": {
-    "yiisoft/yii2-codeception": "~2.0@dev",
-    "codeception/codeception": "~2.1@dev"
+    "yiisoft/yii2-codeception": ">=2.0",
+    "yiisoft/yii2-debug": ">=2.0",
+    "yiisoft/yii2-gii": ">=2.0",
+    "yiisoft/yii2-faker": ">=2.0",
+    "codeclimate/php-test-reporter": "dev-master"
   },
   "autoload": {
     "psr-4": {
-      "nord\\yii\\account\\": ""
+      "nord\\yii\\account\\": "src"
+    }
+  },
+  "scripts": {
+    "post-create-project-cmd": [
+      "yii\\composer\\Installer::postCreateProject"
+    ]
+  },
+  "extra": {
+    "yii\\composer\\Installer::postCreateProject": {
+      "setPermission": [
+        {
+          "tests/codeception/app/runtime": "0777",
+          "tests/codeception/app/web/assets": "0777",
+          "tests/codeception/bin/yii": "0755"
+        }
+      ],
+      "generateCookieValidationKey": [
+        "tests/app/config/web.php"
+      ]
+    },
+    "asset-installer-paths": {
+      "npm-asset-library": "vendor/npm",
+      "bower-asset-library": "vendor/bower"
     }
   }
 }

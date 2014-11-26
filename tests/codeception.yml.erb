@@ -8,10 +8,20 @@ settings:
     bootstrap: _bootstrap.php
     colors: true
     memory_limit: 1024M
+config:
+    test_entry_url: /index.php
 modules:
     config:
         Db:
-            dsn: 'mysql:host=<%= ENV['DB_HOST'] %>;dbname=<%= ENV['DB_NAME'] %>'
+            dsn: 'mysql:host=<%= ENV['DB_HOST'] %>;dbname=account_test'
             user: '<%= ENV['DB_USER'] %>'
             password: '<%= ENV['DB_PASS'] %>'
             dump: codeception/_data/dump.sql
+            populate: true
+            cleanup: false
+coverage:
+    enabled: true
+    include:
+        - src/*
+    exclude:
+        - vendor/*
