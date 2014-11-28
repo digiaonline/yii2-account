@@ -47,7 +47,7 @@ echo mysql-server mysql-server/root_password_again select "root" | debconf-set-s
 sudo apt-get install -y mysql-server-5.5
 
 # create database
-mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS account_test CHARACTER SET utf8;"
+mysql -uroot -proot -e "CREATE DATABASE account_test CHARACTER SET utf8;"
 
 # --- composer ---
 
