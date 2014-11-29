@@ -9,7 +9,7 @@ defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(dirname(dirn
 
 require(YII_APP_BASE_PATH . '/vendor/autoload.php');
 require(YII_APP_BASE_PATH . '/vendor/yiisoft/yii2/Yii.php');
-require(YII_APP_BASE_PATH . '/tests/codeception/c3.php');
+//require(YII_APP_BASE_PATH . '/tests/codeception/c3.php');
 
 $config = require(dirname(__DIR__) . '/config/acceptance.php');
 
