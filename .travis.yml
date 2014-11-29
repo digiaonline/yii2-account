@@ -4,12 +4,13 @@ php:
   - 5.4
 
 before_script:
-  - sh scripts/setup-travis.sh
+  - sh scripts/travis-setup.sh
 
 script: php codecept.phar run --config="tests/codeception.yml"
 
-#after_script:
-#  - sh scripts/send-coverage.sh
+after_script:
+  - sh scripts/travis-debug.sh
+#  - sh scripts/cc-send-coverage.sh
 
 branches:
   only:
