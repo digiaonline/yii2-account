@@ -13,9 +13,9 @@ config:
 modules:
     config:
         Db:
-            dsn: 'mysql:host=<%= ENV['DB_HOST'] %>;dbname=account_test'
-            user: '<%= ENV['DB_USER'] %>'
-            password: '<%= ENV['DB_PASS'] %>'
+            dsn: '<%= ENV['DB_DSN'] %>'
+            user: '<%= ENV['DB_USERNAME'] %>'
+            password: '<%= ENV['DB_PASSWORD'] %>'
             dump: codeception/_data/dump.sql
             populate: true
             cleanup: false

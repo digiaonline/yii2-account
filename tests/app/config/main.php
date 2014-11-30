@@ -13,9 +13,9 @@ return [
   'components' => [
     'db' => [
       'class' => 'yii\db\Connection',
-      'dsn' => 'mysql:host=localhost;dbname=account_test',
-      'username' => 'root',
-      'password' => 'root',
+      'dsn' => DB_DSN,
+      'username' => DB_USERNAME,
+      'password' => DB_PASSWORD,
     ],
     /*
     'mailer' => [
@@ -27,7 +27,9 @@ return [
     'account' => [
       'class' => 'nord\yii\account\Module',
       'components' => [
-        'mailSender' => 'nord\yii\account\components\mailsender\DummyMailSender',
+        'mailSender' => [
+          'class' => 'nord\yii\account\components\mailsender\DummyMailSender',
+        ],
       ],
       'enableCaptcha' => false,
       /*
