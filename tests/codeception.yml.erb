@@ -13,7 +13,7 @@ config:
 modules:
     config:
         Db:
-            dsn: '<%= ENV['DB_DSN'] %>'
+            dsn: 'mysql:host=<%= ENV['DB_HOST'] %>;dbname=account_test'
             user: '<%= ENV['DB_USERNAME'] %>'
             password: '<%= ENV['DB_PASSWORD'] %>'
             dump: codeception/_data/dump.sql
