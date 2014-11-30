@@ -1,5 +1,7 @@
 <?php
 
+require(__DIR__ . '/env.php');
+
 /**
 * Shared application configuration.
 */
