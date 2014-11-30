@@ -5,6 +5,7 @@ php:
 
 before_script:
   - sh scripts/travis-setup.sh
+  - cat tests/app/config/env.php
 
 script: php codecept.phar run --config="tests/codeception.yml"
 
