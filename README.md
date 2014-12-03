@@ -1,7 +1,7 @@
 yii2-account
 ============
 
-[![Build Status](https://travis-ci.org/nordsoftware/yii2-account.svg?branch=test-suite)](https://travis-ci.org/nordsoftware/yii2-account)
+[![Build Status](https://travis-ci.org/nordsoftware/yii2-account.svg?branch=master)](https://travis-ci.org/nordsoftware/yii2-account)
 [![Code Climate](https://codeclimate.com/github/nordsoftware/yii2-account/badges/gpa.svg)](https://codeclimate.com/github/nordsoftware/yii2-account)
 [![Latest Stable Version](https://poser.pugx.org/nordsoftware/yii2-account/v/stable.svg)](https://packagist.org/packages/nordsoftware/yii2-account) [![Total Downloads](https://poser.pugx.org/nordsoftware/yii2-account/downloads.svg)](https://packagist.org/packages/nordsoftware/yii2-account) [![Latest Unstable Version](https://poser.pugx.org/nordsoftware/yii2-account/v/unstable.svg)](https://packagist.org/packages/nordsoftware/yii2-account) [![License](https://poser.pugx.org/nordsoftware/yii2-account/license.svg)](https://packagist.org/packages/nordsoftware/yii2-account)
 
