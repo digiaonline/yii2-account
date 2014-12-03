@@ -54,7 +54,7 @@ Before you can start using the module you need to apply its database migrations.
 To do so run the following command:
 
 ```
-yii migrate --migrationPath="vendor/nordsoftware/yii-account/migrations"
+yii migrate --migrationPath="vendor/nordsoftware/yii2-account/migrations"
 ```
 
 Usage
