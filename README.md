@@ -50,6 +50,12 @@ or add
 
 to the require section of your `composer.json` file.
 
+Before you can start using the module you need to apply its database migrations.
+To do so run the following command:
+
+```
+yii migrate --migrationPath="vendor/nordsoftware/yii-account/migrations"
+```
 
 Usage
 -----
