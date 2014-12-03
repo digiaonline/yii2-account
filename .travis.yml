@@ -15,4 +15,5 @@ after_script:
 
 branches:
   only:
-    - test-suite
+    - master
+    - develop
