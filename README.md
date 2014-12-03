@@ -122,7 +122,7 @@ index.php?r=account OR index.php/account
 You can run the following command to generate an account from the command line:
 
 ```bash
-php yii account/create demo demo1234
+yii account/create demo demo1234
 ```
 
 ## Extending
