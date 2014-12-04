@@ -11,7 +11,7 @@
 use yii\db\Migration;
 use yii\db\Schema;
 
-class m141113_121701_create_account extends Migration
+class m141113_121701_account_create extends Migration
 {
     public function up()
     {

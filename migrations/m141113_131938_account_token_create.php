@@ -11,7 +11,7 @@
 use yii\db\Migration;
 use yii\db\Schema;
 
-class m141113_131938_create_account_token extends Migration
+class m141113_131938_account_token_create extends Migration
 {
     public function up()
     {

@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m141119_185128_create_account_provider extends Migration
+class m141119_185128_account_provider_create extends Migration
 {
     public function up()
     {

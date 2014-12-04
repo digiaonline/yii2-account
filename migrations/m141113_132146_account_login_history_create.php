@@ -11,7 +11,7 @@
 use yii\db\Migration;
 use yii\db\Schema;
 
-class m141113_132146_create_account_login_history extends Migration
+class m141113_132146_account_login_history_create extends Migration
 {
     public function up()
     {
