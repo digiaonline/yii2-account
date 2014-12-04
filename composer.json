@@ -2,6 +2,7 @@
   "name": "nordsoftware/yii2-account",
   "description": "Account module for the Yii framework.",
   "license": "BSD-3-Clause",
+  "keywords": ["yii-extension"],
   "authors": [
     {
       "name": "Christoffer Niska",
@@ -37,9 +38,9 @@
     "yii\\composer\\Installer::postCreateProject": {
       "setPermission": [
         {
-          "tests/codeception/app/runtime": "0777",
-          "tests/codeception/app/web/assets": "0777",
-          "tests/codeception/bin/yii": "0755"
+          "tests/app/runtime": "0777",
+          "tests/app/web/assets": "0777",
+          "tests/app/yii": "0755"
         }
       ],
       "generateCookieValidationKey": [
