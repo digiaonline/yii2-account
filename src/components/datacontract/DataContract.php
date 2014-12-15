@@ -386,13 +386,11 @@ class DataContract extends Component implements DataContractInterface
      *
      * @param ActiveRecord $model model instance.
      * @param array $attributes model attributes.
-     * @throws Exception if the attributes were not updated.
+     * @return boolean the result.
      */
     protected function updateAttributesInternal(ActiveRecord $model, array $attributes)
     {
-        if ($model->updateAttributes($attributes) === 0) {
-            throw new Exception("Failed to update attributes '" . Json::encode($attributes) . "' for model '" . $model::className() . "'.");
-        }
+        return $model->updateAttributes($attributes) !== 0;
     }
 
     /**

@@ -71,7 +71,7 @@ class Bootstrap implements BootstrapInterface
         $app->set('user', ArrayHelper::merge([
                 'class' => $module->getClassName(Module::CLASS_WEB_USER),
                 'identityClass' => $module->getClassName(Module::CLASS_ACCOUNT),
-                'loginUrl' => [Module::URL_ROUTE_LOGIN],
+                'loginUrl' => $module->createRoute(Module::URL_ROUTE_LOGIN),
                 'enableAutoLogin' => true,
             ],
             $module->userConfig

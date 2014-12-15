@@ -14,6 +14,7 @@ use nord\yii\account\controllers\Controller;
 use nord\yii\account\Module;
 use Yii;
 use yii\base\ActionFilter;
+use yii\web\ForbiddenHttpException;
 
 /**
  * @property Controller $owner
@@ -26,7 +27,7 @@ class TokenFilter extends ActionFilter
     public function beforeAction($action)
     {
         if (Yii::$app->request->get('token') === null) {
-            $this->owner->accessDenied(Module::t('errors', 'Invalid authentication token.'));
+            throw new ForbiddenHttpException(Module::t('errors', 'Invalid authentication token.'));
         }
         return true;
     }

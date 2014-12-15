@@ -63,7 +63,7 @@ class PasswordForm extends Model
      */
     public function validatePasswordHistory($attribute, $params)
     {
-        if (Module::getInstance()->getDataContract()->isAccountPasswordUsed($this->account, $this->{$attribute})) {
+        if (Module::getInstance()->getDataContract()->isAccountPasswordUsed($this->account, $this->$attribute)) {
             $this->addError($attribute, Module::t('errors', 'You have already used this password.'));
         }
     }
@@ -76,9 +76,13 @@ class PasswordForm extends Model
     public function changePassword()
     {
         if ($this->validate()) {
-            if ($this->account->changePassword($this->password)) {
+            $this->account->password = $this->password;
+            if ($this->account->save()) {
                 $this->createHistoryEntry($this->account);
                 return true;
+            }
+            foreach ($this->account->getErrors(Module::getInstance()->passwordAttribute) as $error) {
+                $this->addError('password', $error);
             }
         }
         return false;

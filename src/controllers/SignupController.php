@@ -34,6 +34,7 @@ class SignupController extends Controller
         return [
             [
                 'class' => SignupFilter::className(),
+                'only' => ['index'],
             ],
             [
                 'class' => AccessControl::className(),

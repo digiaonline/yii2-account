@@ -172,7 +172,7 @@ class Module extends BaseModule
     /**
      * @var string path to message files used by yii\i18n\PhpMessageSource.
      */
-    public $messagePath = '@nord/yii/account/messages';
+    public $messagePath = '@nord/account/messages';
     /**
      * @var string default controller.
      */
@@ -184,6 +184,9 @@ class Module extends BaseModule
     public function init()
     {
         parent::init();
+
+        // Set a custom path alias for easier access.
+        Yii::setAlias('@nord/account', __DIR__);
 
         $this->initComponents();
         $this->initClassMap();
@@ -304,6 +307,18 @@ class Module extends BaseModule
         }
         $dataContract->createToken(['attributes' => $attributes]);
         return $attributes['token'];
+    }
+
+    /**
+     * Loads a token of a specific type.
+     *
+     * @param string $type token type.
+     * @param string $token token string.
+     * @return AccountToken
+     */
+    public function loadToken($type, $token)
+    {
+        return $this->getDataContract()->findValidToken($type, $token);
     }
 
     /**

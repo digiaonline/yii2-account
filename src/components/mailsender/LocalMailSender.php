@@ -16,6 +16,18 @@ use yii\base\Component;
 abstract class LocalMailSender extends Component implements MailSenderInterface
 {
     /**
+     * @var string view path.
+     */
+    public $viewPath = '@nord/account/views/mail';
+
+    public function init()
+    {
+        parent::init();
+
+        $this->viewPath = rtrim($this->viewPath, '/');
+    }
+
+    /**
      * Sends an e-mail message.
      *
      * @param array $config mail configurations.
@@ -28,7 +40,7 @@ abstract class LocalMailSender extends Component implements MailSenderInterface
      */
     public function sendActivationMail(array $config = [])
     {
-        $config['body'] = Yii::$app->controller->renderPartial('/mail/activate', $config['data']);
+        $config['body'] = Yii::$app->controller->renderPartial($this->viewPath . '/activate', $config['data']);
         return $this->send($config);
     }
 
@@ -37,7 +49,7 @@ abstract class LocalMailSender extends Component implements MailSenderInterface
      */
     public function sendResetPasswordMail(array $config = [])
     {
-        $config['body'] = Yii::$app->controller->renderPartial('/mail/resetPassword', $config['data']);
+        $config['body'] = Yii::$app->controller->renderPartial($this->viewPath . '/resetPassword', $config['data']);
         return $this->send($config);
     }
 }

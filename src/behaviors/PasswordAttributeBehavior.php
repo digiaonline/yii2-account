@@ -10,8 +10,10 @@
 
 namespace nord\yii\account\behaviors;
 
+use app\models\Account;
 use nord\yii\account\components\passwordhasher\PasswordHasherInterface;
 use nord\yii\account\Module;
+use nord\yii\account\validators\PasswordStrengthValidator;
 use Yii;
 use yii\base\Behavior;
 use yii\base\ModelEvent;
@@ -28,7 +30,6 @@ class PasswordAttributeBehavior extends Behavior
      * @var string name of the password attribute.
      */
     public $attribute = 'password';
-
     /**
      * @var string holds the current password, used to detect whether the password has been changed.
      */
@@ -45,17 +46,6 @@ class PasswordAttributeBehavior extends Behavior
             ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSave',
             ActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate',
         ];
-    }
-
-    /**
-     * @param $password
-     * @param boolean $runValidation
-     * @return boolean
-     */
-    public function changePassword($password, $runValidation = true)
-    {
-        $this->changePasswordInternal($password);
-        return $this->owner->save($runValidation, [$this->attribute]);
     }
 
     /**
@@ -87,8 +77,9 @@ class PasswordAttributeBehavior extends Behavior
     public function beforeSave($event)
     {
         $password = $event->sender->{$this->attribute};
-        if ($password !== '' && $this->isPasswordChanged($password)) {
-            $this->changePasswordInternal($password);
+        if ($password !== $this->_passwordHash && $password !== '') {
+            $passwordHash = $this->getPasswordHasher()->generatePasswordHash($password);
+            $this->_passwordHash = $this->owner->{$this->attribute} = $passwordHash;
         }
     }
 
@@ -100,35 +91,14 @@ class PasswordAttributeBehavior extends Behavior
     public function beforeValidate($event)
     {
         $password = $event->sender->{$this->attribute};
-        if ($password !== '' && $this->isPasswordChanged($password)) {
-            $config = Module::getInstance()->passwordConfig;
+        if ($password !== $this->_passwordHash) {
             $validatorClass = Module::getInstance()->getClassName(Module::CLASS_PASSWORD_VALIDATOR);
+            $config = Module::getInstance()->passwordConfig;
+            /** @var PasswordStrengthValidator $validator */
             $validator = Yii::createObject($validatorClass, $config);
             $validator->attributes = [$this->attribute];
             $validator->validateAttributes($event->sender);
         }
-    }
-
-    /**
-     * Changes the value of the password attribute without performing a save operation.
-     *
-     * @param string $password the new password.
-     */
-    protected function changePasswordInternal($password)
-    {
-        $passwordHash = $this->getPasswordHasher()->generatePasswordHash($password);
-        $this->_passwordHash = $this->owner->{$this->attribute} = $passwordHash;
-    }
-
-    /**
-     * Returns whether the password has been changed.
-     *
-     * @param string $password password to compare.
-     * @return boolean whether the password has changed.
-     */
-    protected function isPasswordChanged($password)
-    {
-        return $password !== $this->_passwordHash;
     }
 
     /**
