@@ -35,7 +35,7 @@ class AccountLoginHistory extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'account_login_history';
+        return '{{%account_login_history}}';
     }
 
     /**

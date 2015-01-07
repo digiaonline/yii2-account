@@ -38,7 +38,7 @@ class AccountToken extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'account_token';
+        return '{{%account_token}}';
     }
 
     /**

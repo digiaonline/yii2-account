@@ -42,7 +42,7 @@ class Account extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return 'account';
+        return '{{%account}}';
     }
 
     /**

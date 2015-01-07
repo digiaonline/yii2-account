@@ -25,7 +25,7 @@ class AccountProvider extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'account_provider';
+        return '{{%account_provider}}';
     }
 
     /**
