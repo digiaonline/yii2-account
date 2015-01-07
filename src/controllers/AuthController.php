@@ -21,6 +21,10 @@ use yii\helpers\ArrayHelper;
 
 class AuthController extends Controller
 {
+    // Event types.
+    const EVENT_AFTER_LOGIN = 'afterLogin';
+    const EVENT_AFTER_LOGOUT = 'afterLogout';
+
     /**
      * @var string default action.
      */
@@ -91,6 +95,7 @@ class AuthController extends Controller
                 Yii::$app->user->logout();
                 return $this->redirect([Module::URL_ROUTE_CHANGE_PASSWORD, 'token' => $token]);
             } else {
+                $this->afterLogin();
                 return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_LOGIN));
             }
         } else {
@@ -104,7 +109,24 @@ class AuthController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
+        $this->afterLogout();
         return $this->goHome();
+    }
+
+    /**
+     * Triggers the 'after login' event.
+     */
+    public function afterLogin()
+    {
+        $this->trigger(self::EVENT_AFTER_LOGIN);
+    }
+
+    /**
+     * Triggers the 'after logout' event.
+     */
+    public function afterLogout()
+    {
+        $this->trigger(self::EVENT_AFTER_LOGOUT);
     }
 
     /**
