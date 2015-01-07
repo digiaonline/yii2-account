@@ -91,7 +91,7 @@ class AuthController extends Controller
                 Yii::$app->user->logout();
                 return $this->redirect([Module::URL_ROUTE_CHANGE_PASSWORD, 'token' => $token]);
             } else {
-                return $this->goBack();
+                return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_LOGIN));
             }
         } else {
             return $this->render('login', ['model' => $model]);
@@ -132,7 +132,7 @@ class AuthController extends Controller
 
         if ($provider->account !== null) {
             Yii::$app->user->login($provider->account, Module::getParam(Module::PARAM_LOGIN_EXPIRE_TIME));
-            return $this->goHome();
+            return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_LOGIN));
         } else {
             return $this->redirect([Module::URL_ROUTE_CONNECT, 'providerId' => $provider->id]);
         }

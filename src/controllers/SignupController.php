@@ -76,11 +76,11 @@ class SignupController extends Controller
 
             if ($this->module->enableActivation) {
                 $this->sendActivationMail($account);
-                return $this->redirect([Module::URL_ROUTE_SIGNUP_DONE]);
             } else {
                 $dataContract->activateAccount($account);
-                return $this->redirect([Module::URL_ROUTE_LOGIN]);
             }
+
+            return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_SIGNUP));
         } else {
             return $this->render('index', [
                 'model' => $model,
@@ -110,7 +110,7 @@ class SignupController extends Controller
 
         $this->afterActivate();
 
-        $this->redirect([Module::URL_ROUTE_LOGIN]);
+        return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_ACTIVATE));
     }
 
     /**
@@ -146,7 +146,7 @@ class SignupController extends Controller
             $provider->updateAttributes(['accountId' => $account->id]);
             $this->afterSignup();
             Yii::$app->user->login($account, Module::getParam(Module::PARAM_LOGIN_EXPIRE_TIME));
-            return $this->goBack();
+            return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_CONNECT));
         } else {
             return $this->render('connect', ['model' => $model, 'provider' => $provider]);
         }

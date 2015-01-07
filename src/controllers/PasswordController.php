@@ -65,7 +65,7 @@ class PasswordController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->changePassword()) {
             $dataContract->useToken($tokenModel);
-            return $this->redirect([Module::URL_ROUTE_LOGIN]);
+            return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_CHANGE_PASSWORD));
         } else {
             return $this->render('change', [
                 'model' => $model,
@@ -86,7 +86,7 @@ class PasswordController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $account = $dataContract->findAccount(['email' => $model->email]);
             $this->sendResetPasswordMail($account);
-            return $this->redirect([Module::URL_ROUTE_FORGOT_PASSWORD_DONE]);
+            return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_FORGOT_PASSWORD));
         } else {
             return $this->render('forgot', ['model' => $model]);
         }
@@ -117,7 +117,7 @@ class PasswordController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->changePassword()) {
             $dataContract->useToken($tokenModel);
-            return $this->redirect([Module::URL_ROUTE_LOGIN]);
+            return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_RESET_PASSWORD));
         } else {
             return $this->render('change', [
                 'model' => $model,

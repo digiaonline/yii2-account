@@ -114,6 +114,14 @@ class Module extends BaseModule
     const URL_ROUTE_FORGOT_PASSWORD_DONE = 'password/forgotDone';
     const URL_ROUTE_RESET_PASSWORD = 'password/reset';
 
+    const REDIRECT_LOGIN = 'login';
+    const REDIRECT_SIGNUP = 'signup';
+    const REDIRECT_ACTIVATE = 'activate';
+    const REDIRECT_CONNECT = 'connect';
+    const REDIRECT_CHANGE_PASSWORD = 'changePassword';
+    const REDIRECT_FORGOT_PASSWORD = 'forgotPassword';
+    const REDIRECT_RESET_PASSWORD = 'resetPassword';
+
     // Translation category prefix.
     const I18N_PREFIX = 'nord/account/';
 
@@ -158,6 +166,10 @@ class Module extends BaseModule
      */
     public $urlConfig = [];
     /**
+     * @var array configuration over the redirects done by this module.
+     */
+    public $redirectConfig = [];
+    /**
      * @var string name of the attribute to use for logging in.
      */
     public $loginAttribute = 'username';
@@ -192,6 +204,7 @@ class Module extends BaseModule
         $this->initClassMap();
         $this->initParams();
         $this->initUrlConfig();
+        $this->initRedirectConfig();
         $this->registerTranslations();
     }
 
@@ -273,6 +286,23 @@ class Module extends BaseModule
                 'forgotPasswordDone' => self::URL_ROUTE_FORGOT_PASSWORD_DONE,
                 'resetPassword/<token:[a-zA-Z0-9_-]+>' => self::URL_ROUTE_RESET_PASSWORD,
             ]
+        );
+    }
+
+    /**
+     * Initializes the redirect configuration for this module.
+     */
+    protected function initRedirectConfig()
+    {
+        $this->redirectConfig = ArrayHelper::merge(
+            [
+                self::REDIRECT_SIGNUP => $this->enableActivation ? [self::URL_ROUTE_SIGNUP_DONE] : [self::URL_ROUTE_LOGIN],
+                self::REDIRECT_ACTIVATE => [self::URL_ROUTE_LOGIN],
+                self::REDIRECT_CHANGE_PASSWORD => [self::URL_ROUTE_LOGIN],
+                self::REDIRECT_FORGOT_PASSWORD => [self::URL_ROUTE_FORGOT_PASSWORD_DONE],
+                self::REDIRECT_RESET_PASSWORD => [self::URL_ROUTE_LOGIN],
+            ],
+            $this->redirectConfig
         );
     }
 
@@ -392,6 +422,17 @@ class Module extends BaseModule
     public function createRoute($route)
     {
         return '/' . $this->urlConfig['routePrefix'] . '/' . $route;
+    }
+
+    /**
+     * Returns the redirect URL for a specific type.
+     *
+     * @param string $type redirect type.
+     * @return mixed the redirect URL.
+     */
+    public function getRedirectUrl($type)
+    {
+        return isset($this->redirectConfig[$type]) ? $this->redirectConfig[$type] : Yii::$app->user->getReturnUrl();
     }
 
     /**
