@@ -93,6 +93,7 @@ class SignupController extends Controller
      * Activates an account.
      *
      * @param string $token authentication token.
+     * @return \yii\web\Response
      */
     public function actionActivate($token)
     {
@@ -133,8 +134,8 @@ class SignupController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $account = $dataContract->createAccount([
                 'attributes' => [
-                    'username' => $model->username,
-                    'password' => $this->module->getTokenGenerator()->generate(),
+                    $this->module->loginAttribute => $model->username,
+                    $this->module->passwordAttribute => $this->module->getTokenGenerator()->generate(),
                     'email' => $model->email
                 ],
             ]);
