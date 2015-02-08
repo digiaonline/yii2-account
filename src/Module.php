@@ -35,6 +35,7 @@ use yii\base\Module as BaseModule;
 use yii\captcha\Captcha;
 use yii\captcha\CaptchaAction;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 use yii\helpers\Url;
 use yii\web\User;
 
@@ -315,7 +316,26 @@ class Module extends BaseModule
             'class' => $this->messageSource,
             'sourceLanguage' => 'en-US',
             'basePath' => $this->messagePath,
+            'fileMap' => $this->createTranslationFileMap(),
         ];
+    }
+
+    /**
+     * Creates a map from the translation category to file for this module.
+     *
+     * @return array the file map.
+     */
+    protected function createTranslationFileMap()
+    {
+        $fileMap = [];
+        $directory = Yii::getAlias('@nord/account/messages/templates');
+        $files = FileHelper::findFiles($directory);
+        foreach ($files as $filePath) {
+            $fileName = substr($filePath, strrpos($filePath, '/') + 1);
+            $category = substr($fileName, 0, strrpos($fileName, '.'));
+            $fileMap["nord/account/$category"] = $fileName;
+        }
+        return $fileMap;
     }
 
     /**

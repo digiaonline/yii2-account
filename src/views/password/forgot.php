@@ -16,7 +16,7 @@ use yii\helpers\Html;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model nord\yii\account\models\ForgotPasswordForm */
 
-$this->title = Module::t('views', 'Forgot password');
+$this->title = Module::t('views', 'Forgot Password');
 ?>
 <div class="password-controller forgot-action">
 

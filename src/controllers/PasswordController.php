@@ -69,7 +69,7 @@ class PasswordController extends Controller
         } else {
             return $this->render('change', [
                 'model' => $model,
-                'title' => Module::t('views', 'Change password'),
+                'title' => Module::t('views', 'Change Password'),
                 'reason' => Module::t('views', 'Your password has expired.'),
             ]);
         }
@@ -121,7 +121,7 @@ class PasswordController extends Controller
         } else {
             return $this->render('change', [
                 'model' => $model,
-                'title' => Module::t('views', 'Reset password'),
+                'title' => Module::t('views', 'Reset Password'),
                 'reason' => Module::t('views', 'You have requested to reset your password.'),
             ]);
         }
@@ -139,7 +139,7 @@ class PasswordController extends Controller
         $this->module->getMailSender()->sendResetPasswordMail([
             'to' => [$account->email],
             'from' => $this->module->getParam(Module::PARAM_FROM_EMAIL_ADDRESS),
-            'subject' => Module::t('email', 'Reset password'),
+            'subject' => Module::t('email', 'Reset Password'),
             'data' => ['actionUrl' => $actionUrl],
         ]);
     }

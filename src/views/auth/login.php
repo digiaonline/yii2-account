@@ -39,8 +39,8 @@ $this->title = Module::t('views', 'Login');
             <p class="help-block">
                 <?= Module::t(
                     'views',
-                    'Did you forget your password? &mdash; {forgotPasswordLink}.',
-                    ['forgotPasswordLink' => Html::a('Recover it', [Module::URL_ROUTE_FORGOT_PASSWORD], ['id' => 'forgotpassword-link'])]
+                    'Did you forget your password? &mdash; {forgotLink}.',
+                    ['forgotLink' => Html::a(Module::t('views', 'Recover it'), [Module::URL_ROUTE_FORGOT_PASSWORD], ['id' => 'forgotpassword-link'])]
                 ); ?>
             </p>
 
