@@ -28,7 +28,7 @@ class Bootstrap implements BootstrapInterface
         if (!$app->hasModule(Module::MODULE_ID)) {
             throw new InvalidConfigException("Failed to bootstrap the 'account' module.");
         }
-        $app->setAliases(['@nord/yii/account' => __DIR__]);
+        $app->setAliases(['@nord/account' => __DIR__]);
         if ($app instanceof \yii\web\Application) {
             $this->bootstrapWebApplication($app);
         } elseif ($app instanceof \yii\console\Application) {
@@ -45,7 +45,7 @@ class Bootstrap implements BootstrapInterface
     {
         /** @var Module $module */
         $module = $app->getModule(Module::MODULE_ID);
-        $module->controllerNamespace = 'nord\yii\account\commands';
+        $module->controllerNamespace = 'nord/account/commands';
         $module->defaultController = Module::COMMAND_ACCOUNT;
 
         $app->controllerMap[$module->id] = [

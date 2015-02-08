@@ -198,9 +198,6 @@ class Module extends BaseModule
     {
         parent::init();
 
-        // Set a custom path alias for easier access.
-        Yii::setAlias('@nord/account', __DIR__);
-
         $this->initComponents();
         $this->initClassMap();
         $this->initParams();
