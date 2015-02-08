@@ -187,6 +187,10 @@ class Module extends BaseModule
      */
     public $messagePath = '@nord/account/messages';
     /**
+     * @var string path to the application layout to use for this module.
+     */
+    public $layout = '@app/views/layouts/main';
+    /**
      * @var string default controller.
      */
     public $defaultController = self::CONTROLLER_AUTH;
@@ -472,21 +476,21 @@ class Module extends BaseModule
     {
         $this->classMap = ArrayHelper::merge(
             [
-                Module::CLASS_ACCOUNT => Account::className(),
-                Module::CLASS_TOKEN => AccountToken::className(),
-                Module::CLASS_PROVIDER => AccountProvider::className(),
-                Module::CLASS_LOGIN_HISTORY => AccountLoginHistory::className(),
-                Module::CLASS_PASSWORD_HISTORY => AccountPasswordHistory::className(),
-                Module::CLASS_LOGIN_FORM => LoginForm::className(),
-                Module::CLASS_PASSWORD_FORM => PasswordForm::className(),
-                Module::CLASS_SIGNUP_FORM => SignupForm::className(),
-                Module::CLASS_CONNECT_FORM => ConnectForm::className(),
-                Module::CLASS_FORGOT_PASSWORD_FORM => ForgotPasswordForm::className(),
-                Module::CLASS_WEB_USER => User::className(),
-                Module::CLASS_CAPTCHA => Captcha::className(),
-                Module::CLASS_CAPTCHA_ACTION => CaptchaAction::className(),
-                Module::CLASS_PASSWORD_BEHAVIOR => PasswordAttributeBehavior::className(),
-                Module::CLASS_PASSWORD_VALIDATOR => PasswordStrengthValidator::className(),
+                self::CLASS_ACCOUNT => Account::className(),
+                self::CLASS_TOKEN => AccountToken::className(),
+                self::CLASS_PROVIDER => AccountProvider::className(),
+                self::CLASS_LOGIN_HISTORY => AccountLoginHistory::className(),
+                self::CLASS_PASSWORD_HISTORY => AccountPasswordHistory::className(),
+                self::CLASS_LOGIN_FORM => LoginForm::className(),
+                self::CLASS_PASSWORD_FORM => PasswordForm::className(),
+                self::CLASS_SIGNUP_FORM => SignupForm::className(),
+                self::CLASS_CONNECT_FORM => ConnectForm::className(),
+                self::CLASS_FORGOT_PASSWORD_FORM => ForgotPasswordForm::className(),
+                self::CLASS_WEB_USER => User::className(),
+                self::CLASS_CAPTCHA => Captcha::className(),
+                self::CLASS_CAPTCHA_ACTION => CaptchaAction::className(),
+                self::CLASS_PASSWORD_BEHAVIOR => PasswordAttributeBehavior::className(),
+                self::CLASS_PASSWORD_VALIDATOR => PasswordStrengthValidator::className(),
             ],
             $this->classMap
         );
