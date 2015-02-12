@@ -68,7 +68,7 @@ class Account extends ActiveRecord implements IdentityInterface
             'id' => Module::t('labels', 'ID'),
             'username' => Module::t('labels', 'Username'),
             'password' => Module::t('labels', 'Password'),
-            'authKey' => Module::t('labels', 'Authentication Key'),
+            'authKey' => Module::t('labels', 'Authentication key'),
             'email' => Module::t('labels', 'Email'),
             'lastLoginAt' => Module::t('labels', 'Last Login At'),
             'createdAt' => Module::t('labels', 'Created At'),
@@ -100,15 +100,12 @@ class Account extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function beforeSave($insert)
+    public function beforeValidate()
     {
-        if (parent::beforeSave($insert)) {
-            if ($this->isNewRecord) {
-                $this->authKey = Module::getInstance()->getTokenGenerator()->generate();
-            }
-            return true;
+        if ($this->isNewRecord) {
+            $this->authKey = Module::getInstance()->getTokenGenerator()->generate();
         }
-        return false;
+        return parent::beforeValidate();
     }
 
     /**
