@@ -38,7 +38,7 @@ $this->title = Module::t('views', 'Forgot Password');
                 <?= $form->field($model, 'email'); ?>
             </fieldset>
 
-            <?= Html::submitButton(Module::t('views', 'Recover Account'), ['class' => 'btn btn-lg btn-primary']); ?>
+            <?= Html::submitButton(Module::t('views', 'Send'), ['class' => 'btn btn-lg btn-primary']); ?>
 
             <?php ActiveForm::end(); ?>
 

@@ -60,7 +60,7 @@ class LoginForm extends Model
         return [
             'username' => Module::t('labels', 'Username'),
             'password' => Module::t('labels', 'Password'),
-            'rememberMe' => Module::t('labels', 'Remember me'),
+            'rememberMe' => Module::t('labels', 'Remember Me'),
         ];
     }
 

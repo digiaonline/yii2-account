@@ -19,6 +19,7 @@
 return [
     'Please click the link below to activate your account:' => '',
     'Please click the link below to reset the password for your account:' => '',
-    'Reset password' => '',
+    'Reset Password' => '',
     'Thank you for signing up' => '',
+    'You have requested to reset your password' => '',
 ];

@@ -24,7 +24,7 @@ return [
     'Something went wrong.' => 'Jotain meni pieleen.',
     'Please check the e-mail address.' => 'Ole hyvä ja tarkista sähköpostiosoite.',
     'You have already used this password.' => 'Olet jo käyttänyt tämän salasanan.',
-    'Your account has been locked due to too many failed login attempts.' => '',
+    'Your account has been locked due to too many failed login attempts.' => 'Tilisi on lukittu liian monen epäonnistuneen kirjautumisyrityksen jälkeen.',
     'Your account has not yet been activated.' => 'Et ole vielä aktivoinut tiliäsi.',
     '{attribute} is too short, minimum is {n} {n, plural, =1{character} other{characters}}.' => '{attribute} on liian lyhyt, minimi on {n} {n, plural, =1{merkki} other{merkkiä}}.',
     '{attribute} should contain at least {n} lower case {n, plural, =1{character} other{characters}}.' => '{attribute} tulee sisältää ainakin {n} pientä kirjainta {n, plural, =1{merkki} other{merkkiä}}.',

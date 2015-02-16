@@ -117,6 +117,7 @@ class PasswordController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->changePassword()) {
             $dataContract->useToken($tokenModel);
+            Yii::$app->session->setFlash($this->module->flashMessageKey, Module::t('flash', 'Password changed.'));
             return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_RESET_PASSWORD));
         } else {
             return $this->render('change', [

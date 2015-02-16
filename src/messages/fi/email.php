@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'You have requested to reset your password' => 'Olet pyytäny salasanasi uusimista',
     'Please click the link below to activate your account:' => 'Ole hyvä ja klikkaa alla olevaa linkkiä aktivoidaksesi tilisi:',
     'Please click the link below to reset the password for your account:' => 'Ole hyvä ja klikkaa alla olevaa linkkiä uusiaksesi salasanasi:',
     'Reset Password' => 'Uusi salasana',

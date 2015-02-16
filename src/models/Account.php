@@ -68,7 +68,7 @@ class Account extends ActiveRecord implements IdentityInterface
             'id' => Module::t('labels', 'ID'),
             'username' => Module::t('labels', 'Username'),
             'password' => Module::t('labels', 'Password'),
-            'authKey' => Module::t('labels', 'Authentication key'),
+            'authKey' => Module::t('labels', 'Authentication Key'),
             'email' => Module::t('labels', 'Email'),
             'lastLoginAt' => Module::t('labels', 'Last Login At'),
             'createdAt' => Module::t('labels', 'Created At'),

@@ -13,7 +13,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 
-$this->title = Module::t('views', 'Sign up successfull');
+$this->title = Module::t('views', 'Sign up successful');
 ?>
 <div class="register-controller done-action">
 

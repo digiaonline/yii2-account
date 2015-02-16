@@ -191,6 +191,10 @@ class Module extends BaseModule
      */
     public $layout = '@app/views/layouts/main';
     /**
+     * @var string name of the key to use for setting flash messages.
+     */
+    public $flashMessageKey = 'account';
+    /**
      * @var string default controller.
      */
     public $defaultController = self::CONTROLLER_AUTH;

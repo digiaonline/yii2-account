@@ -54,7 +54,7 @@ class PasswordForm extends Model
     {
         return [
             'password' => Module::t('labels', 'Password'),
-            'verifyPassword' => Module::t('labels', 'Verify password'),
+            'verifyPassword' => Module::t('labels', 'Verify Password'),
         ];
     }
 

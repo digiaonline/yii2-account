@@ -41,7 +41,7 @@ class SignupController extends Controller
                 'denyCallback' => [$this, 'goHome'],
                 'rules' => [
                     [
-                        'actions' => ['activate', 'connect', 'done', 'index'],
+                        'actions' => ['activate', 'connect', 'index'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -78,6 +78,7 @@ class SignupController extends Controller
                 $this->sendActivationMail($account);
             } else {
                 $dataContract->activateAccount($account);
+                Yii::$app->session->setFlash($this->module->flashMessageKey, Module::t('flash', 'Sign up successful.'));
             }
 
             return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_SIGNUP));
@@ -111,6 +112,7 @@ class SignupController extends Controller
 
         $this->afterActivate();
 
+        Yii::$app->session->setFlash($this->module->flashMessageKey, Module::t('flash', 'Account activated.'));
         return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_ACTIVATE));
     }
 

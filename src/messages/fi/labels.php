@@ -17,9 +17,11 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Authentication Key' => 'Tunnistus avain',
+    'Remember Me' => 'Muista minut',
+    'Verify Password' => 'Salasana uudestaan',
     '# Failed Attempts' => 'Epäonnistuneet yritykset',
     'Account ID' => 'Tili ID',
-    'Authentication key' => 'Tunnistus avain',
     'Client ID' => 'Toimeksiantaja ID',
     'Created At' => 'Luotu',
     'Data' => 'Data',
@@ -28,12 +30,10 @@ return [
     'Last Login At' => 'Viimeksi kirjautunut',
     'Name' => 'Nimi',
     'Password' => 'Salasana',
-    'Remember me' => 'Muista minut',
     'Status' => 'Status',
     'Success' => 'Onnistui',
     'Token' => 'Avain',
     'Type' => 'Tyyppi',
     'Username' => 'Käyttäjänimi',
     'Verification Code' => 'Vahvistuskoodi',
-    'Verify password' => 'Salasana uudestaan',
 ];
