@@ -35,10 +35,10 @@ return [
     'Recover it' => 'Uusi salasanasi',
     'Reset Password' => 'Uusi salasana',
     'Sign up' => 'Rekisteröidy',
-    'Thank you for registering!' => 'Kiitos rekisteröitymisestä!',
+    'Sign up successfull' => 'Rekisteröityminen onnistui',
     'You have requested to reset your password.' => 'Olet pyytänyt salasanan uusimista.',
     'You may also log in using one of the providers below:' => 'Voit myös kirjautua käyttäen yhtä alla mainituista palveluista:',
-    'You will soon receive an email with instructions on how to activate your account.' => 'Saat pian sähköpostiisi aktivointiohjeet.',
+    'You will soon receive an email with instructions on how to activate your account.' => 'Saat pian sähköpostiisi tilisi aktivoimisohjeet.',
     'You will soon receive an email with instructions on how to reset the password for your account.' => 'Saat pian sähköpostiisi salasanan uusimisohjeet.',
     'Your password has expired.' => 'Salasanasi on vanhentunut.',
 ];

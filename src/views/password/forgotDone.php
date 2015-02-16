@@ -19,7 +19,7 @@ $this->title = Module::t('views', 'Forgot Password');
 
         <h1 class="page-header"><?= Html::encode($this->title); ?></h1>
 
-        <p class="lead"><?= Module::t('views',
+        <p><?= Module::t('views',
                 'You will soon receive an email with instructions on how to reset the password for your account.'); ?></p>
 
         <p><?= Html::a(Module::t('views', 'Done'), Yii::$app->homeUrl, ['class' => 'btn btn-primary btn-lg']) ?></p>
