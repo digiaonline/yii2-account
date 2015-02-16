@@ -35,5 +35,5 @@ return [
     'Type' => 'Tyyppi',
     'Username' => 'Käyttäjänimi',
     'Verification Code' => 'Vahvistuskoodi',
-    'Verify password' => 'Vahvista salasana',
+    'Verify password' => 'Salasana uudestaan',
 ];
