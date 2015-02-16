@@ -34,7 +34,7 @@ return [
     'Send' => 'Lähetä',
     'Reset Password' => 'Uusi salasana',
     'Sign up' => 'Rekisteröidy',
-    'Sign up successful' => '@@Rekisteröityminen onnistui@@',
+    'Sign up successful' => 'Rekisteröityminen onnistui',
     'You have requested to reset your password.' => 'Olet pyytänyt salasanan uusimista.',
     'You may also log in using one of the providers below:' => 'Voit myös kirjautua käyttäen yhtä alla mainituista palveluista:',
     'You will soon receive an email with instructions on how to activate your account.' => 'Saat pian sähköpostiisi tilisi aktivoimisohjeet.',
