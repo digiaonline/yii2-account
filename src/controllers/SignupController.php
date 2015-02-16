@@ -41,7 +41,7 @@ class SignupController extends Controller
                 'denyCallback' => [$this, 'goHome'],
                 'rules' => [
                     [
-                        'actions' => ['activate', 'connect', 'index'],
+                        'actions' => ['activate', 'connect', 'done', 'index'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
