@@ -22,7 +22,7 @@ return [
     'Invalid authentication token.' => 'Virheellinen tunnistus avain.',
     'Page not found.' => 'Sivua ei löydy.',
     'Something went wrong.' => 'Jotain meni pieleen.',
-    'There is no account is associated with this e-mail address.' => '',
+    'Please check the e-mail address.' => 'Ole hyvä ja tarkista sähköpostiosoite.',
     'You have already used this password.' => 'Olet jo käyttänyt tämän salasanan.',
     'Your account has been locked due to too many failed login attempts.' => '',
     'Your account has not yet been activated.' => 'Et ole vielä aktivoinut tiliäsi.',

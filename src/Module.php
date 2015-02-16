@@ -112,7 +112,7 @@ class Module extends BaseModule
     const URL_ROUTE_CONNECT = 'signup/connect';
     const URL_ROUTE_CHANGE_PASSWORD = 'password/change';
     const URL_ROUTE_FORGOT_PASSWORD = 'password/forgot';
-    const URL_ROUTE_FORGOT_PASSWORD_DONE = 'password/forgotDone';
+    const URL_ROUTE_FORGOT_PASSWORD_DONE = 'password/forgot-done';
     const URL_ROUTE_RESET_PASSWORD = 'password/reset';
 
     const REDIRECT_LOGIN = 'login';

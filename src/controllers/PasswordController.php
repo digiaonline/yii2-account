@@ -34,7 +34,7 @@ class PasswordController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['change', 'forgot', 'forgotDone', 'reset'],
+                        'actions' => ['change', 'forgot', 'forgot-done', 'reset'],
                         'allow' => true,
                         'roles' => ['?'],
 
