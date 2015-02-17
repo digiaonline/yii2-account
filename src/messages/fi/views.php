@@ -32,6 +32,7 @@ return [
     'Please enter your e-mail address and desired username and to create your account.' => 'Ole hyvä ja syötä sähköpostiosoitteesi ja haluamasi käyttäjänimen luodaksesi tilisi.',
     'Please enter your e-mail address and we will send you instructions on how to reset your password.' => 'Ole hyvä ja syötä sähköpostiosoitteesti ja lähetämme sinulle ohjeet miten voit uusia salasanansi.',
     'Send' => 'Lähetä',
+    'Recover it' => 'Uusi se',
     'Reset Password' => 'Uusi salasana',
     'Sign up' => 'Rekisteröidy',
     'Sign up successful' => 'Rekisteröityminen onnistui',

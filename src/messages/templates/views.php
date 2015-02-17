@@ -32,6 +32,7 @@ return [
     'Please enter your e-mail address and desired username and to create your account.' => '',
     'Please enter your e-mail address and we will send you instructions on how to reset your password.' => '',
     'Send' => '',
+    'Recover it' => '',
     'Reset Password' => '',
     'Sign up' => '',
     'Sign up successful' => '',
