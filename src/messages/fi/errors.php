@@ -19,7 +19,7 @@
 return [
     'Access denied.' => 'Pääsy evätty.',
     'Incorrect username or password.' => 'Väärä käyttäjänimi tai salasana.',
-    'Invalid authentication token.' => 'Virheellinen tunnistus avain.',
+    'Invalid authentication token.' => 'Virheellinen tunnistusavain.',
     'Page not found.' => 'Sivua ei löydy.',
     'Something went wrong.' => 'Jotain meni pieleen.',
     'Please check the e-mail address.' => 'Ole hyvä ja tarkista sähköpostiosoite.',
