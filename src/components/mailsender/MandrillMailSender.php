@@ -17,7 +17,7 @@ use yii\helpers\ArrayHelper;
 class MandrillMailSender extends Component implements MailSenderInterface
 {
     // Mandrill template names
-    const TEMPLATE_ACTIVATE = 'activation';
+    const TEMPLATE_ACTIVATE = 'activateAccount';
     const TEMPLATE_RESET_PASSWORD = 'resetPassword';
 
     /**
@@ -44,8 +44,8 @@ class MandrillMailSender extends Component implements MailSenderInterface
 
         $this->messages = ArrayHelper::merge(
             [
-                static::TEMPLATE_ACTIVATE => ['template' => 'activation'],
-                static::TEMPLATE_RESET_PASSWORD => ['template' => 'resetPassword'],
+                static::TEMPLATE_ACTIVATE => ['template' => 'activate-account'],
+                static::TEMPLATE_RESET_PASSWORD => ['template' => 'reset-password'],
             ],
             $this->messages
         );
@@ -81,27 +81,25 @@ class MandrillMailSender extends Component implements MailSenderInterface
     {
         $message = $this->messages[$config['template']];
 
-        $template = $message['template'];
-        unset($message['template']);
+        $template = ArrayHelper::remove($message, 'template');
 
-        $message['to'] = $config['to'];
-        unset($config['to']);
+        $message['to'] = ArrayHelper::getValue($message, 'to', []);
+        foreach (ArrayHelper::remove($config, 'to', []) as $email) {
+            $message['to'][] = ['email' => $email, 'type' => 'to'];
+        }
 
-        $message['from_email'] = $config['from'];
-        unset($config['from']);
+        $message['merge_language'] = ArrayHelper::remove($config, 'mergeLanguage', 'handlebars');
 
-        $content = isset($config['data']) ? $config['data'] : [];
-        unset($config['data']);
+        // Note we are not batching emails so it should be safe to use the global variables
+        $message['global_merge_vars'] = ArrayHelper::getValue($message, 'global_merge_vars', []);
+        foreach (ArrayHelper::remove($config, 'data', []) as $key => $value) {
+            $message['global_merge_vars'][] = ['name' => $key, 'content' => $value];
+        }
 
-        $async = isset($message['async']) ? $message['async'] : false;
-        unset($message['async']);
+        $async = ArrayHelper::remove($message, 'async', false);
+        $ipPool = ArrayHelper::remove($message, 'ipPool');
+        $sendAt = ArrayHelper::remove($message, 'sendAt');
 
-        $ipPool = isset($message['ipPool']) ? $message['ipPool'] : null;
-        unset($message['ipPool']);
-
-        $sendAt = isset($message['sendAt']) ? $message['sendAt'] : null;
-        unset($message['sendAt']);
-
-        return $this->_client->messages->sendTemplate($template, $content, $message, $async, $ipPool, $sendAt);
+        return $this->_client->messages->sendTemplate($template, [], $message, $async, $ipPool, $sendAt);
     }
 }

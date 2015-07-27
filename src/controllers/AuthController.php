@@ -21,6 +21,10 @@ use yii\helpers\ArrayHelper;
 
 class AuthController extends Controller
 {
+    // Event types.
+    const EVENT_AFTER_LOGIN = 'afterLogin';
+    const EVENT_AFTER_LOGOUT = 'afterLogout';
+
     /**
      * @var string default action.
      */
@@ -84,14 +88,15 @@ class AuthController extends Controller
         $model = $dataContract->createLoginForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            $account = $dataContract->findAccount([$this->module->loginAttribute => $model->username]);
+            $account = $dataContract->findAccount([$this->module->emailAttribute => $model->email]);
 
             if ($dataContract->isAccountPasswordExpired($account)) {
                 $token = $this->module->generateToken(Module::TOKEN_CHANGE_PASSWORD, $account->id);
                 Yii::$app->user->logout();
                 return $this->redirect([Module::URL_ROUTE_CHANGE_PASSWORD, 'token' => $token]);
             } else {
-                return $this->goBack();
+                $this->afterLogin();
+                return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_LOGIN));
             }
         } else {
             return $this->render('login', ['model' => $model]);
@@ -104,7 +109,24 @@ class AuthController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
+        $this->afterLogout();
         return $this->goHome();
+    }
+
+    /**
+     * Triggers the 'after login' event.
+     */
+    public function afterLogin()
+    {
+        $this->trigger(self::EVENT_AFTER_LOGIN);
+    }
+
+    /**
+     * Triggers the 'after logout' event.
+     */
+    public function afterLogout()
+    {
+        $this->trigger(self::EVENT_AFTER_LOGOUT);
     }
 
     /**
@@ -132,7 +154,7 @@ class AuthController extends Controller
 
         if ($provider->account !== null) {
             Yii::$app->user->login($provider->account, Module::getParam(Module::PARAM_LOGIN_EXPIRE_TIME));
-            return $this->goHome();
+            return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_LOGIN));
         } else {
             return $this->redirect([Module::URL_ROUTE_CONNECT, 'providerId' => $provider->id]);
         }

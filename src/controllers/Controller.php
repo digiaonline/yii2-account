@@ -25,6 +25,16 @@ use yii\web\ServerErrorHttpException;
 class Controller extends BaseController
 {
     /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->layout = $this->module->layout;
+    }
+
+    /**
      * Loads a token of a specific type.
      *
      * @param string $type token type.

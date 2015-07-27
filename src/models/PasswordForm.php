@@ -14,9 +14,12 @@ use nord\yii\account\Module;
 use yii\base\Exception;
 use yii\base\Model;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 class PasswordForm extends Model
 {
+    const SCENARIO_CHANGE = 'change';
+
     /**
      * @var Account
      */
@@ -40,7 +43,7 @@ class PasswordForm extends Model
         return [
             [['password', 'verifyPassword'], 'required'],
             ['verifyPassword', 'compare', 'compareAttribute' => 'password'],
-            ['password', 'validatePasswordHistory', 'on' => 'change']
+            ['password', 'validatePasswordHistory', 'on' => self::SCENARIO_CHANGE]
         ];
     }
 
@@ -53,6 +56,19 @@ class PasswordForm extends Model
             'password' => Module::t('labels', 'Password'),
             'verifyPassword' => Module::t('labels', 'Verify Password'),
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        return ArrayHelper::merge(
+            [
+                self::SCENARIO_CHANGE => ['password', 'verifyPassword'],
+            ],
+            parent::scenarios()
+        );
     }
 
     /**

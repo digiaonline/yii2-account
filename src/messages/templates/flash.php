@@ -17,23 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '# Failed Attempts' => '',
-    'Account ID' => '',
-    'Authentication Key' => '',
-    'Client ID' => '',
-    'Created At' => '',
-    'Data' => '',
-    'Email' => '',
-    'ID' => '',
-    'Last Login At' => '',
-    'Name' => '',
-    'Password' => '',
-    'Remember Me' => '',
-    'Status' => '',
-    'Success' => '',
-    'Token' => '',
-    'Type' => '',
-    'Username' => '',
-    'Verification Code' => '',
-    'Verify Password' => '',
+    'Account activated.' => '',
+    'Password changed.' => '',
+    'Sign up successful.' => '',
 ];

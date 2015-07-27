@@ -21,7 +21,7 @@ class LoginForm extends Model
     /**
      * @var string
      */
-    public $username;
+    public $email;
 
     /**
      * @var string
@@ -44,7 +44,7 @@ class LoginForm extends Model
     public function rules()
     {
         return [
-            [['username', 'password'], 'required'],
+            [['email', 'password'], 'required'],
             ['rememberMe', 'boolean'],
             ['password', 'validatePassword', 'skipOnError' => true],
             ['password', 'validateAccountActivated', 'skipOnError' => true],
@@ -58,9 +58,9 @@ class LoginForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => Module::t('labels', 'Username'),
+            'email' => Module::t('labels', 'Email'),
             'password' => Module::t('labels', 'Password'),
-            'rememberMe' => Module::t('labels', 'Remember me'),
+            'rememberMe' => Module::t('labels', 'Remember Me'),
         ];
     }
 
@@ -74,7 +74,7 @@ class LoginForm extends Model
     {
         $account = $this->getAccount();
         if ($account === null || !$account->validatePassword($this->password)) {
-            $this->addError($attribute, Module::t('errors', 'Incorrect username or password.'));
+            $this->addError($attribute, Module::t('errors', 'Incorrect email or password.'));
         }
     }
 
@@ -108,7 +108,7 @@ class LoginForm extends Model
     }
 
     /**
-     * Logs in a user using the provided username and password.
+     * Logs in a user using the provided email and password.
      *
      * @return boolean whether the user is logged in successfully
      */
@@ -152,7 +152,7 @@ class LoginForm extends Model
     {
         if ($this->_account === null) {
             $this->_account = Module::getInstance()->getDataContract()->findAccount(
-                [Module::getInstance()->loginAttribute => $this->username]);
+                [Module::getInstance()->emailAttribute => $this->email]);
         }
         return $this->_account;
     }

@@ -52,7 +52,7 @@ class ForgotPasswordForm extends Model
     {
         $account = Module::getInstance()->getDataContract()->findAccount(['email' => $this->email]);
         if ($account === null) {
-            $this->addError($attribute, Module::t('errors', 'There is no account is associated with this e-mail address.'));
+            $this->addError($attribute, Module::t('errors', 'Please check the e-mail address.'));
         }
     }
 }

@@ -41,7 +41,7 @@ class SignupController extends Controller
                 'denyCallback' => [$this, 'goHome'],
                 'rules' => [
                     [
-                        'actions' => ['activate', 'connect', 'index'],
+                        'actions' => ['activate', 'connect', 'done', 'index'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -72,15 +72,16 @@ class SignupController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             $this->afterSignup();
 
-            $account = $dataContract->findAccount(['username' => $model->username]);
+            $account = $dataContract->findAccount([$this->module->emailAttribute => $model->email]);
 
             if ($this->module->enableActivation) {
                 $this->sendActivationMail($account);
-                return $this->redirect([Module::URL_ROUTE_SIGNUP_DONE]);
             } else {
                 $dataContract->activateAccount($account);
-                return $this->redirect([Module::URL_ROUTE_LOGIN]);
+                Yii::$app->session->setFlash($this->module->flashMessageKey, Module::t('flash', 'Sign up successful.'));
             }
+
+            return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_SIGNUP));
         } else {
             return $this->render('index', [
                 'model' => $model,
@@ -93,6 +94,7 @@ class SignupController extends Controller
      * Activates an account.
      *
      * @param string $token authentication token.
+     * @return \yii\web\Response
      */
     public function actionActivate($token)
     {
@@ -110,7 +112,8 @@ class SignupController extends Controller
 
         $this->afterActivate();
 
-        $this->redirect([Module::URL_ROUTE_LOGIN]);
+        Yii::$app->session->setFlash($this->module->flashMessageKey, Module::t('flash', 'Account activated.'));
+        return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_ACTIVATE));
     }
 
     /**
@@ -133,9 +136,9 @@ class SignupController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $account = $dataContract->createAccount([
                 'attributes' => [
-                    'username' => $model->username,
-                    'password' => $this->module->getTokenGenerator()->generate(),
-                    'email' => $model->email
+                    $this->module->usernameAttribute => $model->username,
+                    $this->module->emailAttribute => $model->email,
+                    $this->module->passwordAttribute => $this->module->getTokenGenerator()->generate(),
                 ],
             ]);
 
@@ -146,7 +149,7 @@ class SignupController extends Controller
             $provider->updateAttributes(['accountId' => $account->id]);
             $this->afterSignup();
             Yii::$app->user->login($account, Module::getParam(Module::PARAM_LOGIN_EXPIRE_TIME));
-            return $this->goBack();
+            return $this->redirect($this->module->getRedirectUrl(Module::REDIRECT_CONNECT));
         } else {
             return $this->render('connect', ['model' => $model, 'provider' => $provider]);
         }

@@ -42,7 +42,7 @@ class Account extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return 'account';
+        return '{{%account}}';
     }
 
     /**
@@ -100,15 +100,12 @@ class Account extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function beforeSave($insert)
+    public function beforeValidate()
     {
-        if (parent::beforeSave($insert)) {
-            if ($this->isNewRecord) {
-                $this->authKey = Module::getInstance()->getTokenGenerator()->generate();
-            }
-            return true;
+        if ($this->isNewRecord) {
+            $this->authKey = Module::getInstance()->getTokenGenerator()->generate();
         }
-        return false;
+        return parent::beforeValidate();
     }
 
     /**

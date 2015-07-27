@@ -35,6 +35,7 @@ use yii\base\Module as BaseModule;
 use yii\captcha\Captcha;
 use yii\captcha\CaptchaAction;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 use yii\helpers\Url;
 use yii\web\User;
 
@@ -111,8 +112,16 @@ class Module extends BaseModule
     const URL_ROUTE_CONNECT = 'signup/connect';
     const URL_ROUTE_CHANGE_PASSWORD = 'password/change';
     const URL_ROUTE_FORGOT_PASSWORD = 'password/forgot';
-    const URL_ROUTE_FORGOT_PASSWORD_DONE = 'password/forgotDone';
+    const URL_ROUTE_FORGOT_PASSWORD_DONE = 'password/forgot-done';
     const URL_ROUTE_RESET_PASSWORD = 'password/reset';
+
+    const REDIRECT_LOGIN = 'login';
+    const REDIRECT_SIGNUP = 'signup';
+    const REDIRECT_ACTIVATE = 'activate';
+    const REDIRECT_CONNECT = 'connect';
+    const REDIRECT_CHANGE_PASSWORD = 'changePassword';
+    const REDIRECT_FORGOT_PASSWORD = 'forgotPassword';
+    const REDIRECT_RESET_PASSWORD = 'resetPassword';
 
     // Translation category prefix.
     const I18N_PREFIX = 'nord/account/';
@@ -142,7 +151,7 @@ class Module extends BaseModule
      */
     public $captchaConfig = [];
     /**
-     * @var boolean configuration that is passed to the web user.
+     * @var array configuration that is passed to the web user.
      */
     public $userConfig = [];
     /**
@@ -158,11 +167,19 @@ class Module extends BaseModule
      */
     public $urlConfig = [];
     /**
-     * @var string name of the attribute to use for logging in.
+     * @var array configuration over the redirects done by this module.
      */
-    public $loginAttribute = 'username';
+    public $redirectConfig = [];
     /**
-     * @var string name of the password attribute.
+     * @var string name of the username attribute (defaults to 'username').
+     */
+    public $usernameAttribute = 'username';
+    /**
+     * @var string name of the email attribute (defaults to 'email').
+     */
+    public $emailAttribute = 'email';
+    /**
+     * @var string name of the password attribute (defaults to 'password').
      */
     public $passwordAttribute = 'password';
     /**
@@ -173,6 +190,14 @@ class Module extends BaseModule
      * @var string path to message files used by yii\i18n\PhpMessageSource.
      */
     public $messagePath = '@nord/account/messages';
+    /**
+     * @var string path to the application layout to use for this module.
+     */
+    public $layout = '@app/views/layouts/main';
+    /**
+     * @var string name of the key to use for setting flash messages.
+     */
+    public $flashMessageKey = 'account';
     /**
      * @var string default controller.
      */
@@ -185,13 +210,11 @@ class Module extends BaseModule
     {
         parent::init();
 
-        // Set a custom path alias for easier access.
-        Yii::setAlias('@nord/account', __DIR__);
-
         $this->initComponents();
         $this->initClassMap();
         $this->initParams();
         $this->initUrlConfig();
+        $this->initRedirectConfig();
         $this->registerTranslations();
     }
 
@@ -277,6 +300,23 @@ class Module extends BaseModule
     }
 
     /**
+     * Initializes the redirect configuration for this module.
+     */
+    protected function initRedirectConfig()
+    {
+        $this->redirectConfig = ArrayHelper::merge(
+            [
+                self::REDIRECT_SIGNUP => $this->enableActivation ? [self::URL_ROUTE_SIGNUP_DONE] : [self::URL_ROUTE_LOGIN],
+                self::REDIRECT_ACTIVATE => [self::URL_ROUTE_LOGIN],
+                self::REDIRECT_CHANGE_PASSWORD => [self::URL_ROUTE_LOGIN],
+                self::REDIRECT_FORGOT_PASSWORD => [self::URL_ROUTE_FORGOT_PASSWORD_DONE],
+                self::REDIRECT_RESET_PASSWORD => [self::URL_ROUTE_LOGIN],
+            ],
+            $this->redirectConfig
+        );
+    }
+
+    /**
      * Registers the translations for this module.
      */
     protected function registerTranslations()
@@ -285,7 +325,26 @@ class Module extends BaseModule
             'class' => $this->messageSource,
             'sourceLanguage' => 'en-US',
             'basePath' => $this->messagePath,
+            'fileMap' => $this->createTranslationFileMap(),
         ];
+    }
+
+    /**
+     * Creates a map from the translation category to file for this module.
+     *
+     * @return array the file map.
+     */
+    protected function createTranslationFileMap()
+    {
+        $fileMap = [];
+        $directory = Yii::getAlias('@nord/account/messages/templates');
+        $files = FileHelper::findFiles($directory);
+        foreach ($files as $filePath) {
+            $fileName = substr($filePath, strrpos($filePath, '/') + 1);
+            $category = substr($fileName, 0, strrpos($fileName, '.'));
+            $fileMap["nord/account/$category"] = $fileName;
+        }
+        return $fileMap;
     }
 
     /**
@@ -395,6 +454,17 @@ class Module extends BaseModule
     }
 
     /**
+     * Returns the redirect URL for a specific type.
+     *
+     * @param string $type redirect type.
+     * @return mixed the redirect URL.
+     */
+    public function getRedirectUrl($type)
+    {
+        return isset($this->redirectConfig[$type]) ? $this->redirectConfig[$type] : Yii::$app->user->getReturnUrl();
+    }
+
+    /**
      * Creates an URL to this module.
      *
      * @param string|array $route URL route.
@@ -414,21 +484,21 @@ class Module extends BaseModule
     {
         $this->classMap = ArrayHelper::merge(
             [
-                Module::CLASS_ACCOUNT => Account::className(),
-                Module::CLASS_TOKEN => AccountToken::className(),
-                Module::CLASS_PROVIDER => AccountProvider::className(),
-                Module::CLASS_LOGIN_HISTORY => AccountLoginHistory::className(),
-                Module::CLASS_PASSWORD_HISTORY => AccountPasswordHistory::className(),
-                Module::CLASS_LOGIN_FORM => LoginForm::className(),
-                Module::CLASS_PASSWORD_FORM => PasswordForm::className(),
-                Module::CLASS_SIGNUP_FORM => SignupForm::className(),
-                Module::CLASS_CONNECT_FORM => ConnectForm::className(),
-                Module::CLASS_FORGOT_PASSWORD_FORM => ForgotPasswordForm::className(),
-                Module::CLASS_WEB_USER => User::className(),
-                Module::CLASS_CAPTCHA => Captcha::className(),
-                Module::CLASS_CAPTCHA_ACTION => CaptchaAction::className(),
-                Module::CLASS_PASSWORD_BEHAVIOR => PasswordAttributeBehavior::className(),
-                Module::CLASS_PASSWORD_VALIDATOR => PasswordStrengthValidator::className(),
+                self::CLASS_ACCOUNT => Account::className(),
+                self::CLASS_TOKEN => AccountToken::className(),
+                self::CLASS_PROVIDER => AccountProvider::className(),
+                self::CLASS_LOGIN_HISTORY => AccountLoginHistory::className(),
+                self::CLASS_PASSWORD_HISTORY => AccountPasswordHistory::className(),
+                self::CLASS_LOGIN_FORM => LoginForm::className(),
+                self::CLASS_PASSWORD_FORM => PasswordForm::className(),
+                self::CLASS_SIGNUP_FORM => SignupForm::className(),
+                self::CLASS_CONNECT_FORM => ConnectForm::className(),
+                self::CLASS_FORGOT_PASSWORD_FORM => ForgotPasswordForm::className(),
+                self::CLASS_WEB_USER => User::className(),
+                self::CLASS_CAPTCHA => Captcha::className(),
+                self::CLASS_CAPTCHA_ACTION => CaptchaAction::className(),
+                self::CLASS_PASSWORD_BEHAVIOR => PasswordAttributeBehavior::className(),
+                self::CLASS_PASSWORD_VALIDATOR => PasswordStrengthValidator::className(),
             ],
             $this->classMap
         );

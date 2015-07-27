@@ -33,7 +33,7 @@ class AccountPasswordHistory extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'account_password_history';
+        return '{{%account_password_history}}';
     }
 
     /**

@@ -13,15 +13,15 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 
-$this->title = Module::t('views', 'Success');
+$this->title = Module::t('views', 'Sign up successful');
 ?>
 <div class="register-controller done-action">
 
     <h1 class="page-header"><?= Html::encode($this->title); ?></h1>
 
-    <p class="lead"><?= Module::t('views', 'Thank you for signing up!'); ?></p>
-
-    <p><?= Module::t('views',
+    <p class="lead"><?= Module::t('views',
             'You will soon receive an email with instructions on how to activate your account.'); ?></p>
+
+    <p><?= Html::a(Module::t('views', 'Done'), Yii::$app->homeUrl, ['class' => 'btn btn-primary btn-lg']) ?></p>
 
 </div>

@@ -17,23 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '# Failed Attempts' => '',
-    'Account ID' => '',
-    'Authentication Key' => '',
-    'Client ID' => '',
-    'Created At' => '',
-    'Data' => '',
-    'Email' => '',
-    'ID' => '',
-    'Last Login At' => '',
-    'Name' => '',
-    'Password' => '',
-    'Remember Me' => '',
-    'Status' => '',
-    'Success' => '',
-    'Token' => '',
-    'Type' => '',
-    'Username' => '',
-    'Verification Code' => '',
-    'Verify Password' => '',
+    'You have requested to reset your password' => 'Olet pyytäny salasanasi uusimista',
+    'Please click the link below to activate your account:' => 'Ole hyvä ja klikkaa alla olevaa linkkiä aktivoidaksesi tilisi:',
+    'Please click the link below to reset the password for your account:' => 'Ole hyvä ja klikkaa alla olevaa linkkiä uusiaksesi salasanasi:',
+    'Reset Password' => 'Uusi salasana',
+    'Thank you for signing up' => 'Kiitos rekisteröitymisestä',
 ];

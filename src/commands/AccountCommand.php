@@ -31,12 +31,13 @@ class AccountCommand extends Controller
     public function actionCreate($username, $password)
     {
         $dataContract = $this->module->getDataContract();
+        
         $account = $dataContract->createAccount(
             [
                 'attributes' => [
-                    'username' => $username,
-                    'password' => $password,
-                    'email' => $username . '@example.com',
+                    $this->module->usernameAttribute => $username,
+                    $this->module->passwordAttribute => $password,
+                    $this->module->emailAttribute => $username . '@example.com',
                     'status' => $dataContract->getStatusCode(Module::CLASS_ACCOUNT,
                         Module::STATUS_ACTIVATED)
                 ]

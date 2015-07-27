@@ -29,8 +29,8 @@ $this->title = Module::t('views', 'Sign up');
             <p class="help-block">
                 <?= Module::t(
                     'views',
-                    'If you already have an account &ndash; {loginLink}.',
-                    ['loginLink' => Html::a(Module::t('views', 'Log in'), [Module::URL_ROUTE_LOGIN])]
+                    'If you already have an account &mdash; {loginLink}',
+                    ['loginLink' => Html::a(Module::t('views', 'Login'), [Module::URL_ROUTE_LOGIN])]
                 ); ?>
             </p>
 
