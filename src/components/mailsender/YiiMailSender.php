@@ -23,7 +23,7 @@ class YiiMailSender extends LocalMailSender
             ->setTo($config['to'])
             ->setFrom($config['from'])
             ->setSubject($config['subject'])
-            ->setTextBody($config['body'])
+            ->setHtmlBody($config['body'])
             ->send();
     }
 }

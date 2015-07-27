@@ -18,7 +18,7 @@
  */
 return [
     'Access denied.' => 'Pääsy evätty.',
-    'Incorrect username or password.' => 'Väärä käyttäjänimi tai salasana.',
+    'Invalid email or password.' => 'Virheellinen sähköposti tai salasana.',
     'Invalid authentication token.' => 'Virheellinen tunnistusavain.',
     'Page not found.' => 'Sivua ei löydy.',
     'Something went wrong.' => 'Jotain meni pieleen.',
