@@ -30,7 +30,6 @@ For more details refer to the features section below.
  - Password history (encrypted) to prevent from using same password twice __DONE__
  - Lock accounts after x failed login attempts (disabled by default) __DONE__
  - Console command for creating accounts __DONE__
- - Proper README __WIP__
 
 ## Installation
 
@@ -54,7 +53,7 @@ Before you can start using the module you need to apply its database migrations.
 To do so run the following command:
 
 ```
-yii migrate --migrationPath="vendor/nordsoftware/yii2-account/migrations"
+yii migrate --migrationPath="vendor/nordsoftware/yii2-account/src/migrations"
 ```
 
 Usage
@@ -90,7 +89,8 @@ The following configurations are available for the ```nord\yii\account\Module```
  * __captchaConfig__ _array_ configuration passed to ```CaptchaAction```.
  * __clientAuthConfig__ _array_ configuration passed to ```yii\authclient\Collection```.
  * __urlConfig__ _array_ configuration for the URLs used by the module.
- * __loginAttribute__ _string_ name of the attribute to use for logging in (defaults to ```username```).
+ * __usernameAttribute__ _string_ name of the username attribute (defaults to ```username```).
+ * __emailAttribute__ _string_ name of the email attribute (defaults to ```email```).
  * __passwordAttribute__ _string_ name of the password attribute (defaults to ```password```).
  * __messageSource__ _string_ message source component to use for the module.
  * __messagePath__ _string_ message path to use for the module.
