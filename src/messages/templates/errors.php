@@ -18,7 +18,7 @@
  */
 return [
     'Access denied.' => '',
-    'Incorrect username or password.' => '',
+    'Invalid email or password.' => '',
     'Invalid authentication token.' => '',
     'Page not found.' => '',
     'Please check the e-mail address.' => '',
