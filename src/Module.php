@@ -151,7 +151,7 @@ class Module extends BaseModule
      */
     public $captchaConfig = [];
     /**
-     * @var boolean configuration that is passed to the web user.
+     * @var array configuration that is passed to the web user.
      */
     public $userConfig = [];
     /**
@@ -171,11 +171,15 @@ class Module extends BaseModule
      */
     public $redirectConfig = [];
     /**
-     * @var string name of the attribute to use for logging in.
+     * @var string name of the username attribute (defaults to 'username').
      */
-    public $loginAttribute = 'username';
+    public $usernameAttribute = 'username';
     /**
-     * @var string name of the password attribute.
+     * @var string name of the email attribute (defaults to 'email').
+     */
+    public $emailAttribute = 'email';
+    /**
+     * @var string name of the password attribute (defaults to 'password').
      */
     public $passwordAttribute = 'password';
     /**

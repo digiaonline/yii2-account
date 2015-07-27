@@ -88,7 +88,7 @@ class AuthController extends Controller
         $model = $dataContract->createLoginForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            $account = $dataContract->findAccount([$this->module->loginAttribute => $model->username]);
+            $account = $dataContract->findAccount([$this->module->emailAttribute => $model->email]);
 
             if ($dataContract->isAccountPasswordExpired($account)) {
                 $token = $this->module->generateToken(Module::TOKEN_CHANGE_PASSWORD, $account->id);

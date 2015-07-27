@@ -72,7 +72,7 @@ class SignupController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             $this->afterSignup();
 
-            $account = $dataContract->findAccount(['username' => $model->username]);
+            $account = $dataContract->findAccount([$this->module->emailAttribute => $model->email]);
 
             if ($this->module->enableActivation) {
                 $this->sendActivationMail($account);
@@ -136,9 +136,9 @@ class SignupController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $account = $dataContract->createAccount([
                 'attributes' => [
-                    $this->module->loginAttribute => $model->username,
+                    $this->module->usernameAttribute => $model->username,
+                    $this->module->emailAttribute => $model->email,
                     $this->module->passwordAttribute => $this->module->getTokenGenerator()->generate(),
-                    'email' => $model->email
                 ],
             ]);
 

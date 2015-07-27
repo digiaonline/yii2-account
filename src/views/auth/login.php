@@ -30,7 +30,7 @@ $this->title = Module::t('views', 'Login');
                 <p class="help-block">
                     <?= Module::t(
                         'views',
-                        'If you do not have an account &mdash; {signupLink}.',
+                        'If you do not have an account &mdash; {signupLink}',
                         ['signupLink' => Html::a(Module::t('views', 'Sign up'), [Module::URL_ROUTE_SIGNUP], ['id' => 'signup-link'])]
                     ); ?>
                 </p>
@@ -39,15 +39,15 @@ $this->title = Module::t('views', 'Login');
             <p class="help-block">
                 <?= Module::t(
                     'views',
-                    'Did you forget your password? &mdash; {forgotLink}.',
-                    ['forgotLink' => Html::a(Module::t('views', 'Recover it'), [Module::URL_ROUTE_FORGOT_PASSWORD], ['id' => 'forgotpassword-link'])]
+                    'Did you forget your password? &mdash; {forgotLink}',
+                    ['forgotLink' => Html::a(Module::t('views', 'Recover your password'), [Module::URL_ROUTE_FORGOT_PASSWORD], ['id' => 'forgotpassword-link'])]
                 ); ?>
             </p>
 
             <?php $form = ActiveForm::begin(['id' => 'loginform']); ?>
 
             <fieldset>
-                <?= $form->field($model, 'username'); ?>
+                <?= $form->field($model, 'email'); ?>
                 <?= $form->field($model, 'password')->passwordInput(); ?>
                 <?= $form->field($model, 'rememberMe')->checkbox(); ?>
             </fieldset>
