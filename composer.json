@@ -9,7 +9,6 @@
       "email": "christoffer.niska@nordsoftware.com"
     }
   ],
-  "minimum-stability": "dev",
   "require": {
     "php": ">=5.4.0",
     "ircmaxell/random-lib": ">=v1.0",
