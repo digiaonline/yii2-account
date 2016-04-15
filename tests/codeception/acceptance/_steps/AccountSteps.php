@@ -16,7 +16,7 @@ class AccountSteps extends \AcceptanceTester
     public function login($username, $password)
     {
         $I = $this;
-        $I->fillField(\LoginPage::$fieldUsername, $username);
+        $I->fillField(\LoginPage::$fieldEmail, $username);
         $I->fillField(\LoginPage::$fieldPassword, $password);
         $I->click(\LoginPage::$buttonSubmit);
     }
