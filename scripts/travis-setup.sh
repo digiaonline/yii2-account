@@ -7,7 +7,7 @@ erb tests/codeception/acceptance.suite.yml.erb > tests/codeception/acceptance.su
 
 # install composer and dependencies
 composer self-update && composer --version
-composer global require "fxp/composer-asset-plugin:1.0.0-beta3"
+composer global require "fxp/composer-asset-plugin"
 composer install --no-interaction --prefer-source
 
 # start the php web server
