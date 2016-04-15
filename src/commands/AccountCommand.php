@@ -51,4 +51,41 @@ class AccountCommand extends Controller
 
         return 0;
     }
+
+
+    /**
+     * Sends a test activation e-mail to the specified e-mail address
+     *
+     * @param string $email
+     */
+    public function actionTestActivationEmail($email)
+    {
+        $actionUrl = 'http://example.com/activate/' . $email;
+
+        $this->module->getMailSender()->sendActivationMail([
+            'to'      => [$email],
+            'from'    => $this->module->getParam(Module::PARAM_FROM_EMAIL_ADDRESS),
+            'subject' => Module::t('email', 'Thank you for signing up'),
+            'data'    => ['actionUrl' => $actionUrl],
+        ]);
+    }
+
+
+    /**
+     * Sends a test "recover pasword" e-mail to the specified e-mail address
+     *
+     * @param string $email
+     */
+    public function actionTestResendPasswordEmail($email)
+    {
+        $actionUrl = 'http://example.com/recoverPassword/' . $email;
+
+        $this->module->getMailSender()->sendResetPasswordMail([
+            'to'      => [$email],
+            'from'    => $this->module->getParam(Module::PARAM_FROM_EMAIL_ADDRESS),
+            'subject' => Module::t('email', 'Thank you for signing up'),
+            'data'    => ['actionUrl' => $actionUrl],
+        ]);
+    }
+    
 }
