@@ -11,7 +11,7 @@ class LoginPage
      * public static $formSubmitButton = "#mainForm input[type=submit]";
      */
 
-     static $fieldUsername = '#loginform-username';
+     static $fieldEmail = '#loginform-email';
      static $fieldPassword = '#loginform-password';
 
      static $buttonSubmit = '#loginform button[type=submit]';
